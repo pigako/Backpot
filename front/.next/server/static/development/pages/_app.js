@@ -119,8 +119,7 @@ const globalStyles = styled_components__WEBPACK_IMPORTED_MODULE_0__["createGloba
     }
     body {
         font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        font-size : 12px;
-        padding-top : 50px;
+        font-size : 18px;
     }
 `;
 /* harmony default export */ __webpack_exports__["default"] = (globalStyles);
@@ -157,24 +156,53 @@ const List = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.ul.withCon
 const Item = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.li.withConfig({
   displayName: "Header__Item",
   componentId: "i7gymj-2"
-})(["width:50px;height:50px;text-align:center;& > a{color:white;height:50px;display:flex;align-items:center;justify-content:center;}"]);
+})(["width:70px;height:50px;text-align:center;& > a{color:white;height:50px;display:flex;align-items:center;justify-content:center;}"]);
+const SearchForm = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.form.withConfig({
+  displayName: "Header__SearchForm",
+  componentId: "i7gymj-3"
+})(["display:flex;justify-content:center;align-items:center;padding:0px 10px;"]);
+const SearchInput = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.input.withConfig({
+  displayName: "Header__SearchInput",
+  componentId: "i7gymj-4"
+})(["margin-right:10px;"]);
+const SearchButton = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.button.withConfig({
+  displayName: "Header__SearchButton",
+  componentId: "i7gymj-5"
+})([""]);
 
 const Header = () => {
+  const {
+    0: searchText,
+    1: setSearchText
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+  const onChangeSearchText = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+    setSearchText(e.target.value);
+  }, []);
+  const onSubmitSearch = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+    e.preventDefault();
+  }, []);
   return __jsx(Menu, null, __jsx(List, null, __jsx(Item, {
     key: "home"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/"
-  }, __jsx("a", null, "Logo"))), __jsx(Item, {
+  }, __jsx("a", null, "Backpot"))), __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "/mydirectory"
+    href: "/mylibrery"
   }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), __jsx(Item, {
     key: "profile"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/profile"
   }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/search"
-  }, __jsx("a", null, "Search")))));
+  }, __jsx("a", null, "Search"))), __jsx(SearchForm, {
+    onSubmit: onSubmitSearch
+  }, __jsx(SearchInput, {
+    value: searchText,
+    onChange: onChangeSearchText
+  }), __jsx(SearchButton, {
+    type: "submit"
+  }, "\uAC80\uC0C9"))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Header);
@@ -212,11 +240,11 @@ const Contents = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.wi
 const LeftContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__LeftContent",
   componentId: "sc-17g3k6v-1"
-})([""]);
+})(["width:33.333336%;float:left;margin:10px 0 10px 5px;height:500px;"]);
 const RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__RightContent",
   componentId: "sc-17g3k6v-2"
-})([""]);
+})(["width:66.666663%;"]);
 
 const Layout = ({
   children

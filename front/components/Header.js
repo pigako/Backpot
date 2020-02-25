@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 
@@ -22,7 +22,7 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-  width: 50px;
+  width: 70px;
   height: 50px;
   text-align: center;
   & > a {
@@ -34,17 +34,40 @@ const Item = styled.li`
   }
 `;
 
+const SearchForm = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
+`;
+
+const SearchInput = styled.input`
+  margin-right: 10px;
+`;
+
+const SearchButton = styled.button``;
+
 const Header = () => {
+  const [searchText, setSearchText] = useState('');
+
+  const onChangeSearchText = useCallback(e => {
+    setSearchText(e.target.value);
+  }, []);
+
+  const onSubmitSearch = useCallback(e => {
+    e.preventDefault();
+  }, []);
+
   return (
     <Menu>
       <List>
         <Item key="home">
           <Link href="/">
-            <a>Logo</a>
+            <a>Backpot</a>
           </Link>
         </Item>
         <Item key="mydirectory">
-          <Link href="/mydirectory">
+          <Link href="/mylibrery">
             <a>내 서재</a>
           </Link>
         </Item>
@@ -58,6 +81,13 @@ const Header = () => {
             <a>Search</a>
           </Link>
         </Item>
+        <SearchForm onSubmit={onSubmitSearch}>
+          <SearchInput
+            value={searchText}
+            onChange={onChangeSearchText}
+          ></SearchInput>
+          <SearchButton type="submit">검색</SearchButton>
+        </SearchForm>
       </List>
     </Menu>
   );
