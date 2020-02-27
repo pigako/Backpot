@@ -7,13 +7,13 @@ const dotenv = require('dotenv');
 // const passport = require('passport');
 
 // const passport = require('./passport'); // passport
-// const db = require('./model');  // DB model
+const db = require('./models'); // DB model
 const userAPIRouter = require('./routes/user'); // Router 등록
 // const postAPIRouter = require('./routes/post');
 
 dotenv.config(); // dotenv 실행
 const app = express();
-// db.sequelize.sync(); // 시퀄라이즈 실행
+db.sequelize.sync(); // 시퀄라이즈 실행
 // passportConfig(); // passport start
 
 app.use(morgan('dev')); // Log

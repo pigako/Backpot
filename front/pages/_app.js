@@ -8,7 +8,7 @@ import withReduxSaga from 'next-redux-saga';
 import { Container } from 'next/app';
 import axios from 'axios';
 
-import GlobalStyles from '../components/GlobalStyles';
+import GlobalStyles from '../components/designs/GlobalStyles';
 import Layout from '../components/Layout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
