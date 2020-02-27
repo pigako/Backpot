@@ -4,9 +4,9 @@ const cors = require('cors'); // CORS
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
-// const passport = require('passport');
+const passport = require('passport');
 
-// const passport = require('./passport'); // passport
+const passportConfig = require('./passport');
 const db = require('./models'); // DB model
 const userAPIRouter = require('./routes/user'); // Router 등록
 // const postAPIRouter = require('./routes/post');
@@ -14,7 +14,7 @@ const userAPIRouter = require('./routes/user'); // Router 등록
 dotenv.config(); // dotenv 실행
 const app = express();
 db.sequelize.sync(); // 시퀄라이즈 실행
-// passportConfig(); // passport start
+passportConfig(); // passport start
 
 app.use(morgan('dev')); // Log
 app.use('/', express.static('uploads')); // Image 파일 다른서버에서 가져갈수 있도록 등록
@@ -39,8 +39,8 @@ app.use(
     name: 'ADSFOPK',
   }),
 );
-// app.use(passport.initialize()); // 로그인 미들웨어
-// app.use(passport.session()); // express session
+app.use(passport.initialize()); // 로그인 미들웨어
+app.use(passport.session()); // express session
 
 app.use('/api/user', userAPIRouter);
 // app.use('/api/post', postAPIRouter);
