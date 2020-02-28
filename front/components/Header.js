@@ -96,6 +96,11 @@ const Header = () => {
             <a>Backpot</a>
           </Link>
         </Item>
+        <Item key="booklist">
+          <Link href="booklist">
+            <a>웹소설</a>
+          </Link>
+        </Item>
         <Item key="mydirectory">
           <Link href="/mylibrery">
             <a>내 서재</a>

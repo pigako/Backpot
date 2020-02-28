@@ -58,7 +58,8 @@ router.post('/logout', (req, res, next) => {
 // 회원가입
 router.post('/signup', async (req, res, next) => {
   try {
-    const existUser = await db.User.findOne({ where: { id: req.body.userId } });
+    console.log('signUp', req.body);
+    const existUser = await db.User.findOne({ where: { userId: req.body.userId } });
     if (existUser) {
       return res.status(403).send('이미 사용중인 아이디입니다.');
     }
@@ -74,5 +75,30 @@ router.post('/signup', async (req, res, next) => {
     return next(e);
   }
 });
-
+router.post('/check', async (req, res, next) => {
+  console.log(req.body);
+  try {
+    if (req.body.type === 'userId') {
+      const existUserId = await db.User.findOne({ where: { userId: req.body.userId } });
+      if (existUserId) {
+        return res.send(false);
+      }
+      return res.send(true);
+    } else if (req.body.type === 'nickname') {
+      const existNickname = await db.User.findOne({ where: { nickname: req.body.nickname } });
+      if (existNickname) {
+        return res.send(false);
+      }
+      return res.send(true);
+    }
+    return res.status(403).send('잘못된 요청입니다.');
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+  // const existUser = await db.User.findOne({ where: { userId: req.body.userId } });
+  // if (existUser) {
+  //   return res.status(403).send('이미 사용중인 아이디입니다.');
+  // }
+});
 module.exports = router;

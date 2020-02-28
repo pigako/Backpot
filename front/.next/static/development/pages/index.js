@@ -56,7 +56,7 @@ var Home = function Home() {
 
 /***/ }),
 
-/***/ 2:
+/***/ 1:
 /*!*********************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cindex.js ***!
   \*********************************************************************************************************************/
@@ -79,5 +79,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=index.js.map

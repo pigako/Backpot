@@ -35,6 +35,11 @@ const LoginFormButtonDiv = styled.div`
   }
 `;
 
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
+`;
+
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
     userId: '',
@@ -80,12 +85,15 @@ const LoginForm = () => {
         />
       </div>
       <LoginFormButtonDiv>
-        <Button type="submit">로그인</Button>
-        <Link href="signup">
+        <Link href="/signup">
           <a>
             <Button color="pink">회원가입</Button>
           </a>
         </Link>
+        <Button type="submit">
+          {/* <LoadingImg src="/static/icons/loading_blue.gif" /> */}
+          로그인
+        </Button>
       </LoginFormButtonDiv>
     </Form>
   );

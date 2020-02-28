@@ -13,6 +13,7 @@ const StyledButton = styled.button`
   padding-right: 1rem;
 
   height: 2.25rem;
+  width: 6rem;
   font-size: 1rem;
 
   ${props => {

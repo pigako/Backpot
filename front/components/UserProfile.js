@@ -49,7 +49,7 @@ const Label = styled.label`
 `;
 
 const BottomProfile = styled.div`
-  width: 90%;
+  width: 100%;
 
   & > * {
     margin-top: 10px;

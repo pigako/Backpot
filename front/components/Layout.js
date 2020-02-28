@@ -28,6 +28,7 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   width: 75.666663%;
+  height: 100%;
   min-width: calc(100% - 410px);
   max-width: calc(100% - 310px);
   float: right;
@@ -39,7 +40,7 @@ const Layout = ({ children }) => {
       <Header />
       <Contents>
         <LeftContent>
-          {/* <LoginForm /> */}
+          <LoginForm />
           <UserProfile />
         </LeftContent>
         <RightContent>{children}</RightContent>

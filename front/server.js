@@ -30,8 +30,8 @@ app.prepare().then(() => {
     }),
   );
 
-  server.get('/book/:id', (req, res) => {
-    return app.render(req, res, '/book', { id: req.params.id });
+  server.get('/book/:bookid', (req, res) => {
+    return app.render(req, res, '/book', { bookId: req.params.bookid });
   });
 
   server.get('*', (req, res) => {

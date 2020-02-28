@@ -151,6 +151,10 @@ const Header = () => {
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/"
   }, __jsx("a", null, "Backpot"))), __jsx(Item, {
+    key: "booklist"
+  }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    href: "booklist"
+  }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/mylibrery"
@@ -212,12 +216,12 @@ const LeftContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div
 const RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__RightContent",
   componentId: "sc-17g3k6v-3"
-})(["width:75.666663%;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;"]);
+})(["width:75.666663%;height:100%;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;"]);
 
 const Layout = ({
   children
 }) => {
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null)), __jsx(RightContent, null, children)));
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null), __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null)), __jsx(RightContent, null, children)));
 };
 
 Layout.propTypes = {
@@ -332,6 +336,10 @@ const LoginFormButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___defaul
   displayName: "LoginForm__LoginFormButtonDiv",
   componentId: "sc-1xv52z9-3"
 })(["display:flex;justify-content:flex-end;align-items:center;width:90%;& button{margin-left:10px;}"]);
+const LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.img.withConfig({
+  displayName: "LoginForm__LoadingImg",
+  componentId: "sc-1xv52z9-4"
+})(["margin-top:4px;height:1.5rem;"]);
 
 const LoginForm = () => {
   const {
@@ -371,13 +379,13 @@ const LoginForm = () => {
     value: password,
     onChange: onChangeInputs,
     required: true
-  })), __jsx(LoginFormButtonDiv, null, __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    type: "submit"
-  }, "\uB85C\uADF8\uC778"), __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "signup"
+  })), __jsx(LoginFormButtonDiv, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    href: "/signup"
   }, __jsx("a", null, __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     color: "pink"
-  }, "\uD68C\uC6D0\uAC00\uC785")))));
+  }, "\uD68C\uC6D0\uAC00\uC785"))), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "submit"
+  }, "\uB85C\uADF8\uC778")));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
@@ -434,7 +442,7 @@ const Label = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.label.wit
 const BottomProfile = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "UserProfile__BottomProfile",
   componentId: "ny6ey5-6"
-})(["width:90%;& > *{margin-top:10px;}"]);
+})(["width:100%;& > *{margin-top:10px;}"]);
 const LikeBookList = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.ul.withConfig({
   displayName: "UserProfile__LikeBookList",
   componentId: "ny6ey5-7"
@@ -488,7 +496,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 const StyledButton = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.button.withConfig({
   displayName: "Button__StyledButton",
   componentId: "nqeedc-0"
-})(["display:inline-block;outline:none;border:none;border-radius:4px;color:white;font-weight:bold;cursor:pointer;padding-left:1rem;padding-right:1rem;height:2.25rem;font-size:1rem;", " ", " & + &{margin-left:1rem;}"], props => {
+})(["display:inline-block;outline:none;border:none;border-radius:4px;color:white;font-weight:bold;cursor:pointer;padding-left:1rem;padding-right:1rem;height:2.25rem;width:6rem;font-size:1rem;", " ", " & + &{margin-left:1rem;}"], props => {
   if (props.size === 'large') {
     return Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["css"])(["width:100%;"]);
   }
@@ -2576,13 +2584,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "redux");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./reducers/user.js");
-/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_user__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./book */ "./reducers/book.js");
 
 
 
 const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-  user: (_user__WEBPACK_IMPORTED_MODULE_1___default()),
+  user: _user__WEBPACK_IMPORTED_MODULE_1__["default"],
   book: _book__WEBPACK_IMPORTED_MODULE_2__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (rootReducer);
@@ -2593,10 +2600,57 @@ const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: initalState, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
+const initalState = {
+  isLoggingIn: false,
+  loginErrorReason: '',
+  isSignedUp: false,
+  isSigningUp: false,
+  signUpErrorReason: '',
+  me: [],
+  LikedBookList: [],
+  LikedWriterList: [],
+  otherUserInfo: []
+};
+const SIGN_UP_REQUEST = `SIGN_UP_REQUEST`;
+const SIGN_UP_SUCCESS = `SIGN_UP_SUCCESS`;
+const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
+
+const reducer = (state = initalState, action) => {
+  return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
+    switch (action.type) {
+      case SIGN_UP_REQUEST:
+        draft.isSigningUp = true;
+        break;
+
+      case SIGN_UP_SUCCESS:
+        draft.isSigningUp = false;
+        draft.isSignedUp = true;
+        break;
+
+      case SIGN_UP_FAILURE:
+        draft.isSigningUp = false;
+        draft.signUpErrorReason = action.error;
+        break;
+
+      default:
+        break;
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
 
 /***/ }),
 
@@ -2651,7 +2705,59 @@ function* postSaga() {}
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return userSaga; });
-function* userSaga() {}
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-saga/effects */ "redux-saga/effects");
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
+
+
+ // 회원가입
+// // function signUpApi(signUpData)
+// // function* signUp(action) {
+// //   try {
+// //     const result = yield call(signUpData => {
+// //       return axios.post('/user/signup', { signUpData });
+// //     }, action.data);
+// //     yield put({
+// //       type: SIGN_UP_SUCCESS,
+// //       data: result,
+// //     });
+// //   } catch (e) {
+// //     console.log(e);
+// //     yield put({
+// //       type: SIGN_UP_FAILURE,
+// //       error: e,
+// //     });
+// //   }
+// // }
+// function* watchSignUp() {
+//   yield takeLatest(SIGN_UP_REQUEST, signUp);
+// }
+
+function* watchSignUp() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["SIGN_UP_REQUEST"], function* signUp(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(signUpData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/user/signup', signUpData);
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["SIGN_UP_SUCCESS"],
+        data: result
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["SIGN_UP_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
+function* userSaga() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp)]);
+}
 
 /***/ }),
 
