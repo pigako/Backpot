@@ -75,7 +75,7 @@ const LoadingImg = styled.img`
 `;
 
 const SignUp = () => {
-  const { isSignedUp, isSigningUp } = useSelector(state => state.user);
+  const { isSignedUp, isSigningUp, me } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -191,11 +191,15 @@ const SignUp = () => {
   );
 
   useEffect(() => {
+    if (me && me.userId) {
+      alert('로그인한 사용자는 접근할 수 없습니다.');
+      Router.push('/');
+    }
     if (isSignedUp) {
       alert('회원가입 완료');
       Router.push('/');
     }
-  }, [isSignedUp]);
+  }, [isSignedUp, me && me.userId]);
 
   return (
     <SignUpDesign>

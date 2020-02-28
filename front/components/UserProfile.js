@@ -1,8 +1,9 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './designs/Button';
 import LikedBook from './LikedBook';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const Profile = styled.div`
   width: 90%;
@@ -59,20 +60,31 @@ const BottomProfile = styled.div`
 const LikeBookList = styled.ul`
   color: white;
 `;
-
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
+`;
 const UserProfile = () => {
-  const { likedBookList } = useSelector(state => state.book);
+  const { likedBookList, isLoggingOut } = useSelector(state => state.book);
   const dispatch = useDispatch();
 
-  const onLogout = useCallback(() => {
-    dispatch();
+  const onLogout = useCallback(e => {
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
   }, []);
 
   return (
     <Profile>
       <TopProfile>
         <Nickname>돼지돼지</Nickname>
-        <Button onClick={onLogout}>로그아웃</Button>
+        <Button onClick={onLogout}>
+          {isLoggingOut ? (
+            <LoadingImg src="/static/icons/loading_blue.gif" />
+          ) : (
+            `로그아웃`
+          )}
+        </Button>
       </TopProfile>
       <MiddleProfile>
         <Preference>

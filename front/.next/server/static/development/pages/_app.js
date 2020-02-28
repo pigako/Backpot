@@ -194,7 +194,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./components/Header.js");
 /* harmony import */ var _LoginForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoginForm */ "./components/LoginForm.js");
 /* harmony import */ var _UserProfile__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UserProfile */ "./components/UserProfile.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_6__);
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -221,7 +224,10 @@ const RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.di
 const Layout = ({
   children
 }) => {
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null), __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null)), __jsx(RightContent, null, children)));
+  const {
+    me
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user);
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)));
 };
 
 Layout.propTypes = {
@@ -308,6 +314,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -315,6 +324,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -343,6 +354,10 @@ const LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.img.
 
 const LoginForm = () => {
   const {
+    isLoggingIn
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user);
+  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
+  const {
     0: inputs,
     1: setInputs
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
@@ -360,7 +375,14 @@ const LoginForm = () => {
   }, [inputs]);
   const onSubmitForm = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
     e.preventDefault();
-  });
+    dispatch({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_IN_REQUEST"],
+      data: {
+        userId,
+        password
+      }
+    });
+  }, [userId, password]);
   return __jsx(Form, {
     onSubmit: onSubmitForm
   }, __jsx("div", null, __jsx(Label, {
@@ -376,16 +398,20 @@ const LoginForm = () => {
   }, "\uBE44\uBC00\uBC88\uD638"), __jsx("br", null), __jsx(Input, {
     htmlFor: "user-password",
     name: "password",
+    type: "password",
     value: password,
     onChange: onChangeInputs,
     required: true
   })), __jsx(LoginFormButtonDiv, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/signup"
   }, __jsx("a", null, __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "button",
     color: "pink"
   }, "\uD68C\uC6D0\uAC00\uC785"))), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "submit"
-  }, "\uB85C\uADF8\uC778")));
+  }, isLoggingIn ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : `로그인`)));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
@@ -409,7 +435,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
 /* harmony import */ var _LikedBook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LikedBook */ "./components/LikedBook.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -447,18 +475,27 @@ const LikeBookList = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.ul
   displayName: "UserProfile__LikeBookList",
   componentId: "ny6ey5-7"
 })(["color:white;"]);
+const LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.img.withConfig({
+  displayName: "UserProfile__LoadingImg",
+  componentId: "ny6ey5-8"
+})(["margin-top:4px;height:1.5rem;"]);
 
 const UserProfile = () => {
   const {
-    likedBookList
+    likedBookList,
+    isLoggingOut
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.book);
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
-  const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
-    dispatch();
+  const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+    dispatch({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_OUT_REQUEST"]
+    });
   }, []);
   return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, "\uB3FC\uC9C0\uB3FC\uC9C0"), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: onLogout
-  }, "\uB85C\uADF8\uC544\uC6C3")), __jsx(MiddleProfile, null, __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likedBookList.length)), __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, "20"))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likedBookList ? likedBookList.map((v, i) => {
+  }, isLoggingOut ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : `로그아웃`)), __jsx(MiddleProfile, null, __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likedBookList.length)), __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, "20"))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likedBookList ? likedBookList.map((v, i) => {
     return __jsx(_LikedBook__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: i,
       likedBook: v
@@ -2445,7 +2482,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.js");
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../reducers */ "./reducers/index.js");
 /* harmony import */ var _sagas__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../sagas */ "./sagas/index.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -2484,10 +2523,16 @@ Backpot.getInitialProps = async context => {
   let pageProps = {};
   const state = ctx.store.getState();
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+  axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = '';
 
   if (ctx.isServer && cookie) {
     axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = cookie;
-  }
+  } // if (!state.user.me) {
+  //   ctx.store.dispatch({
+  //     type: LOAD_USER_REQUEST,
+  //   });
+  // }
+
 
   if (Component.getInitialProps) {
     pageProps = (await Component.getInitialProps(ctx)) || {};
@@ -2600,21 +2645,31 @@ const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initalState, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, default */
+/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_REQUEST", function() { return LOG_IN_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_SUCCESS", function() { return LOG_IN_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_FAILURE", function() { return LOG_IN_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_REQUEST", function() { return LOG_OUT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_SUCCESS", function() { return LOG_OUT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_FAILURE", function() { return LOG_OUT_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_REQUEST", function() { return LOAD_USER_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_SUCCESS", function() { return LOAD_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_FAILURE", function() { return LOAD_USER_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
   isLoggingIn: false,
   loginErrorReason: '',
+  isLoggingOut: false,
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: '',
@@ -2623,15 +2678,56 @@ const initalState = {
   LikedWriterList: [],
   otherUserInfo: []
 };
+const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
+const LOG_IN_SUCCESS = `LOG_IN_SUCCESS`;
+const LOG_IN_FAILURE = `LOG_IN_FAILURE`;
+const LOG_OUT_REQUEST = `LOG_OUT_REQUEST`;
+const LOG_OUT_SUCCESS = `LOG_OUT_SUCCESS`;
+const LOG_OUT_FAILURE = `LOG_OUT_FAILURE`;
 const SIGN_UP_REQUEST = `SIGN_UP_REQUEST`;
 const SIGN_UP_SUCCESS = `SIGN_UP_SUCCESS`;
 const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
+const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
+const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
+const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
     switch (action.type) {
+      // 로그인
+      case LOG_IN_REQUEST:
+        draft.isLoggingIn = true;
+        draft.loginErrorReason = '';
+        break;
+
+      case LOG_IN_SUCCESS:
+        draft.isLoggingIn = false;
+        draft.me = action.data;
+        break;
+
+      case LOG_IN_FAILURE:
+        draft.isLoggingIn = false;
+        draft.loginErrorReason = action.error;
+        break;
+      // 로그아웃
+
+      case LOG_OUT_REQUEST:
+        draft.isLoggingOut = true;
+        break;
+
+      case LOG_OUT_SUCCESS:
+        draft.isLoggingOut = false;
+        draft.me = [];
+        break;
+
+      case LOG_OUT_FAILURE:
+        draft.isLoggingOut = false;
+        break;
+      // 회원가입
+
       case SIGN_UP_REQUEST:
         draft.isSigningUp = true;
+        draft.signUpErrorReason = '';
         break;
 
       case SIGN_UP_SUCCESS:
@@ -2642,6 +2738,22 @@ const reducer = (state = initalState, action) => {
       case SIGN_UP_FAILURE:
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
+        break;
+      // 유저 정보 불러오기
+
+      case LOAD_USER_REQUEST:
+        break;
+
+      case LOAD_USER_SUCCESS:
+        if (action.me) {
+          draft.me = action.data;
+        } else {
+          draft.otherUserInfo = action.data;
+        }
+
+        break;
+
+      case LOAD_USER_FAILURE:
         break;
 
       default:
@@ -2712,28 +2824,53 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 
 
- // 회원가입
-// // function signUpApi(signUpData)
-// // function* signUp(action) {
-// //   try {
-// //     const result = yield call(signUpData => {
-// //       return axios.post('/user/signup', { signUpData });
-// //     }, action.data);
-// //     yield put({
-// //       type: SIGN_UP_SUCCESS,
-// //       data: result,
-// //     });
-// //   } catch (e) {
-// //     console.log(e);
-// //     yield put({
-// //       type: SIGN_UP_FAILURE,
-// //       error: e,
-// //     });
-// //   }
-// // }
-// function* watchSignUp() {
-//   yield takeLatest(SIGN_UP_REQUEST, signUp);
-// }
+ // 로그인
+
+function* watchLogin() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_IN_REQUEST"], function* login(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loginData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/user/login', loginData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_IN_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_IN_FAILURE"],
+        error: e
+      });
+      alert('로그인에 실패했습니다.');
+    }
+  });
+} // 로그아웃
+
+
+function* watchLogout() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_OUT_REQUEST"], function* logout() {
+    try {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(() => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/user/logout', {}, {
+          withCredentials: true
+        });
+      });
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_OUT_SUCCESS"]
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOG_OUT_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 회원가입
+
 
 function* watchSignUp() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["SIGN_UP_REQUEST"], function* signUp(action) {
@@ -2755,8 +2892,32 @@ function* watchSignUp() {
   });
 }
 
+function* watchLoadUser() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_REQUEST"], function* loadUser(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(userId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(userId ? `/user/${userId}` : `/user`, {
+          withCredentials: true
+        });
+      }, action.data);
+      console.log('loadUser Result', result);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_SUCCESS"],
+        data: result.data,
+        me: !action.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
 function* userSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUser)]);
 }
 
 /***/ }),

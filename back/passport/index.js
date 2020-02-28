@@ -12,9 +12,9 @@ module.exports = () => {
       const user = await db.User.findOne({
         where: { id },
       });
-      return done(null, user);
+      return done(null, user); // req.user
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return done(e);
     }
   });

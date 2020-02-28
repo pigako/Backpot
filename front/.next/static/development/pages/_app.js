@@ -99,7 +99,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./components/Header.js");
 /* harmony import */ var _LoginForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoginForm */ "./components/LoginForm.js");
 /* harmony import */ var _UserProfile__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UserProfile */ "./components/UserProfile.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -125,7 +127,13 @@ var RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div
 
 var Layout = function Layout(_ref) {
   var children = _ref.children;
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null), __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null)), __jsx(RightContent, null, children)));
+
+  var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(function (state) {
+    return state.user;
+  }),
+      me = _useSelector.me;
+
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)));
 };
 
 Layout.propTypes = {
@@ -222,6 +230,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 
 
 
@@ -234,6 +244,8 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement;
 function ownKeys(object, enumerableOnly) { var keys = _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_5___default()(object); if (_babel_runtime_corejs2_core_js_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4___default.a) { var symbols = _babel_runtime_corejs2_core_js_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4___default()(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return _babel_runtime_corejs2_core_js_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3___default()(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(target, key, source[key]); }); } else if (_babel_runtime_corejs2_core_js_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_2___default.a) { _babel_runtime_corejs2_core_js_object_define_properties__WEBPACK_IMPORTED_MODULE_1___default()(target, _babel_runtime_corejs2_core_js_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_2___default()(source)); } else { ownKeys(Object(source)).forEach(function (key) { _babel_runtime_corejs2_core_js_object_define_property__WEBPACK_IMPORTED_MODULE_0___default()(target, key, _babel_runtime_corejs2_core_js_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3___default()(source, key)); }); } } return target; }
+
+
 
 
 
@@ -261,6 +273,13 @@ var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].img.w
 })(["margin-top:4px;height:1.5rem;"]);
 
 var LoginForm = function LoginForm() {
+  var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_11__["useSelector"])(function (state) {
+    return state.user;
+  }),
+      isLoggingIn = _useSelector.isLoggingIn;
+
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_11__["useDispatch"])();
+
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_7__["useState"])({
     userId: '',
     password: ''
@@ -275,7 +294,14 @@ var LoginForm = function LoginForm() {
   }, [inputs]);
   var onSubmitForm = Object(react__WEBPACK_IMPORTED_MODULE_7__["useCallback"])(function (e) {
     e.preventDefault();
-  });
+    dispatch({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_12__["LOG_IN_REQUEST"],
+      data: {
+        userId: userId,
+        password: password
+      }
+    });
+  }, [userId, password]);
   return __jsx(Form, {
     onSubmit: onSubmitForm
   }, __jsx("div", null, __jsx(Label, {
@@ -291,16 +317,20 @@ var LoginForm = function LoginForm() {
   }, "\uBE44\uBC00\uBC88\uD638"), __jsx("br", null), __jsx(Input, {
     htmlFor: "user-password",
     name: "password",
+    type: "password",
     value: password,
     onChange: onChangeInputs,
     required: true
   })), __jsx(LoginFormButtonDiv, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_9___default.a, {
     href: "/signup"
   }, __jsx("a", null, __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    type: "button",
     color: "pink"
   }, "\uD68C\uC6D0\uAC00\uC785"))), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_10__["default"], {
     type: "submit"
-  }, "\uB85C\uADF8\uC778")));
+  }, isLoggingIn ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : "\uB85C\uADF8\uC778")));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
@@ -322,7 +352,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
 /* harmony import */ var _LikedBook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LikedBook */ "./components/LikedBook.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -360,20 +392,29 @@ var LikeBookList = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.
   displayName: "UserProfile__LikeBookList",
   componentId: "ny6ey5-7"
 })(["color:white;"]);
+var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].img.withConfig({
+  displayName: "UserProfile__LoadingImg",
+  componentId: "ny6ey5-8"
+})(["margin-top:4px;height:1.5rem;"]);
 
 var UserProfile = function UserProfile() {
   var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.book;
   }),
-      likedBookList = _useSelector.likedBookList;
+      likedBookList = _useSelector.likedBookList,
+      isLoggingOut = _useSelector.isLoggingOut;
 
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
-  var onLogout = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
-    dispatch();
+  var onLogout = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
+    dispatch({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_OUT_REQUEST"]
+    });
   }, []);
   return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, "\uB3FC\uC9C0\uB3FC\uC9C0"), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: onLogout
-  }, "\uB85C\uADF8\uC544\uC6C3")), __jsx(MiddleProfile, null, __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likedBookList.length)), __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, "20"))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likedBookList ? likedBookList.map(function (v, i) {
+  }, isLoggingOut ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : "\uB85C\uADF8\uC544\uC6C3")), __jsx(MiddleProfile, null, __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likedBookList.length)), __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, "20"))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likedBookList ? likedBookList.map(function (v, i) {
     return __jsx(_LikedBook__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: i,
       likedBook: v
@@ -19258,7 +19299,7 @@ module.exports = (__webpack_require__(/*! dll-reference dll_ef0ff7c60362f24a921f
 /*!***********************************************************************!*\
   !*** ./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
   \***********************************************************************/
-/*! exports provided: default, CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
+/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23689,8 +23730,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.js");
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../reducers */ "./reducers/index.js");
 /* harmony import */ var _sagas__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../sagas */ "./sagas/index.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
 
 
 
@@ -23730,38 +23773,44 @@ Backpot.getInitialProps = function _callee(context) {
           pageProps = {};
           state = ctx.store.getState();
           cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+          axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.Cookie = '';
 
           if (ctx.isServer && cookie) {
             axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.Cookie = cookie;
-          }
+          } // if (!state.user.me) {
+          //   ctx.store.dispatch({
+          //     type: LOAD_USER_REQUEST,
+          //   });
+          // }
+
 
           if (!Component.getInitialProps) {
-            _context.next = 12;
+            _context.next = 13;
             break;
           }
 
-          _context.next = 8;
+          _context.next = 9;
           return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(Component.getInitialProps(ctx));
 
-        case 8:
+        case 9:
           _context.t0 = _context.sent;
 
           if (_context.t0) {
-            _context.next = 11;
+            _context.next = 12;
             break;
           }
 
           _context.t0 = {};
 
-        case 11:
+        case 12:
           pageProps = _context.t0;
 
-        case 12:
+        case 13:
           return _context.abrupt("return", {
             pageProps: pageProps
           });
 
-        case 13:
+        case 14:
         case "end":
           return _context.stop();
       }
@@ -23877,20 +23926,30 @@ var rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initalState, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, default */
+/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_REQUEST", function() { return LOG_IN_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_SUCCESS", function() { return LOG_IN_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_IN_FAILURE", function() { return LOG_IN_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_REQUEST", function() { return LOG_OUT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_SUCCESS", function() { return LOG_OUT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_OUT_FAILURE", function() { return LOG_OUT_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_REQUEST", function() { return LOAD_USER_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_SUCCESS", function() { return LOAD_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_FAILURE", function() { return LOAD_USER_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
 var initalState = {
   isLoggingIn: false,
   loginErrorReason: '',
+  isLoggingOut: false,
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: '',
@@ -23899,17 +23958,58 @@ var initalState = {
   LikedWriterList: [],
   otherUserInfo: []
 };
+var LOG_IN_REQUEST = "LOG_IN_REQUEST";
+var LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
+var LOG_IN_FAILURE = "LOG_IN_FAILURE";
+var LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
+var LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
+var LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 var SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 var SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 var SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
+var LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+var LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+var LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
   return Object(immer__WEBPACK_IMPORTED_MODULE_0__["default"])(state, function (draft) {
     switch (action.type) {
+      // 로그인
+      case LOG_IN_REQUEST:
+        draft.isLoggingIn = true;
+        draft.loginErrorReason = '';
+        break;
+
+      case LOG_IN_SUCCESS:
+        draft.isLoggingIn = false;
+        draft.me = action.data;
+        break;
+
+      case LOG_IN_FAILURE:
+        draft.isLoggingIn = false;
+        draft.loginErrorReason = action.error;
+        break;
+      // 로그아웃
+
+      case LOG_OUT_REQUEST:
+        draft.isLoggingOut = true;
+        break;
+
+      case LOG_OUT_SUCCESS:
+        draft.isLoggingOut = false;
+        draft.me = [];
+        break;
+
+      case LOG_OUT_FAILURE:
+        draft.isLoggingOut = false;
+        break;
+      // 회원가입
+
       case SIGN_UP_REQUEST:
         draft.isSigningUp = true;
+        draft.signUpErrorReason = '';
         break;
 
       case SIGN_UP_SUCCESS:
@@ -23920,6 +24020,22 @@ var reducer = function reducer() {
       case SIGN_UP_FAILURE:
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
+        break;
+      // 유저 정보 불러오기
+
+      case LOAD_USER_REQUEST:
+        break;
+
+      case LOAD_USER_SUCCESS:
+        if (action.me) {
+          draft.me = action.data;
+        } else {
+          draft.otherUserInfo = action.data;
+        }
+
+        break;
+
+      case LOAD_USER_FAILURE:
         break;
 
       default:
@@ -24030,66 +24146,56 @@ __webpack_require__.r(__webpack_exports__);
 
 var _marked =
 /*#__PURE__*/
-_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchSignUp),
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLogin),
     _marked2 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLogout),
+    _marked3 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchSignUp),
+    _marked4 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadUser),
+    _marked5 =
 /*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(userSaga);
 
 
 
- // 회원가입
-// // function signUpApi(signUpData)
-// // function* signUp(action) {
-// //   try {
-// //     const result = yield call(signUpData => {
-// //       return axios.post('/user/signup', { signUpData });
-// //     }, action.data);
-// //     yield put({
-// //       type: SIGN_UP_SUCCESS,
-// //       data: result,
-// //     });
-// //   } catch (e) {
-// //     console.log(e);
-// //     yield put({
-// //       type: SIGN_UP_FAILURE,
-// //       error: e,
-// //     });
-// //   }
-// // }
-// function* watchSignUp() {
-//   yield takeLatest(SIGN_UP_REQUEST, signUp);
-// }
+ // 로그인
 
-function watchSignUp() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchSignUp$(_context2) {
+function watchLogin() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLogin$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_REQUEST"],
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_IN_REQUEST"],
           /*#__PURE__*/
-          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function signUp(action) {
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function login(action) {
             var result;
-            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function signUp$(_context) {
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function login$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
                     _context.prev = 0;
                     _context.next = 3;
-                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (signUpData) {
-                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/user/signup', signUpData);
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (loginData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/user/login', loginData, {
+                        withCredentials: true
+                      });
                     }, action.data);
 
                   case 3:
                     result = _context.sent;
                     _context.next = 6;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
-                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_SUCCESS"],
-                      data: result
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_IN_SUCCESS"],
+                      data: result.data
                     });
 
                   case 6:
-                    _context.next = 13;
+                    _context.next = 14;
                     break;
 
                   case 8:
@@ -24098,16 +24204,19 @@ function watchSignUp() {
                     console.log(_context.t0);
                     _context.next = 13;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
-                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_FAILURE"],
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_IN_FAILURE"],
                       error: _context.t0
                     });
 
                   case 13:
+                    alert('로그인에 실패했습니다.');
+
+                  case 14:
                   case "end":
                     return _context.stop();
                 }
               }
-            }, signUp, null, [[0, 8]]);
+            }, login, null, [[0, 8]]);
           }));
 
         case 2:
@@ -24116,22 +24225,201 @@ function watchSignUp() {
       }
     }
   }, _marked);
-}
+} // 로그아웃
 
-function userSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function userSaga$(_context3) {
+
+function watchLogout() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLogout$(_context4) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          _context3.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignUp)]);
+          _context4.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_OUT_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function logout() {
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function logout$(_context3) {
+              while (1) {
+                switch (_context3.prev = _context3.next) {
+                  case 0:
+                    _context3.prev = 0;
+                    _context3.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function () {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/user/logout', {}, {
+                        withCredentials: true
+                      });
+                    });
+
+                  case 3:
+                    _context3.next = 5;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_OUT_SUCCESS"]
+                    });
+
+                  case 5:
+                    _context3.next = 12;
+                    break;
+
+                  case 7:
+                    _context3.prev = 7;
+                    _context3.t0 = _context3["catch"](0);
+                    console.log(_context3.t0);
+                    _context3.next = 12;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOG_OUT_FAILURE"],
+                      error: _context3.t0
+                    });
+
+                  case 12:
+                  case "end":
+                    return _context3.stop();
+                }
+              }
+            }, logout, null, [[0, 7]]);
+          }));
 
         case 2:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
     }
   }, _marked2);
+} // 회원가입
+
+
+function watchSignUp() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchSignUp$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function signUp(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function signUp$(_context5) {
+              while (1) {
+                switch (_context5.prev = _context5.next) {
+                  case 0:
+                    _context5.prev = 0;
+                    _context5.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (signUpData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/user/signup', signUpData);
+                    }, action.data);
+
+                  case 3:
+                    result = _context5.sent;
+                    _context5.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_SUCCESS"],
+                      data: result
+                    });
+
+                  case 6:
+                    _context5.next = 13;
+                    break;
+
+                  case 8:
+                    _context5.prev = 8;
+                    _context5.t0 = _context5["catch"](0);
+                    console.log(_context5.t0);
+                    _context5.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["SIGN_UP_FAILURE"],
+                      error: _context5.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context5.stop();
+                }
+              }
+            }, signUp, null, [[0, 8]]);
+          }));
+
+        case 2:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  }, _marked3);
+}
+
+function watchLoadUser() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLoadUser$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function loadUser(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function loadUser$(_context7) {
+              while (1) {
+                switch (_context7.prev = _context7.next) {
+                  case 0:
+                    _context7.prev = 0;
+                    _context7.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (userId) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(userId ? "/user/".concat(userId) : "/user", {
+                        withCredentials: true
+                      });
+                    }, action.data);
+
+                  case 3:
+                    result = _context7.sent;
+                    console.log('loadUser Result', result);
+                    _context7.next = 7;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_SUCCESS"],
+                      data: result.data,
+                      me: !action.data
+                    });
+
+                  case 7:
+                    _context7.next = 14;
+                    break;
+
+                  case 9:
+                    _context7.prev = 9;
+                    _context7.t0 = _context7["catch"](0);
+                    console.log(_context7.t0);
+                    _context7.next = 14;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_FAILURE"],
+                      error: _context7.t0
+                    });
+
+                  case 14:
+                  case "end":
+                    return _context7.stop();
+                }
+              }
+            }, loadUser, null, [[0, 9]]);
+          }));
+
+        case 2:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  }, _marked4);
+}
+
+function userSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function userSaga$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          _context9.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser)]);
+
+        case 2:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, _marked5);
 }
 
 /***/ }),

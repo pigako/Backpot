@@ -2,12 +2,15 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../models');
+
 const router = express.Router();
 
 // 내정보 가져오기
 router.get('/', (req, res, next) => {
   try {
-    return res.send('user');
+    const user = Object.assign({}, req.user.toJSON());
+    delete user.password;
+    return res.json(user);
   } catch (e) {
     console.log(e);
     return next(e);
@@ -15,34 +18,31 @@ router.get('/', (req, res, next) => {
 });
 // 로그인
 router.post('/login', (req, res, next) => {
-  try {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        console.log(err);
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.log(err);
+      return next(e);
+    }
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async loginErr => {
+      try {
+        if (loginErr) {
+          console.log(loginErr);
+          return next(loginErr);
+        }
+        const fullUser = await db.User.findOne({
+          where: { id: user.id },
+          attributes: ['id', 'userId', 'nickname'],
+        });
+        return res.json(fullUser);
+      } catch (e) {
+        console.log(e);
         return next(e);
       }
-      if (info) {
-        return req.status(401).send(info.reason);
-      }
-      return req.login(user, async loginErr => {
-        try {
-          if (loginErr) {
-            console.log(loginErr);
-            return next(loginErr);
-          }
-          const fullUser = await db.User.findOne({
-            where: { id: user.id },
-            include: [{}],
-            attributes: ['id', 'userId', 'nickname'],
-          });
-          return res.json(fullUser);
-        } catch (e) {}
-      });
     });
-  } catch (e) {
-    console.log(e);
-    return next(e);
-  }
+  })(req, res, next);
 });
 // 로그아웃
 router.post('/logout', (req, res, next) => {
@@ -101,4 +101,5 @@ router.post('/check', async (req, res, next) => {
   //   return res.status(403).send('이미 사용중인 아이디입니다.');
   // }
 });
+router.get('/');
 module.exports = router;

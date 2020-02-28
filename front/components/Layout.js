@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import { useSelector } from 'react-redux';
 
 const Screen = styled.div`
   height: 100%;
@@ -35,13 +36,13 @@ const RightContent = styled.div`
 `;
 
 const Layout = ({ children }) => {
+  const { me } = useSelector(state => state.user);
   return (
     <Screen>
       <Header />
       <Contents>
         <LeftContent>
-          <LoginForm />
-          <UserProfile />
+          {me && me.userId ? <UserProfile /> : <LoginForm />}
         </LeftContent>
         <RightContent>{children}</RightContent>
       </Contents>

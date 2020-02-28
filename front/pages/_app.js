@@ -12,6 +12,7 @@ import GlobalStyles from '../components/designs/GlobalStyles';
 import Layout from '../components/Layout';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Backpot = ({ Component, store, pageProps }) => {
   return (
@@ -37,9 +38,15 @@ Backpot.getInitialProps = async context => {
   let pageProps = {};
   const state = ctx.store.getState();
   const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
   if (ctx.isServer && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  // if (!state.user.me) {
+  //   ctx.store.dispatch({
+  //     type: LOAD_USER_REQUEST,
+  //   });
+  // }
   if (Component.getInitialProps) {
     pageProps = (await Component.getInitialProps(ctx)) || {};
   }

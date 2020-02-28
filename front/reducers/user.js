@@ -3,6 +3,7 @@ import produce from 'immer';
 export const initalState = {
   isLoggingIn: false,
   loginErrorReason: '',
+  isLoggingOut: false,
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: '',
@@ -12,15 +13,53 @@ export const initalState = {
   otherUserInfo: [],
 };
 
+export const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
+export const LOG_IN_SUCCESS = `LOG_IN_SUCCESS`;
+export const LOG_IN_FAILURE = `LOG_IN_FAILURE`;
+
+export const LOG_OUT_REQUEST = `LOG_OUT_REQUEST`;
+export const LOG_OUT_SUCCESS = `LOG_OUT_SUCCESS`;
+export const LOG_OUT_FAILURE = `LOG_OUT_FAILURE`;
+
 export const SIGN_UP_REQUEST = `SIGN_UP_REQUEST`;
 export const SIGN_UP_SUCCESS = `SIGN_UP_SUCCESS`;
 export const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
 
+export const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
+export const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
+export const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
+
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
     switch (action.type) {
+      // 로그인
+      case LOG_IN_REQUEST:
+        draft.isLoggingIn = true;
+        draft.loginErrorReason = '';
+        break;
+      case LOG_IN_SUCCESS:
+        draft.isLoggingIn = false;
+        draft.me = action.data;
+        break;
+      case LOG_IN_FAILURE:
+        draft.isLoggingIn = false;
+        draft.loginErrorReason = action.error;
+        break;
+      // 로그아웃
+      case LOG_OUT_REQUEST:
+        draft.isLoggingOut = true;
+        break;
+      case LOG_OUT_SUCCESS:
+        draft.isLoggingOut = false;
+        draft.me = [];
+        break;
+      case LOG_OUT_FAILURE:
+        draft.isLoggingOut = false;
+        break;
+      // 회원가입
       case SIGN_UP_REQUEST:
         draft.isSigningUp = true;
+        draft.signUpErrorReason = '';
         break;
       case SIGN_UP_SUCCESS:
         draft.isSigningUp = false;
@@ -29,6 +68,18 @@ const reducer = (state = initalState, action) => {
       case SIGN_UP_FAILURE:
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
+        break;
+      // 유저 정보 불러오기
+      case LOAD_USER_REQUEST:
+        break;
+      case LOAD_USER_SUCCESS:
+        if (action.me) {
+          draft.me = action.data;
+        } else {
+          draft.otherUserInfo = action.data;
+        }
+        break;
+      case LOAD_USER_FAILURE:
         break;
       default:
         break;

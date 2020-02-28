@@ -34,7 +34,7 @@ app.use(
     secret: process.env.COOKIE_SECRET, // 암호화 문자열
     cookie: {
       httpOnly: true, //자바스크립트로 쿠키 접근 x
-      secure: true, // https 설정
+      secure: false, // https 설정
     },
     name: 'ADSFOPK',
   }),

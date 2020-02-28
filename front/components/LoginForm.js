@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 
 import Button from './designs/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const Form = styled.form`
   width: 100%;
@@ -41,6 +43,8 @@ const LoadingImg = styled.img`
 `;
 
 const LoginForm = () => {
+  const { isLoggingIn } = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     userId: '',
     password: '',
@@ -57,9 +61,19 @@ const LoginForm = () => {
     [inputs],
   );
 
-  const onSubmitForm = useCallback(e => {
-    e.preventDefault();
-  });
+  const onSubmitForm = useCallback(
+    e => {
+      e.preventDefault();
+      dispatch({
+        type: LOG_IN_REQUEST,
+        data: {
+          userId,
+          password,
+        },
+      });
+    },
+    [userId, password],
+  );
   return (
     <Form onSubmit={onSubmitForm}>
       <div>
@@ -79,6 +93,7 @@ const LoginForm = () => {
         <Input
           htmlFor="user-password"
           name="password"
+          type="password"
           value={password}
           onChange={onChangeInputs}
           required
@@ -87,12 +102,17 @@ const LoginForm = () => {
       <LoginFormButtonDiv>
         <Link href="/signup">
           <a>
-            <Button color="pink">회원가입</Button>
+            <Button type="button" color="pink">
+              회원가입
+            </Button>
           </a>
         </Link>
         <Button type="submit">
-          {/* <LoadingImg src="/static/icons/loading_blue.gif" /> */}
-          로그인
+          {isLoggingIn ? (
+            <LoadingImg src="/static/icons/loading_blue.gif" />
+          ) : (
+            `로그인`
+          )}
         </Button>
       </LoginFormButtonDiv>
     </Form>
