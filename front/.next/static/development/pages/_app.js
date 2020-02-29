@@ -19299,7 +19299,7 @@ module.exports = (__webpack_require__(/*! dll-reference dll_ef0ff7c60362f24a921f
 /*!***********************************************************************!*\
   !*** ./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
   \***********************************************************************/
-/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
+/*! exports provided: default, CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23777,40 +23777,41 @@ Backpot.getInitialProps = function _callee(context) {
 
           if (ctx.isServer && cookie) {
             axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.Cookie = cookie;
-          } // if (!state.user.me) {
-          //   ctx.store.dispatch({
-          //     type: LOAD_USER_REQUEST,
-          //   });
-          // }
+          }
 
+          if (!state.user.me) {
+            ctx.store.dispatch({
+              type: _reducers_user__WEBPACK_IMPORTED_MODULE_14__["LOAD_USER_REQUEST"]
+            });
+          }
 
           if (!Component.getInitialProps) {
-            _context.next = 13;
+            _context.next = 14;
             break;
           }
 
-          _context.next = 9;
+          _context.next = 10;
           return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(Component.getInitialProps(ctx));
 
-        case 9:
+        case 10:
           _context.t0 = _context.sent;
 
           if (_context.t0) {
-            _context.next = 12;
+            _context.next = 13;
             break;
           }
 
           _context.t0 = {};
 
-        case 12:
+        case 13:
           pageProps = _context.t0;
 
-        case 13:
+        case 14:
           return _context.abrupt("return", {
             pageProps: pageProps
           });
 
-        case 14:
+        case 15:
         case "end":
           return _context.stop();
       }
@@ -23953,7 +23954,7 @@ var initalState = {
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: '',
-  me: [],
+  me: null,
   LikedBookList: [],
   LikedWriterList: [],
   otherUserInfo: []
@@ -23999,7 +24000,7 @@ var reducer = function reducer() {
 
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = [];
+        draft.me = null;
         break;
 
       case LOG_OUT_FAILURE:

@@ -7,7 +7,7 @@ export const initalState = {
   isSignedUp: false,
   isSigningUp: false,
   signUpErrorReason: '',
-  me: [],
+  me: null,
   LikedBookList: [],
   LikedWriterList: [],
   otherUserInfo: [],
@@ -51,7 +51,7 @@ const reducer = (state = initalState, action) => {
         break;
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = [];
+        draft.me = null;
         break;
       case LOG_OUT_FAILURE:
         draft.isLoggingOut = false;

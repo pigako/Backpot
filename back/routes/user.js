@@ -2,11 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../models');
-
+const { isLoggedIn } = require('./middleware');
 const router = express.Router();
 
 // 내정보 가져오기
-router.get('/', (req, res, next) => {
+router.get('/', isLoggedIn, (req, res, next) => {
   try {
     const user = Object.assign({}, req.user.toJSON());
     delete user.password;
@@ -45,7 +45,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 // 로그아웃
-router.post('/logout', (req, res, next) => {
+router.post('/logout', isLoggedIn, (req, res, next) => {
   try {
     req.logout();
     req.session.destroy();
@@ -75,6 +75,7 @@ router.post('/signup', async (req, res, next) => {
     return next(e);
   }
 });
+// 중복확인
 router.post('/check', async (req, res, next) => {
   console.log(req.body);
   try {
@@ -101,5 +102,4 @@ router.post('/check', async (req, res, next) => {
   //   return res.status(403).send('이미 사용중인 아이디입니다.');
   // }
 });
-router.get('/');
 module.exports = router;
