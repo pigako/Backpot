@@ -15,7 +15,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -23,7 +25,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 var Menu = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].header.withConfig({
   displayName: "Header__Menu",
   componentId: "i7gymj-0"
-})(["position:flexd;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);box-shadow:0px 1px 2px 5px rgba(0,0,0,0.8);margin-bottom:10px;"]);
+})(["position:flexd;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;border-bottom:solid 2px #495057;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);"]);
 var List = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.withConfig({
   displayName: "Header__List",
   componentId: "i7gymj-1"
@@ -31,7 +33,7 @@ var List = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.withConf
 var Item = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].li.withConfig({
   displayName: "Header__Item",
   componentId: "i7gymj-2"
-})(["width:70px;height:50px;text-align:center;margin-right:10px;& a{color:white;height:50px;display:flex;align-items:center;justify-content:center;}"]);
+})(["width:10rem;height:3.2rem;text-align:center;margin-right:10px;& a{color:white;width:100%;height:3.2rem;display:flex;align-items:center;justify-content:center;}"]);
 var SearchForm = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].form.withConfig({
   displayName: "Header__SearchForm",
   componentId: "i7gymj-3"
@@ -45,6 +47,11 @@ var Header = function Header() {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       searchText = _useState[0],
       setSearchText = _useState[1];
+
+  var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
+    return state.user.me;
+  }),
+      userId = _useSelector.userId;
 
   var onChangeSearchText = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
     setSearchText(e.target.value);
@@ -63,12 +70,22 @@ var Header = function Header() {
   }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "/mylibrery"
+    href: {
+      pathname: '/mylibrery',
+      query: {
+        id: userId
+      }
+    },
+    as: "/mylibrery/".concat(userId)
   }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), __jsx(Item, {
     key: "profile"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/profile"
-  }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(SearchForm, {
+  }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, {
+    key: "board"
+  }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    href: "/board"
+  }, __jsx("a", null, "\uCD94\uCC9C\uAC8C\uC2DC\uD310"))), __jsx(SearchForm, {
     onSubmit: onSubmitSearch
   }, __jsx("a", null, "Search"), __jsx(SearchInput, {
     value: searchText,
@@ -115,15 +132,19 @@ var Screen = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withC
 var Contents = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__Contents",
   componentId: "sc-17g3k6v-1"
-})(["height:100%;"]);
+})(["height:calc(100% - 100px);"]);
 var LeftContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__LeftContent",
   componentId: "sc-17g3k6v-2"
-})(["width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);box-shadow:0px 1px 2px 5px rgba(0,0,0,0.8);"]);
+})(["width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);"]);
 var RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__RightContent",
   componentId: "sc-17g3k6v-3"
-})(["width:75.666663%;height:100%;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;"]);
+})(["width:75.666663%;height:100%;overflow:scroll;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;margin-top:0.5rem;&::-webkit-scrollbar{display:none;}"]);
+var Footer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
+  displayName: "Layout__Footer",
+  componentId: "sc-17g3k6v-4"
+})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);"]);
 
 var Layout = function Layout(_ref) {
   var children = _ref.children;
@@ -133,7 +154,7 @@ var Layout = function Layout(_ref) {
   }),
       me = _useSelector.me;
 
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)));
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)), __jsx(Footer, null, __jsx("p", null, "Footer @CopyRight@")));
 };
 
 Layout.propTypes = {
@@ -143,10 +164,10 @@ Layout.propTypes = {
 
 /***/ }),
 
-/***/ "./components/LikedBook.js":
-/*!*********************************!*\
-  !*** ./components/LikedBook.js ***!
-  \*********************************/
+/***/ "./components/LikingBook.js":
+/*!**********************************!*\
+  !*** ./components/LikingBook.js ***!
+  \**********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -164,39 +185,36 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
-var LikedList = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].li.withConfig({
-  displayName: "LikedBook__LikedList",
-  componentId: "gxwyjk-0"
+var LikingList = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].li.withConfig({
+  displayName: "LikingBook__LikingList",
+  componentId: "sc-1befqkz-0"
 })(["display:block;width:100%;height:2rem;text-align:left;border-radius:4px;border-bottom:solid 2px #495057;&:nth-child(2n){background:#495057;}&:hover{background:#148cff;}& + &{margin-top:10px;}"]);
 var Writer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].label.withConfig({
-  displayName: "LikedBook__Writer",
-  componentId: "gxwyjk-1"
+  displayName: "LikingBook__Writer",
+  componentId: "sc-1befqkz-1"
 })(["display:block;width:35%;line-height:2rem;float:left;cursor:pointer;margin-left:5px;"]);
 var Bookname = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].label.withConfig({
-  displayName: "LikedBook__Bookname",
-  componentId: "gxwyjk-2"
+  displayName: "LikingBook__Bookname",
+  componentId: "sc-1befqkz-2"
 })(["display:block;width:calc(65% -5px);line-height:2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;"]);
 
 var LikedBook = function LikedBook(_ref) {
-  var likedBook = _ref.likedBook;
-  return __jsx(LikedList, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
+  var book = _ref.book;
+  return __jsx(LikingList, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: "/writer"
-  }, __jsx("a", null, __jsx(Writer, null, likedBook.writer))), __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
+  }, __jsx("a", null, __jsx(Writer, null, book.User.nickname))), __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: {
       pathname: '/book',
       query: {
-        id: likedBook.bookname
+        bookid: book.id
       }
     },
-    as: "/book/".concat(likedBook.bookname)
-  }, __jsx("a", null, __jsx(Bookname, null, likedBook.bookname))));
+    as: "/book/".concat(book.id)
+  }, __jsx("a", null, __jsx(Bookname, null, book.name))));
 };
 
 LikedBook.propTypes = {
-  likedBook: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    writer: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
-    bookname: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string
-  })
+  book: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object
 };
 /* harmony default export */ __webpack_exports__["default"] = (LikedBook);
 
@@ -351,7 +369,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
-/* harmony import */ var _LikedBook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LikedBook */ "./components/LikedBook.js");
+/* harmony import */ var _LikingBook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LikingBook */ "./components/LikingBook.js");
 /* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -387,7 +405,7 @@ var Label = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].label.with
 var BottomProfile = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "UserProfile__BottomProfile",
   componentId: "ny6ey5-6"
-})(["width:100%;& > *{margin-top:10px;}"]);
+})(["width:100%;height:100%;min-height:20rem;max-height:calc(100vh - 300px);overflow:auto;& > *{margin-top:10px;}&::-webkit-scrollbar{width:10px;}::-webkit-scrollbar-track{box-shadow:inset 0 0 5px grey;border-radius:10px;}::-webkit-scrollbar-thumb{background:#148cff;border-radius:10px;}::-webkit-scrollbar-thumb:hover{background:#1e96ff;}::-webkit-scrollbar-thumb:active{background:#0a82ff;}"]);
 var LikeBookList = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.withConfig({
   displayName: "UserProfile__LikeBookList",
   componentId: "ny6ey5-7"
@@ -399,10 +417,18 @@ var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].img.w
 
 var UserProfile = function UserProfile() {
   var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
-    return state.book;
+    return state.user;
   }),
-      likedBookList = _useSelector.likedBookList,
       isLoggingOut = _useSelector.isLoggingOut;
+
+  var _useSelector2 = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.user.me;
+  }),
+      likingBookList = _useSelector2.LikingBook,
+      likingWriter = _useSelector2.LikingUser,
+      nickname = _useSelector2.nickname; // const likingBookList = useSelector(state => state.user.me.LikingBook);
+  // const likingWriter = useSelector(state => state.user.me.LikingUser);
+
 
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
   var onLogout = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
@@ -410,16 +436,20 @@ var UserProfile = function UserProfile() {
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_OUT_REQUEST"]
     });
   }, []);
-  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, "\uB3FC\uC9C0\uB3FC\uC9C0"), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, nickname), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: onLogout
   }, isLoggingOut ? __jsx(LoadingImg, {
     src: "/static/icons/loading_blue.gif"
-  }) : "\uB85C\uADF8\uC544\uC6C3")), __jsx(MiddleProfile, null, __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likedBookList.length)), __jsx(Preference, null, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, "20"))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likedBookList ? likedBookList.map(function (v, i) {
-    return __jsx(_LikedBook__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }) : "\uB85C\uADF8\uC544\uC6C3")), __jsx(MiddleProfile, null, __jsx(Preference, {
+    key: "LikedBook"
+  }, __jsx(Label, null, "\uC120\uD638\uC791\uD488"), __jsx(Label, null, likingBookList.length || 0)), __jsx(Preference, {
+    key: "LikedWriter"
+  }, __jsx(Label, null, "\uC120\uD638\uC791\uAC00"), __jsx(Label, null, likingWriter.length))), __jsx(BottomProfile, null, __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D"), __jsx(LikeBookList, null, likingBookList ? likingBookList.map(function (v, i) {
+    return __jsx(_LikingBook__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: i,
-      likedBook: v
+      book: v
     });
-  }) : __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D\uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.")), likedBookList && __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }) : __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D\uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.")), likingBookList && __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     size: 'large'
   }, "\uB354 \uBCF4\uAE30")));
 };
@@ -491,7 +521,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _templateObject() {
-  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        height:100%; \n        overflow:hidden;\n    }\n    body {\n        height:100%; \n        overflow:hidden;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    #__next {\n        height:100%;\n    }\n"]);
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        height:100%; \n    }\n    body {\n        height:100%; \n        min-width: 1200px;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    body::-webkit-scrollbar { \n        display: none; \n    }\n    #__next {\n        height:100%;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -23772,8 +23802,7 @@ Backpot.getInitialProps = function _callee(context) {
           ctx = context.ctx, Component = context.Component;
           pageProps = {};
           state = ctx.store.getState();
-          cookie = ctx.isServer ? ctx.req.headers.cookie : '';
-          axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.Cookie = '';
+          cookie = ctx.isServer ? ctx.req.headers.cookie : ''; // axios.defaults.headers.Cookie = '';
 
           if (ctx.isServer && cookie) {
             axios__WEBPACK_IMPORTED_MODULE_9___default.a.defaults.headers.Cookie = cookie;
@@ -23786,32 +23815,32 @@ Backpot.getInitialProps = function _callee(context) {
           }
 
           if (!Component.getInitialProps) {
-            _context.next = 14;
+            _context.next = 13;
             break;
           }
 
-          _context.next = 10;
+          _context.next = 9;
           return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(Component.getInitialProps(ctx));
 
-        case 10:
+        case 9:
           _context.t0 = _context.sent;
 
           if (_context.t0) {
-            _context.next = 13;
+            _context.next = 12;
             break;
           }
 
           _context.t0 = {};
 
-        case 13:
+        case 12:
           pageProps = _context.t0;
 
-        case 14:
+        case 13:
           return _context.abrupt("return", {
             pageProps: pageProps
           });
 
-        case 15:
+        case 14:
         case "end":
           return _context.stop();
       }
@@ -23854,36 +23883,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
-var initalState = {
-  likedBookList: [{
-    writer: '글슬슬',
-    bookname: '천재배우의 아우라'
-  }, {
-    writer: '준슬',
-    bookname: '시스템 에러로 종족초월'
-  }, {
-    writer: '하이엔드',
-    bookname: '천재의 게임방송'
-  }, {
-    writer: '디다트',
-    bookname: 'BJ대마도사'
-  }, {
-    writer: '김강현',
-    bookname: '천마는 조용히 살고싶다.'
-  }, {
-    writer: '마교졸개',
-    bookname: '회귀자가 다 뺏어먹음'
-  }, {
-    writer: '근서',
-    bookname: '내가 키운 S급들'
-  }, {
-    writer: '판미손',
-    bookname: '빌린어 방송을 너무 잘함'
-  }, {
-    writer: '테스트작가',
-    bookname: '박박박박박박박박박박박박박박박박박박박박박박박박박박박박박박'
-  }]
-};
+var initalState = {};
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
@@ -24049,6 +24049,38 @@ var reducer = function reducer() {
 
 /***/ }),
 
+/***/ "./sagas/book.js":
+/*!***********************!*\
+  !*** ./sagas/book.js ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bookSaga; });
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "./node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var _marked =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(bookSaga);
+
+function bookSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function bookSaga$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _marked);
+}
+
+/***/ }),
+
 /***/ "./sagas/index.js":
 /*!************************!*\
   !*** ./sagas/index.js ***!
@@ -24065,7 +24097,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user */ "./sagas/user.js");
-/* harmony import */ var _post__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./post */ "./sagas/post.js");
+/* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./book */ "./sagas/book.js");
 
 
 var _marked =
@@ -24083,41 +24115,9 @@ function rootSaga() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_user__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_post__WEBPACK_IMPORTED_MODULE_4__["default"])]);
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_user__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_book__WEBPACK_IMPORTED_MODULE_4__["default"])]);
 
         case 2:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
-
-/***/ }),
-
-/***/ "./sagas/post.js":
-/*!***********************!*\
-  !*** ./sagas/post.js ***!
-  \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return postSaga; });
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "./node_modules/@babel/runtime-corejs2/regenerator/index.js");
-/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var _marked =
-/*#__PURE__*/
-_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(postSaga);
-
-function postSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function postSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
         case "end":
           return _context.stop();
       }
@@ -24369,34 +24369,33 @@ function watchLoadUser() {
 
                   case 3:
                     result = _context7.sent;
-                    console.log('loadUser Result', result);
-                    _context7.next = 7;
+                    _context7.next = 6;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
                       type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_SUCCESS"],
                       data: result.data,
                       me: !action.data
                     });
 
-                  case 7:
-                    _context7.next = 14;
+                  case 6:
+                    _context7.next = 13;
                     break;
 
-                  case 9:
-                    _context7.prev = 9;
+                  case 8:
+                    _context7.prev = 8;
                     _context7.t0 = _context7["catch"](0);
                     console.log(_context7.t0);
-                    _context7.next = 14;
+                    _context7.next = 13;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
                       type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_FAILURE"],
                       error: _context7.t0
                     });
 
-                  case 14:
+                  case 13:
                   case "end":
                     return _context7.stop();
                 }
               }
-            }, loadUser, null, [[0, 9]]);
+            }, loadUser, null, [[0, 8]]);
           }));
 
         case 2:

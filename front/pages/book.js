@@ -14,7 +14,7 @@ Book.propTypes = {
 };
 
 Book.getInitialProps = async context => {
-  const bookId = context.query.bookId;
+  const bookId = context.query.bookid;
   return { bookId };
 };
 

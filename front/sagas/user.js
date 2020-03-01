@@ -101,7 +101,6 @@ function* watchLoadUser() {
           withCredentials: true,
         });
       }, action.data);
-      console.log('loadUser Result', result);
       yield put({
         type: LOAD_USER_SUCCESS,
         data: result.data,

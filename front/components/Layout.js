@@ -12,7 +12,7 @@ const Screen = styled.div`
 `;
 
 const Contents = styled.div`
-  height: 100%;
+  height: calc(100% - 100px);
 `;
 
 const LeftContent = styled.div`
@@ -22,17 +22,31 @@ const LeftContent = styled.div`
   height: 100%;
   float: left;
   color: white;
-
   background-color: rgba(20, 20, 20, 0.8);
-  box-shadow: 0px 1px 2px 5px rgba(0, 0, 0, 0.8);
 `;
 
 const RightContent = styled.div`
   width: 75.666663%;
   height: 100%;
+  overflow: scroll;
   min-width: calc(100% - 410px);
   max-width: calc(100% - 310px);
   float: right;
+  margin-top: 0.5rem;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const Footer = styled.div`
+  display: flex;
+  position: fixed;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background-color: rgba(20, 20, 20, 0.8);
 `;
 
 const Layout = ({ children }) => {
@@ -46,6 +60,9 @@ const Layout = ({ children }) => {
         </LeftContent>
         <RightContent>{children}</RightContent>
       </Contents>
+      <Footer>
+        <p>Footer @CopyRight@</p>
+      </Footer>
     </Screen>
   );
 };

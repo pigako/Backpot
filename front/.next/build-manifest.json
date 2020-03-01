@@ -21,7 +21,31 @@
       "static/runtime/polyfills.js",
       "static/runtime/polyfills.js.map"
     ],
+    "/board": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/book": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/booklist": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
     "/index": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/mylibrery": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/next/dist/pages/_error": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/profile": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

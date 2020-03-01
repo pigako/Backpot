@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MyLibrery = ({ userId }) => {
+const MyLibrery = ({ id }) => {
   return (
     <div>
-      <h1>MyLibrery / {userId}</h1>
+      <h1>MyLibrery / {id}</h1>
     </div>
   );
 };
@@ -13,9 +13,9 @@ MyLibrery.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-MyLibrery.getInitialProps = context => {
-  const userId = context.query.userId;
-  return userId;
+MyLibrery.getInitialProps = async context => {
+  const id = context.query.id;
+  return { id };
 };
 
 export default MyLibrery;

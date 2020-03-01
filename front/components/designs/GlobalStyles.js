@@ -12,13 +12,15 @@ const globalStyles = createGlobalStyle`
     }
     html {
         height:100%; 
-        overflow:hidden;
     }
     body {
         height:100%; 
-        overflow:hidden;
+        min-width: 1200px;
         font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size : 1.2rem;
+    }
+    body::-webkit-scrollbar { 
+        display: none; 
     }
     #__next {
         height:100%;
