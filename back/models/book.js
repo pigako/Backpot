@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
-      thumnail: {
+      thumbnail: {
         type: DataTypes.STRING(200),
         allowNull: false,
       },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       flag: {
-        // 0 정상 / 1 휴재 / 2 삭제
+        // 0 정상 / 1 완결 / 2 휴재 / 3 삭제
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,

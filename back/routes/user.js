@@ -16,6 +16,57 @@ router.get('/', isLoggedIn, (req, res, next) => {
     return next(e);
   }
 });
+// 다른 유저 정보 가져오기
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+      include: [
+        {
+          model: db.Board,
+          include: [
+            {
+              model: db.User,
+              attributes: ['nickname'],
+            },
+          ],
+        },
+        {
+          model: db.Book,
+          as: 'Books',
+          include: [
+            { model: db.Genre, as: 'BookGenre', attributes: ['name'] },
+            {
+              model: db.User,
+              attributes: ['nickname'],
+            },
+          ],
+        },
+        {
+          model: db.Book,
+          as: 'LikingBook',
+          include: [
+            {
+              model: db.User,
+              attributes: ['nickname'],
+            },
+          ],
+        },
+        {
+          model: db.User,
+          as: 'LikingUser',
+          attributes: ['id'],
+        },
+      ],
+      attributes: ['id', 'userId', 'nickname'],
+    });
+    console.log('LoadUser', user);
+    return res.json(user);
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
 // 로그인
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -38,12 +89,17 @@ router.post('/login', (req, res, next) => {
           include: [
             {
               model: db.Board,
-              attributes: ['id'],
+              include: [
+                {
+                  model: db.User,
+                  attributes: ['nickname'],
+                },
+              ],
             },
             {
               model: db.Book,
               as: 'Books',
-              attributes: ['id'],
+              include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
             },
             {
               model: db.Book,

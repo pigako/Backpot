@@ -145,7 +145,7 @@ const Header = () => {
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
   const {
     userId
-  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me);
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me) || false;
   const onChangeSearchText = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
     setSearchText(e.target.value);
   }, []);
@@ -160,20 +160,26 @@ const Header = () => {
     key: "booklist"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "booklist"
-  }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), __jsx(Item, {
+  }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
-      pathname: '/mylibrery',
+      pathname: '/librery',
       query: {
         id: userId
       }
     },
-    as: `/mylibrery/${userId}`
-  }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), __jsx(Item, {
+    as: `/librery/${userId}`
+  }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), userId && __jsx(Item, {
     key: "profile"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "/profile"
+    href: {
+      pathname: '/profile',
+      query: {
+        id: userId
+      }
+    },
+    as: `/profile/${userId}`
   }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, {
     key: "board"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -239,7 +245,7 @@ const RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.di
 const Footer = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__Footer",
   componentId: "sc-17g3k6v-4"
-})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);"]);
+})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);border-top:solid 2px #495057;"]);
 
 const Layout = ({
   children
@@ -514,7 +520,7 @@ const UserProfile = () => {
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_OUT_REQUEST"]
     });
   }, []);
-  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, nickname), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, nickname, " \uB2D8"), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: onLogout
   }, isLoggingOut ? __jsx(LoadingImg, {
     src: "/static/icons/loading_blue.gif"
@@ -2717,7 +2723,7 @@ const reducer = (state = initalState, action) => {
 
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = null;
+        draft.me = [];
         break;
 
       case LOG_OUT_FAILURE:
@@ -2890,7 +2896,8 @@ function* watchSignUp() {
       });
     }
   });
-}
+} // 유저 정보 가져오기
+
 
 function* watchLoadUser() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_REQUEST"], function* loadUser(action) {
@@ -2900,6 +2907,7 @@ function* watchLoadUser() {
           withCredentials: true
         });
       }, action.data);
+      console.log('LOAD_USER', result.data);
       yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
         type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_SUCCESS"],
         data: result.data,

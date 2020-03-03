@@ -80,7 +80,7 @@ const SearchInput = styled.input`
 
 const Header = () => {
   const [searchText, setSearchText] = useState('');
-  const { userId } = useSelector(state => state.user.me);
+  const { userId } = useSelector(state => state.user.me) || false;
   const onChangeSearchText = useCallback(e => {
     setSearchText(e.target.value);
   }, []);
@@ -102,19 +102,26 @@ const Header = () => {
             <a>웹소설</a>
           </Link>
         </Item>
-        <Item key="mydirectory">
-          <Link
-            href={{ pathname: '/mylibrery', query: { id: userId } }}
-            as={`/mylibrery/${userId}`}
-          >
-            <a>내 서재</a>
-          </Link>
-        </Item>
-        <Item key="profile">
-          <Link href="/profile">
-            <a>내 정보</a>
-          </Link>
-        </Item>
+        {userId && (
+          <Item key="mydirectory">
+            <Link
+              href={{ pathname: '/librery', query: { id: userId } }}
+              as={`/librery/${userId}`}
+            >
+              <a>내 서재</a>
+            </Link>
+          </Item>
+        )}
+        {userId && (
+          <Item key="profile">
+            <Link
+              href={{ pathname: '/profile', query: { id: userId } }}
+              as={`/profile/${userId}`}
+            >
+              <a>내 정보</a>
+            </Link>
+          </Item>
+        )}
         <Item key="board">
           <Link href="/board">
             <a>추천게시판</a>

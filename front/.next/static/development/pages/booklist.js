@@ -56,7 +56,7 @@ var BookList = function BookList() {
 
 /***/ }),
 
-/***/ 7:
+/***/ 1:
 /*!********************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fbooklist&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cbooklist.js ***!
   \********************************************************************************************************************************/
@@ -79,5 +79,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[7,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=booklist.js.map

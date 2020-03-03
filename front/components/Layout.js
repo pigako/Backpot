@@ -47,6 +47,7 @@ const Footer = styled.div`
   width: 100%;
   height: 50px;
   background-color: rgba(20, 20, 20, 0.8);
+  border-top: solid 2px #495057;
 `;
 
 const Layout = ({ children }) => {

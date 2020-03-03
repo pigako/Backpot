@@ -34,8 +34,12 @@ app.prepare().then(() => {
     return app.render(req, res, '/book', { bookid: req.params.bookid });
   });
 
-  server.get('/mylibrery/:id', (req, res) => {
-    return app.render(req, res, '/mylibrery', { id: req.params.id });
+  server.get('/librery/:id', (req, res) => {
+    return app.render(req, res, '/librery', { id: req.params.id });
+  });
+
+  server.get('/profile/:id', (req, res) => {
+    return app.render(req, res, '/profile', { id: req.params.id });
   });
 
   server.get('*', (req, res) => {

@@ -111,7 +111,7 @@ const UserProfile = () => {
   return (
     <Profile>
       <TopProfile>
-        <Nickname>{nickname}</Nickname>
+        <Nickname>{nickname} 님</Nickname>
         <Button onClick={onLogout}>
           {isLoggingOut ? (
             <LoadingImg src="/static/icons/loading_blue.gif" />

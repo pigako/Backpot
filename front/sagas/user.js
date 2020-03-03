@@ -92,7 +92,7 @@ function* watchSignUp() {
     }
   });
 }
-
+// 유저 정보 가져오기
 function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, function* loadUser(action) {
     try {
@@ -101,6 +101,7 @@ function* watchLoadUser() {
           withCredentials: true,
         });
       }, action.data);
+      console.log('LOAD_USER', result.data);
       yield put({
         type: LOAD_USER_SUCCESS,
         data: result.data,

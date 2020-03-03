@@ -14,12 +14,17 @@ module.exports = () => {
         include: [
           {
             model: db.Board,
-            attributes: ['id'],
+            include: [
+              {
+                model: db.User,
+                attributes: ['nickname'],
+              },
+            ],
           },
           {
             model: db.Book,
             as: 'Books',
-            attributes: ['id'],
+            include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
           },
           {
             model: db.Book,

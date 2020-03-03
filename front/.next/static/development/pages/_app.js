@@ -48,10 +48,10 @@ var Header = function Header() {
       searchText = _useState[0],
       setSearchText = _useState[1];
 
-  var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
+  var _ref = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
     return state.user.me;
-  }),
-      userId = _useSelector.userId;
+  }) || false,
+      userId = _ref.userId;
 
   var onChangeSearchText = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
     setSearchText(e.target.value);
@@ -67,20 +67,26 @@ var Header = function Header() {
     key: "booklist"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "booklist"
-  }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), __jsx(Item, {
+  }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
-      pathname: '/mylibrery',
+      pathname: '/librery',
       query: {
         id: userId
       }
     },
-    as: "/mylibrery/".concat(userId)
-  }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), __jsx(Item, {
+    as: "/librery/".concat(userId)
+  }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), userId && __jsx(Item, {
     key: "profile"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "/profile"
+    href: {
+      pathname: '/profile',
+      query: {
+        id: userId
+      }
+    },
+    as: "/profile/".concat(userId)
   }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, {
     key: "board"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -144,7 +150,7 @@ var RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div
 var Footer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__Footer",
   componentId: "sc-17g3k6v-4"
-})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);"]);
+})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);border-top:solid 2px #495057;"]);
 
 var Layout = function Layout(_ref) {
   var children = _ref.children;
@@ -436,7 +442,7 @@ var UserProfile = function UserProfile() {
       type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["LOG_OUT_REQUEST"]
     });
   }, []);
-  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, nickname), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  return __jsx(Profile, null, __jsx(TopProfile, null, __jsx(Nickname, null, nickname, " \uB2D8"), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: onLogout
   }, isLoggingOut ? __jsx(LoadingImg, {
     src: "/static/icons/loading_blue.gif"
@@ -19329,7 +19335,7 @@ module.exports = (__webpack_require__(/*! dll-reference dll_ef0ff7c60362f24a921f
 /*!***********************************************************************!*\
   !*** ./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
   \***********************************************************************/
-/*! exports provided: default, CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
+/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24000,7 +24006,7 @@ var reducer = function reducer() {
 
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = null;
+        draft.me = [];
         break;
 
       case LOG_OUT_FAILURE:
@@ -24343,7 +24349,8 @@ function watchSignUp() {
       }
     }
   }, _marked3);
-}
+} // 유저 정보 가져오기
+
 
 function watchLoadUser() {
   return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLoadUser$(_context8) {
@@ -24369,33 +24376,34 @@ function watchLoadUser() {
 
                   case 3:
                     result = _context7.sent;
-                    _context7.next = 6;
+                    console.log('LOAD_USER', result.data);
+                    _context7.next = 7;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
                       type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_SUCCESS"],
                       data: result.data,
                       me: !action.data
                     });
 
-                  case 6:
-                    _context7.next = 13;
+                  case 7:
+                    _context7.next = 14;
                     break;
 
-                  case 8:
-                    _context7.prev = 8;
+                  case 9:
+                    _context7.prev = 9;
                     _context7.t0 = _context7["catch"](0);
                     console.log(_context7.t0);
-                    _context7.next = 13;
+                    _context7.next = 14;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
                       type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_FAILURE"],
                       error: _context7.t0
                     });
 
-                  case 13:
+                  case 14:
                   case "end":
                     return _context7.stop();
                 }
               }
-            }, loadUser, null, [[0, 8]]);
+            }, loadUser, null, [[0, 9]]);
           }));
 
         case 2:
