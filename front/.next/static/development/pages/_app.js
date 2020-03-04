@@ -66,7 +66,7 @@ var Header = function Header() {
   }, __jsx("a", null, "Backpot"))), __jsx(Item, {
     key: "booklist"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "booklist"
+    href: "/booklist"
   }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -19335,7 +19335,7 @@ module.exports = (__webpack_require__(/*! dll-reference dll_ef0ff7c60362f24a921f
 /*!***********************************************************************!*\
   !*** ./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
   \***********************************************************************/
-/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
+/*! exports provided: default, CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23955,6 +23955,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var initalState = {
   isLoggingIn: false,
+  isLoggedIn: false,
   loginErrorReason: '',
   isLoggingOut: false,
   isSignedUp: false,
@@ -23963,7 +23964,7 @@ var initalState = {
   me: null,
   LikedBookList: [],
   LikedWriterList: [],
-  otherUserInfo: []
+  otherUserInfo: null
 };
 var LOG_IN_REQUEST = "LOG_IN_REQUEST";
 var LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -23986,11 +23987,13 @@ var reducer = function reducer() {
       // 로그인
       case LOG_IN_REQUEST:
         draft.isLoggingIn = true;
+        draft.isLoggedIn = false;
         draft.loginErrorReason = '';
         break;
 
       case LOG_IN_SUCCESS:
         draft.isLoggingIn = false;
+        draft.isLoggedIn = true;
         draft.me = action.data;
         break;
 
@@ -24006,7 +24009,8 @@ var reducer = function reducer() {
 
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = [];
+        draft.isLoggedIn = false;
+        draft.me = null;
         break;
 
       case LOG_OUT_FAILURE:
@@ -24031,12 +24035,18 @@ var reducer = function reducer() {
       // 유저 정보 불러오기
 
       case LOAD_USER_REQUEST:
+        if (action.data) {
+          draft.otherUserInfo = null;
+        }
+
         break;
 
       case LOAD_USER_SUCCESS:
         if (action.me) {
           draft.me = action.data;
-        } else {
+        }
+
+        if (!action.me) {
           draft.otherUserInfo = action.data;
         }
 
@@ -24162,8 +24172,11 @@ _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(w
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchSignUp),
     _marked4 =
 /*#__PURE__*/
-_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadUser),
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(loadUser),
     _marked5 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadUser),
+    _marked6 =
 /*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(userSaga);
 
@@ -24352,67 +24365,91 @@ function watchSignUp() {
 } // 유저 정보 가져오기
 
 
+function loadUserAPI(userId) {
+  return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(userId ? "/user/".concat(userId) : "/user", {
+    withCredentials: true
+  });
+}
+
+function loadUser(action) {
+  var result;
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function loadUser$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.prev = 0;
+          _context7.next = 3;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(loadUserAPI, action.data);
+
+        case 3:
+          result = _context7.sent;
+          _context7.next = 6;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+            type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_SUCCESS"],
+            data: result.data,
+            me: !action.data
+          });
+
+        case 6:
+          _context7.next = 13;
+          break;
+
+        case 8:
+          _context7.prev = 8;
+          _context7.t0 = _context7["catch"](0);
+          console.log(_context7.t0);
+          _context7.next = 13;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+            type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_FAILURE"],
+            error: _context7.t0
+          });
+
+        case 13:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  }, _marked4, null, [[0, 8]]);
+}
+
 function watchLoadUser() {
   return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLoadUser$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
           _context8.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_REQUEST"],
-          /*#__PURE__*/
-          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function loadUser(action) {
-            var result;
-            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function loadUser$(_context7) {
-              while (1) {
-                switch (_context7.prev = _context7.next) {
-                  case 0:
-                    _context7.prev = 0;
-                    _context7.next = 3;
-                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (userId) {
-                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(userId ? "/user/".concat(userId) : "/user", {
-                        withCredentials: true
-                      });
-                    }, action.data);
-
-                  case 3:
-                    result = _context7.sent;
-                    console.log('LOAD_USER', result.data);
-                    _context7.next = 7;
-                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
-                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_SUCCESS"],
-                      data: result.data,
-                      me: !action.data
-                    });
-
-                  case 7:
-                    _context7.next = 14;
-                    break;
-
-                  case 9:
-                    _context7.prev = 9;
-                    _context7.t0 = _context7["catch"](0);
-                    console.log(_context7.t0);
-                    _context7.next = 14;
-                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
-                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_FAILURE"],
-                      error: _context7.t0
-                    });
-
-                  case 14:
-                  case "end":
-                    return _context7.stop();
-                }
-              }
-            }, loadUser, null, [[0, 9]]);
-          }));
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["LOAD_USER_REQUEST"], loadUser);
 
         case 2:
         case "end":
           return _context8.stop();
       }
     }
-  }, _marked4);
-}
+  }, _marked5);
+} // function* watchLoadUser() {
+//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
+//     try {
+//       const result = yield call(userId => {
+//         return axios.get(userId ? `/user/${userId}` : `/user`, {
+//           withCredentials: true,
+//         });
+//       }, action.data);
+//       console.log('LOAD_USER', result.data);
+//       yield put({
+//         type: LOAD_USER_SUCCESS,
+//         data: result.data,
+//         me: !action.data,
+//       });
+//     } catch (e) {
+//       console.log(e);
+//       yield put({
+//         type: LOAD_USER_FAILURE,
+//         error: e,
+//       });
+//     }
+//   });
+// }
+
 
 function userSaga() {
   return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function userSaga$(_context9) {
@@ -24427,7 +24464,7 @@ function userSaga() {
           return _context9.stop();
       }
     }
-  }, _marked5);
+  }, _marked6);
 }
 
 /***/ }),

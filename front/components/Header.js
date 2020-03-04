@@ -98,7 +98,7 @@ const Header = () => {
           </Link>
         </Item>
         <Item key="booklist">
-          <Link href="booklist">
+          <Link href="/booklist">
             <a>웹소설</a>
           </Link>
         </Item>

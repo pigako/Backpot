@@ -93,29 +93,55 @@ function* watchSignUp() {
   });
 }
 // 유저 정보 가져오기
-function* watchLoadUser() {
-  yield takeLatest(LOAD_USER_REQUEST, function* loadUser(action) {
-    try {
-      const result = yield call(userId => {
-        return axios.get(userId ? `/user/${userId}` : `/user`, {
-          withCredentials: true,
-        });
-      }, action.data);
-      console.log('LOAD_USER', result.data);
-      yield put({
-        type: LOAD_USER_SUCCESS,
-        data: result.data,
-        me: !action.data,
-      });
-    } catch (e) {
-      console.log(e);
-      yield put({
-        type: LOAD_USER_FAILURE,
-        error: e,
-      });
-    }
+function loadUserAPI(userId) {
+  return axios.get(userId ? `/user/${userId}` : `/user`, {
+    withCredentials: true,
   });
 }
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+      me: !action.data,
+    });
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: e,
+    });
+  }
+}
+
+function* watchLoadUser() {
+  yield takeEvery(LOAD_USER_REQUEST, loadUser);
+}
+// function* watchLoadUser() {
+//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
+//     try {
+//       const result = yield call(userId => {
+//         return axios.get(userId ? `/user/${userId}` : `/user`, {
+//           withCredentials: true,
+//         });
+//       }, action.data);
+//       console.log('LOAD_USER', result.data);
+//       yield put({
+//         type: LOAD_USER_SUCCESS,
+//         data: result.data,
+//         me: !action.data,
+//       });
+//     } catch (e) {
+//       console.log(e);
+//       yield put({
+//         type: LOAD_USER_FAILURE,
+//         error: e,
+//       });
+//     }
+//   });
+// }
 export default function* userSaga() {
   yield all([
     fork(watchSignUp),

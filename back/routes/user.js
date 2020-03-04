@@ -20,7 +20,7 @@ router.get('/', isLoggedIn, (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const user = await db.User.findOne({
-      where: { id: parseInt(req.params.id, 10) },
+      where: { userId: req.params.id },
       include: [
         {
           model: db.Board,

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
+import Link from 'next/link';
+import Router from 'next/router';
 
 const Card = styled.div`
   width: 31%;
@@ -11,6 +13,18 @@ const Card = styled.div`
 
   border: solid 1px #495057;
   float: left;
+  cursor: pointer;
+
+  & > img,
+  div,
+  label {
+    cursor: pointer;
+  }
+
+  &:hover {
+    border: solid 1px #148cff;
+    outline: solid 2px #148cff;
+  }
 
   @media (max-width: 1620px) {
     width: 47%;
@@ -58,8 +72,12 @@ const CreatedDate = styled.label`
 const BookCard = ({ book, nickname }) => {
   const dispatch = useDispatch();
 
+  const goBook = useCallback(e => {
+    Router.push(`/book/${book.id}`);
+  });
+
   return (
-    <Card>
+    <Card onClick={goBook}>
       <Thumbnail src={book.thumbnail}></Thumbnail>
       <CardContent>
         <Title>{book.name}</Title>

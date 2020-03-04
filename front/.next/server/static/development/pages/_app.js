@@ -159,7 +159,7 @@ const Header = () => {
   }, __jsx("a", null, "Backpot"))), __jsx(Item, {
     key: "booklist"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    href: "booklist"
+    href: "/booklist"
   }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
     key: "mydirectory"
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -2674,6 +2674,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const initalState = {
   isLoggingIn: false,
+  isLoggedIn: false,
   loginErrorReason: '',
   isLoggingOut: false,
   isSignedUp: false,
@@ -2682,7 +2683,7 @@ const initalState = {
   me: null,
   LikedBookList: [],
   LikedWriterList: [],
-  otherUserInfo: []
+  otherUserInfo: null
 };
 const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
 const LOG_IN_SUCCESS = `LOG_IN_SUCCESS`;
@@ -2703,11 +2704,13 @@ const reducer = (state = initalState, action) => {
       // 로그인
       case LOG_IN_REQUEST:
         draft.isLoggingIn = true;
+        draft.isLoggedIn = false;
         draft.loginErrorReason = '';
         break;
 
       case LOG_IN_SUCCESS:
         draft.isLoggingIn = false;
+        draft.isLoggedIn = true;
         draft.me = action.data;
         break;
 
@@ -2723,7 +2726,8 @@ const reducer = (state = initalState, action) => {
 
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = [];
+        draft.isLoggedIn = false;
+        draft.me = null;
         break;
 
       case LOG_OUT_FAILURE:
@@ -2748,12 +2752,18 @@ const reducer = (state = initalState, action) => {
       // 유저 정보 불러오기
 
       case LOAD_USER_REQUEST:
+        if (action.data) {
+          draft.otherUserInfo = null;
+        }
+
         break;
 
       case LOAD_USER_SUCCESS:
         if (action.me) {
           draft.me = action.data;
-        } else {
+        }
+
+        if (!action.me) {
           draft.otherUserInfo = action.data;
         }
 
@@ -2899,29 +2909,55 @@ function* watchSignUp() {
 } // 유저 정보 가져오기
 
 
-function* watchLoadUser() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_REQUEST"], function* loadUser(action) {
-    try {
-      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(userId => {
-        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(userId ? `/user/${userId}` : `/user`, {
-          withCredentials: true
-        });
-      }, action.data);
-      console.log('LOAD_USER', result.data);
-      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
-        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_SUCCESS"],
-        data: result.data,
-        me: !action.data
-      });
-    } catch (e) {
-      console.log(e);
-      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
-        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_FAILURE"],
-        error: e
-      });
-    }
+function loadUserAPI(userId) {
+  return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(userId ? `/user/${userId}` : `/user`, {
+    withCredentials: true
   });
 }
+
+function* loadUser(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(loadUserAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_SUCCESS"],
+      data: result.data,
+      me: !action.data
+    });
+  } catch (e) {
+    console.log(e);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_FAILURE"],
+      error: e
+    });
+  }
+}
+
+function* watchLoadUser() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_REQUEST"], loadUser);
+} // function* watchLoadUser() {
+//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
+//     try {
+//       const result = yield call(userId => {
+//         return axios.get(userId ? `/user/${userId}` : `/user`, {
+//           withCredentials: true,
+//         });
+//       }, action.data);
+//       console.log('LOAD_USER', result.data);
+//       yield put({
+//         type: LOAD_USER_SUCCESS,
+//         data: result.data,
+//         me: !action.data,
+//       });
+//     } catch (e) {
+//       console.log(e);
+//       yield put({
+//         type: LOAD_USER_FAILURE,
+//         error: e,
+//       });
+//     }
+//   });
+// }
+
 
 function* userSaga() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUser)]);

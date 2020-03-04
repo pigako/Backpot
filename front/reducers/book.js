@@ -1,6 +1,8 @@
 import produce from 'immer';
 
-export const initalState = {};
+export const initalState = {
+
+};
 
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
@@ -10,4 +12,5 @@ const reducer = (state = initalState, action) => {
     }
   });
 };
+
 export default reducer;

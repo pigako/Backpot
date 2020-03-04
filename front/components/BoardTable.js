@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Link from 'next/link';
+import Router from 'next/router';
 
 const Table = styled.table`
   border-collapse: separate;
@@ -20,6 +21,7 @@ const Table = styled.table`
   & td {
     padding: 1rem;
     border-bottom: 1px solid #7053c4;
+    cursor: pointer;
   }
   & th:nth-child(1) {
     width: 10%;
@@ -44,7 +46,13 @@ const Table = styled.table`
 `;
 
 const BoardTable = ({ board }) => {
-  console.log('board~', board);
+  const goBoard = useCallback(
+    boardId => e => {
+      Router.push(`/detailboard/${boardId}`);
+    },
+    [],
+  );
+
   return (
     <Table>
       <thead>
@@ -58,7 +66,7 @@ const BoardTable = ({ board }) => {
       <tbody>
         {board.map(v => {
           return (
-            <tr key={+v.id}>
+            <tr key={+v.id} onClick={goBoard(+v.id)}>
               <td>{v.id}</td>
               <td>
                 <Link

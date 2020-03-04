@@ -2,6 +2,7 @@ import produce from 'immer';
 
 export const initalState = {
   isLoggingIn: false,
+  isLoggedIn: false,
   loginErrorReason: '',
   isLoggingOut: false,
   isSignedUp: false,
@@ -10,7 +11,7 @@ export const initalState = {
   me: null,
   LikedBookList: [],
   LikedWriterList: [],
-  otherUserInfo: [],
+  otherUserInfo: null,
 };
 
 export const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
@@ -35,10 +36,12 @@ const reducer = (state = initalState, action) => {
       // 로그인
       case LOG_IN_REQUEST:
         draft.isLoggingIn = true;
+        draft.isLoggedIn = false;
         draft.loginErrorReason = '';
         break;
       case LOG_IN_SUCCESS:
         draft.isLoggingIn = false;
+        draft.isLoggedIn = true;
         draft.me = action.data;
         break;
       case LOG_IN_FAILURE:
@@ -51,7 +54,8 @@ const reducer = (state = initalState, action) => {
         break;
       case LOG_OUT_SUCCESS:
         draft.isLoggingOut = false;
-        draft.me = [];
+        draft.isLoggedIn = false;
+        draft.me = null;
         break;
       case LOG_OUT_FAILURE:
         draft.isLoggingOut = false;
@@ -71,11 +75,15 @@ const reducer = (state = initalState, action) => {
         break;
       // 유저 정보 불러오기
       case LOAD_USER_REQUEST:
+        if (action.data) {
+          draft.otherUserInfo = null;
+        }
         break;
       case LOAD_USER_SUCCESS:
         if (action.me) {
           draft.me = action.data;
-        } else {
+        }
+        if (!action.me) {
           draft.otherUserInfo = action.data;
         }
         break;

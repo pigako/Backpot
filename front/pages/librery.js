@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 
-import LOAD_USER_REQUEST from '../reducers/user';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 import BookCard from '../components/BookCard';
 import Button from '../components/designs/Button';
 import BoardTable from '../components/BoardTable';
@@ -50,34 +50,56 @@ const MyBoard = styled.div`
   }
 `;
 
-const Librery = () => {
-  const user =
-    useSelector(state => state.user.otherUserInfo).length === 0
-      ? useSelector(state => state.user.me)
-      : useSelector(state => state.user.otherUserInfo);
+const BoardButtonDiv = styled.div`
+  width: 100%;
+  margin: 1rem 0rem 1rem 0rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  console.log('lib', user);
+  & > p {
+    text-align: center;
+    margin-right: 1rem;
+  }
+
+  & > button {
+    width: 7rem;
+  }
+`;
+
+const Librery = () => {
+  const user = useSelector(state => state.user.otherUserInfo)
+    ? useSelector(state => state.user.otherUserInfo)
+    : useSelector(state => state.user.me);
+
   return (
     <div>
       <LibreryTitle>{user.nickname} 님의 서재입니다.</LibreryTitle>
       <NovelList>
         <p>연재소설목록</p>
-        {user.Books.map(book => {
-          return (
-            <BookCard key={+book.id} book={book} nickname={user.nickname} />
-          );
-        })}
+        {user &&
+          user.Books.map(book => {
+            return (
+              <BookCard key={+book.id} book={book} nickname={user.nickname} />
+            );
+          })}
+
         <NovelButtonDiv>
-          {user.Books[0] ? null : <p>연재중인 소설이 존재하지 않습니다.</p>}
+          {user && user.Books[0] ? null : (
+            <p>연재중인 소설이 존재하지 않습니다.</p>
+          )}
           <Button>새 작품</Button>
         </NovelButtonDiv>
       </NovelList>
       <MyBoard>
         <p>작성한 게시글 목록</p>
-        <BoardTable board={user.Boards} />
-        {/* {user.Boards.map(board => {
-          return <p>{board.id}</p>;
-        })} */}
+        {user && user.Boards.length ? <BoardTable board={user.Boards} /> : null}
+        <BoardButtonDiv>
+          {user && user.Boards.length ? null : (
+            <p>작성한 게시글이 존재하지 않습니다.</p>
+          )}
+          <Button>새 게시글</Button>
+        </BoardButtonDiv>
       </MyBoard>
     </div>
   );
@@ -85,17 +107,11 @@ const Librery = () => {
 
 Librery.getInitialProps = async context => {
   const id = context.query.id;
-  if (!id) {
-    alert('잘못된 접근입니다.');
-    Router.push('/');
-  }
-  const state = context.store.getState();
-  if (id !== (state.user.me && state.user.me.id)) {
-    context.store.dispatch({
-      type: LOAD_USER_REQUEST,
-      data: id,
-    });
-  }
+
+  context.store.dispatch({
+    type: LOAD_USER_REQUEST,
+    data: id,
+  });
 };
 
 export default Librery;
