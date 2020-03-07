@@ -14,9 +14,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/router */ "./node_modules/next/dist/client/router.js");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -25,7 +28,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 var Menu = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].header.withConfig({
   displayName: "Header__Menu",
   componentId: "i7gymj-0"
-})(["position:flexd;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;border-bottom:solid 2px #495057;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);"]);
+})(["position:fixed;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;border-bottom:solid 2px #495057;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);"]);
 var List = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.withConfig({
   displayName: "Header__List",
   componentId: "i7gymj-1"
@@ -33,7 +36,9 @@ var List = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].ul.withConf
 var Item = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].li.withConfig({
   displayName: "Header__Item",
   componentId: "i7gymj-2"
-})(["width:10rem;height:3.2rem;text-align:center;margin-right:10px;& a{color:white;width:100%;height:3.2rem;display:flex;align-items:center;justify-content:center;}"]);
+})(["width:10rem;height:3.2rem;text-align:center;margin-right:10px;border-bottom:solid 4px ", ";transition:border-bottom 0.5s ease-in-out;& a{color:white;width:100%;height:3.2rem;display:flex;align-items:center;justify-content:center;}"], function (props) {
+  return props.current ? '#148cff' : 'transparent';
+});
 var SearchForm = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].form.withConfig({
   displayName: "Header__SearchForm",
   componentId: "i7gymj-3"
@@ -44,11 +49,15 @@ var SearchInput = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].inpu
 })(["margin-right:10px;outline:none;border:none;border-radius:4px;padding-left:10px;height:2.25rem;width:10rem;font-size:1.5rem;transition:0.55s ease;&:hover{width:30rem;}&:focus{width:30rem;}"]);
 
 var Header = function Header() {
+  var _useRouter = Object(next_router__WEBPACK_IMPORTED_MODULE_3__["useRouter"])(),
+      pathname = _useRouter.pathname,
+      query = _useRouter.query;
+
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       searchText = _useState[0],
       setSearchText = _useState[1];
 
-  var _ref = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
+  var _ref = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(function (state) {
     return state.user.me;
   }) || false,
       userId = _ref.userId;
@@ -60,15 +69,18 @@ var Header = function Header() {
     e.preventDefault();
   }, []);
   return __jsx(Menu, null, __jsx(List, null, __jsx(Item, {
-    key: "home"
+    key: "home",
+    current: pathname === '/'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/"
   }, __jsx("a", null, "Backpot"))), __jsx(Item, {
-    key: "booklist"
+    key: "booklist",
+    current: pathname === '/booklist'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/booklist"
   }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
-    key: "mydirectory"
+    key: "mydirectory",
+    current: pathname === "/librery" && query.id === userId
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
       pathname: '/librery',
@@ -78,7 +90,8 @@ var Header = function Header() {
     },
     as: "/librery/".concat(userId)
   }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), userId && __jsx(Item, {
-    key: "profile"
+    key: "profile",
+    current: pathname === "/profile" && query.id === userId
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
       pathname: '/profile',
@@ -88,7 +101,8 @@ var Header = function Header() {
     },
     as: "/profile/".concat(userId)
   }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, {
-    key: "board"
+    key: "board",
+    current: pathname === '/board'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/board"
   }, __jsx("a", null, "\uCD94\uCC9C\uAC8C\uC2DC\uD310"))), __jsx(SearchForm, {
@@ -96,7 +110,7 @@ var Header = function Header() {
   }, __jsx("a", null, "Search"), __jsx(SearchInput, {
     value: searchText,
     onChange: onChangeSearchText
-  }), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
     type: "submit"
   }, "\uAC80\uC0C9"))));
 };
@@ -138,19 +152,15 @@ var Screen = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withC
 var Contents = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__Contents",
   componentId: "sc-17g3k6v-1"
-})(["height:calc(100% - 100px);"]);
+})(["margin-top:50px;"]);
 var LeftContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__LeftContent",
   componentId: "sc-17g3k6v-2"
-})(["width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);"]);
+})(["position:fixed;width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);"]);
 var RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
   displayName: "Layout__RightContent",
   componentId: "sc-17g3k6v-3"
-})(["width:75.666663%;height:100%;overflow:scroll;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;margin-top:0.5rem;&::-webkit-scrollbar{display:none;}"]);
-var Footer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div.withConfig({
-  displayName: "Layout__Footer",
-  componentId: "sc-17g3k6v-4"
-})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);border-top:solid 2px #495057;"]);
+})(["width:75.666663%;overflow:scroll;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;margin-top:0.5rem;&::-webkit-scrollbar{display:none;}"]);
 
 var Layout = function Layout(_ref) {
   var children = _ref.children;
@@ -160,7 +170,7 @@ var Layout = function Layout(_ref) {
   }),
       me = _useSelector.me;
 
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)), __jsx(Footer, null, __jsx("p", null, "Footer @CopyRight@")));
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)));
 };
 
 Layout.propTypes = {
@@ -527,7 +537,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _templateObject() {
-  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        height:100%; \n    }\n    body {\n        height:100%; \n        min-width: 1200px;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    body::-webkit-scrollbar { \n        display: none; \n    }\n    #__next {\n        height:100%;\n    }\n"]);
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        height:100%; \n    }\n    body {\n        height:100%; \n        min-width: 1200px;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    /* body::-webkit-scrollbar { \n        display: none; \n    } */\n    #__next {\n        height:100%;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -23877,6 +23887,56 @@ var configureStore = function configureStore(initialState, options) {
 
 /***/ }),
 
+/***/ "./reducers/board.js":
+/*!***************************!*\
+  !*** ./reducers/board.js ***!
+  \***************************/
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
+
+var initalState = {
+  boards: []
+};
+var LOAD_BOARDS_REQUEST = "LOAD_BOARDS_REQUEST";
+var LOAD_BOARDS_SUCCESS = "LOAD_BOARDS_SUCCESS";
+var LOAD_BOARDS_FAILURE = "LOAD_BOARDS_FAILURE";
+
+var reducer = function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  return Object(immer__WEBPACK_IMPORTED_MODULE_0__["default"])(state, function (draft) {
+    switch (action.type) {
+      case LOAD_BOARDS_REQUEST:
+        draft.boards = !action.lastId ? [] : draft.boards;
+        draft.hasMoreBoards = action.lastId ? draft.hasMoreBoards : true;
+        break;
+
+      case LOAD_BOARDS_SUCCESS:
+        draft.boards = draft.boards.concat(action.data);
+        draft.hasMoreBoards = action.data.length === 30;
+        break;
+
+      case LOAD_BOARDS_FAILURE:
+        break;
+
+      default:
+        break;
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
 /***/ "./reducers/book.js":
 /*!**************************!*\
   !*** ./reducers/book.js ***!
@@ -23918,12 +23978,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./reducers/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./book */ "./reducers/book.js");
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./board */ "./reducers/board.js");
+
 
 
 
 var rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   user: _user__WEBPACK_IMPORTED_MODULE_1__["default"],
-  book: _book__WEBPACK_IMPORTED_MODULE_2__["default"]
+  book: _book__WEBPACK_IMPORTED_MODULE_2__["default"],
+  board: _board__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (rootReducer);
 
@@ -24065,6 +24128,113 @@ var reducer = function reducer() {
 
 /***/ }),
 
+/***/ "./sagas/board.js":
+/*!************************!*\
+  !*** ./sagas/board.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bookSaga; });
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "./node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _reducers_board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../reducers/board */ "./reducers/board.js");
+
+
+var _marked =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadBords),
+    _marked2 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(bookSaga);
+
+
+
+
+
+function watchLoadBords() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchLoadBords$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["throttle"])(1000, _reducers_board__WEBPACK_IMPORTED_MODULE_3__["LOAD_BOARDS_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function loadBoards(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function loadBoards$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.prev = 0;
+                    _context.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function () {
+                      var lastId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+                      var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 30;
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/boards?lastId=".concat(lastId, "&limit=").concat(limit));
+                    }, action.lastId);
+
+                  case 3:
+                    result = _context.sent;
+                    _context.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_board__WEBPACK_IMPORTED_MODULE_3__["LOAD_BOARDS_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context.next = 13;
+                    break;
+
+                  case 8:
+                    _context.prev = 8;
+                    _context.t0 = _context["catch"](0);
+                    console.log(_context.t0);
+                    _context.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_board__WEBPACK_IMPORTED_MODULE_3__["LOAD_BOARDS_FAILURE"],
+                      error: _context.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, loadBoards, null, [[0, 8]]);
+          }));
+
+        case 2:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked);
+}
+
+function bookSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function bookSaga$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadBords)]);
+
+        case 2:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, _marked2);
+}
+
+/***/ }),
+
 /***/ "./sagas/book.js":
 /*!***********************!*\
   !*** ./sagas/book.js ***!
@@ -24114,11 +24284,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user */ "./sagas/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./book */ "./sagas/book.js");
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./board */ "./sagas/board.js");
 
 
 var _marked =
 /*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(rootSaga);
+
 
 
 
@@ -24131,7 +24303,7 @@ function rootSaga() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_user__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_book__WEBPACK_IMPORTED_MODULE_4__["default"])]);
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_user__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_book__WEBPACK_IMPORTED_MODULE_4__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(_board__WEBPACK_IMPORTED_MODULE_5__["default"])]);
 
         case 2:
         case "end":

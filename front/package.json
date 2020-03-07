@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/pigako/Backpot#readme",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
     "axios": "^0.19.2",
     "babel-plugin-styled-components": "^1.10.7",
     "cookie-parser": "^1.4.4",

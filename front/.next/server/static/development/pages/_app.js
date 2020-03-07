@@ -108,10 +108,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _designs_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./designs/Button */ "./components/designs/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_5__);
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -120,7 +123,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 const Menu = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.header.withConfig({
   displayName: "Header__Menu",
   componentId: "i7gymj-0"
-})(["position:flexd;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;border-bottom:solid 2px #495057;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);"]);
+})(["position:fixed;top:0px;left:0px;width:100%;height:50px;display:flex;align-items:center;border-bottom:solid 2px #495057;padding:0px 10px;z-index:10;background-color:rgba(20,20,20,0.8);"]);
 const List = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.ul.withConfig({
   displayName: "Header__List",
   componentId: "i7gymj-1"
@@ -128,7 +131,7 @@ const List = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.ul.withCon
 const Item = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.li.withConfig({
   displayName: "Header__Item",
   componentId: "i7gymj-2"
-})(["width:10rem;height:3.2rem;text-align:center;margin-right:10px;& a{color:white;width:100%;height:3.2rem;display:flex;align-items:center;justify-content:center;}"]);
+})(["width:10rem;height:3.2rem;text-align:center;margin-right:10px;border-bottom:solid 4px ", ";transition:border-bottom 0.5s ease-in-out;& a{color:white;width:100%;height:3.2rem;display:flex;align-items:center;justify-content:center;}"], props => props.current ? '#148cff' : 'transparent');
 const SearchForm = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.form.withConfig({
   displayName: "Header__SearchForm",
   componentId: "i7gymj-3"
@@ -140,12 +143,16 @@ const SearchInput = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.inp
 
 const Header = () => {
   const {
+    pathname,
+    query
+  } = Object(next_router__WEBPACK_IMPORTED_MODULE_3__["useRouter"])();
+  const {
     0: searchText,
     1: setSearchText
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
   const {
     userId
-  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me) || false;
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.me) || false;
   const onChangeSearchText = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
     setSearchText(e.target.value);
   }, []);
@@ -153,15 +160,18 @@ const Header = () => {
     e.preventDefault();
   }, []);
   return __jsx(Menu, null, __jsx(List, null, __jsx(Item, {
-    key: "home"
+    key: "home",
+    current: pathname === '/'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/"
   }, __jsx("a", null, "Backpot"))), __jsx(Item, {
-    key: "booklist"
+    key: "booklist",
+    current: pathname === '/booklist'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/booklist"
   }, __jsx("a", null, "\uC6F9\uC18C\uC124"))), userId && __jsx(Item, {
-    key: "mydirectory"
+    key: "mydirectory",
+    current: pathname === `/librery` && query.id === userId
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
       pathname: '/librery',
@@ -171,7 +181,8 @@ const Header = () => {
     },
     as: `/librery/${userId}`
   }, __jsx("a", null, "\uB0B4 \uC11C\uC7AC"))), userId && __jsx(Item, {
-    key: "profile"
+    key: "profile",
+    current: pathname === `/profile` && query.id === userId
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: {
       pathname: '/profile',
@@ -181,7 +192,8 @@ const Header = () => {
     },
     as: `/profile/${userId}`
   }, __jsx("a", null, "\uB0B4 \uC815\uBCF4"))), __jsx(Item, {
-    key: "board"
+    key: "board",
+    current: pathname === '/board'
   }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     href: "/board"
   }, __jsx("a", null, "\uCD94\uCC9C\uAC8C\uC2DC\uD310"))), __jsx(SearchForm, {
@@ -189,7 +201,7 @@ const Header = () => {
   }, __jsx("a", null, "Search"), __jsx(SearchInput, {
     value: searchText,
     onChange: onChangeSearchText
-  }), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
     type: "submit"
   }, "\uAC80\uC0C9"))));
 };
@@ -233,19 +245,15 @@ const Screen = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.with
 const Contents = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__Contents",
   componentId: "sc-17g3k6v-1"
-})(["height:calc(100% - 100px);"]);
+})(["margin-top:50px;"]);
 const LeftContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__LeftContent",
   componentId: "sc-17g3k6v-2"
-})(["width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);"]);
+})(["position:fixed;width:23.333336%;min-width:300px;max-width:400px;height:100%;float:left;color:white;background-color:rgba(20,20,20,0.8);"]);
 const RightContent = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "Layout__RightContent",
   componentId: "sc-17g3k6v-3"
-})(["width:75.666663%;height:100%;overflow:scroll;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;margin-top:0.5rem;&::-webkit-scrollbar{display:none;}"]);
-const Footer = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
-  displayName: "Layout__Footer",
-  componentId: "sc-17g3k6v-4"
-})(["display:flex;position:fixed;color:white;justify-content:center;align-items:center;width:100%;height:50px;background-color:rgba(20,20,20,0.8);border-top:solid 2px #495057;"]);
+})(["width:75.666663%;overflow:scroll;min-width:calc(100% - 410px);max-width:calc(100% - 310px);float:right;margin-top:0.5rem;&::-webkit-scrollbar{display:none;}"]);
 
 const Layout = ({
   children
@@ -253,7 +261,7 @@ const Layout = ({
   const {
     me
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user);
-  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)), __jsx(Footer, null, __jsx("p", null, "Footer @CopyRight@")));
+  return __jsx(Screen, null, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], null), __jsx(Contents, null, __jsx(LeftContent, null, me && me.userId ? __jsx(_UserProfile__WEBPACK_IMPORTED_MODULE_5__["default"], null) : __jsx(_LoginForm__WEBPACK_IMPORTED_MODULE_4__["default"], null)), __jsx(RightContent, null, children)));
 };
 
 Layout.propTypes = {
@@ -628,9 +636,9 @@ const globalStyles = styled_components__WEBPACK_IMPORTED_MODULE_0__["createGloba
         font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size : 1.2rem;
     }
-    body::-webkit-scrollbar { 
+    /* body::-webkit-scrollbar { 
         display: none; 
-    }
+    } */
     #__next {
         height:100%;
     }
@@ -2595,6 +2603,55 @@ const configureStore = (initialState, options) => {
 
 /***/ }),
 
+/***/ "./reducers/board.js":
+/*!***************************!*\
+  !*** ./reducers/board.js ***!
+  \***************************/
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
+
+const initalState = {
+  boards: []
+};
+const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
+const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
+const LOAD_BOARDS_FAILURE = `LOAD_BOARDS_FAILURE`;
+
+const reducer = (state = initalState, action) => {
+  return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
+    switch (action.type) {
+      case LOAD_BOARDS_REQUEST:
+        draft.boards = !action.lastId ? [] : draft.boards;
+        draft.hasMoreBoards = action.lastId ? draft.hasMoreBoards : true;
+        break;
+
+      case LOAD_BOARDS_SUCCESS:
+        draft.boards = draft.boards.concat(action.data);
+        draft.hasMoreBoards = action.data.length === 30;
+        break;
+
+      case LOAD_BOARDS_FAILURE:
+        break;
+
+      default:
+        break;
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
 /***/ "./reducers/book.js":
 /*!**************************!*\
   !*** ./reducers/book.js ***!
@@ -2636,12 +2693,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./reducers/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./book */ "./reducers/book.js");
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./board */ "./reducers/board.js");
+
 
 
 
 const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   user: _user__WEBPACK_IMPORTED_MODULE_1__["default"],
-  book: _book__WEBPACK_IMPORTED_MODULE_2__["default"]
+  book: _book__WEBPACK_IMPORTED_MODULE_2__["default"],
+  board: _board__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (rootReducer);
 
@@ -2782,6 +2842,51 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
+/***/ "./sagas/board.js":
+/*!************************!*\
+  !*** ./sagas/board.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return bookSaga; });
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-saga/effects */ "redux-saga/effects");
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _reducers_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/board */ "./reducers/board.js");
+
+
+
+
+function* watchLoadBords() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["throttle"])(1000, _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_REQUEST"], function* loadBoards(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])((lastId = 0, limit = 30) => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/boards?lastId=${lastId}&limit=${limit}`);
+      }, action.lastId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
+function* bookSaga() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords)]);
+}
+
+/***/ }),
+
 /***/ "./sagas/book.js":
 /*!***********************!*\
   !*** ./sagas/book.js ***!
@@ -2812,13 +2917,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user */ "./sagas/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./book */ "./sagas/book.js");
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./board */ "./sagas/board.js");
+
 
 
 
 
 axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.baseURL = `http://localhost:5000/api`;
 function* rootSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_user__WEBPACK_IMPORTED_MODULE_2__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_book__WEBPACK_IMPORTED_MODULE_3__["default"])]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_user__WEBPACK_IMPORTED_MODULE_2__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_book__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_board__WEBPACK_IMPORTED_MODULE_4__["default"])]);
 }
 
 /***/ }),
@@ -3073,6 +3180,17 @@ module.exports = require("next-redux-saga");
 /***/ (function(module, exports) {
 
 module.exports = require("next-redux-wrapper");
+
+/***/ }),
+
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/router");
 
 /***/ }),
 

@@ -12,10 +12,12 @@ const Screen = styled.div`
 `;
 
 const Contents = styled.div`
-  height: calc(100% - 100px);
+  /* height: calc(100% - 100px); */
+  margin-top: 50px;
 `;
 
 const LeftContent = styled.div`
+  position: fixed;
   width: 23.333336%;
   min-width: 300px;
   max-width: 400px;
@@ -27,7 +29,7 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   width: 75.666663%;
-  height: 100%;
+  /* height: calc(100% - 10px); */
   overflow: scroll;
   min-width: calc(100% - 410px);
   max-width: calc(100% - 310px);
@@ -36,18 +38,6 @@ const RightContent = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const Footer = styled.div`
-  display: flex;
-  position: fixed;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  background-color: rgba(20, 20, 20, 0.8);
-  border-top: solid 2px #495057;
 `;
 
 const Layout = ({ children }) => {
@@ -61,9 +51,6 @@ const Layout = ({ children }) => {
         </LeftContent>
         <RightContent>{children}</RightContent>
       </Contents>
-      <Footer>
-        <p>Footer @CopyRight@</p>
-      </Footer>
     </Screen>
   );
 };

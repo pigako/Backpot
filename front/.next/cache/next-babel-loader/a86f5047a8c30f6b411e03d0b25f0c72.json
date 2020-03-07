@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function* bookSaga() {}","map":{"version":3,"sources":["C:/Document/Backpot/front/sagas/board.js"],"names":["bookSaga"],"mappings":"AAAA,eAAe,UAAUA,QAAV,GAAqB,CAAE","sourcesContent":["export default function* bookSaga() {}\r\n"]},"metadata":{},"sourceType":"module"}

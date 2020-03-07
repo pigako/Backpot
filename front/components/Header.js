@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import Button from './designs/Button';
 import { useSelector } from 'react-redux';
 
 const Menu = styled.header`
-  position: flexd;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -29,6 +30,9 @@ const Item = styled.li`
   height: 3.2rem;
   text-align: center;
   margin-right: 10px;
+  border-bottom: solid 4px
+    ${props => (props.current ? '#148cff' : 'transparent')};
+  transition: border-bottom 0.5s ease-in-out;
   & a {
     color: white;
     width: 100%;
@@ -79,6 +83,7 @@ const SearchInput = styled.input`
 `;
 
 const Header = () => {
+  const { pathname, query } = useRouter();
   const [searchText, setSearchText] = useState('');
   const { userId } = useSelector(state => state.user.me) || false;
   const onChangeSearchText = useCallback(e => {
@@ -92,18 +97,21 @@ const Header = () => {
   return (
     <Menu>
       <List>
-        <Item key="home">
+        <Item key="home" current={pathname === '/'}>
           <Link href="/">
             <a>Backpot</a>
           </Link>
         </Item>
-        <Item key="booklist">
+        <Item key="booklist" current={pathname === '/booklist'}>
           <Link href="/booklist">
             <a>웹소설</a>
           </Link>
         </Item>
         {userId && (
-          <Item key="mydirectory">
+          <Item
+            key="mydirectory"
+            current={pathname === `/librery` && query.id === userId}
+          >
             <Link
               href={{ pathname: '/librery', query: { id: userId } }}
               as={`/librery/${userId}`}
@@ -113,7 +121,10 @@ const Header = () => {
           </Item>
         )}
         {userId && (
-          <Item key="profile">
+          <Item
+            key="profile"
+            current={pathname === `/profile` && query.id === userId}
+          >
             <Link
               href={{ pathname: '/profile', query: { id: userId } }}
               as={`/profile/${userId}`}
@@ -122,7 +133,7 @@ const Header = () => {
             </Link>
           </Item>
         )}
-        <Item key="board">
+        <Item key="board" current={pathname === '/board'}>
           <Link href="/board">
             <a>추천게시판</a>
           </Link>
