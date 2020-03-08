@@ -11,10 +11,10 @@ const globalStyles = createGlobalStyle`
         box-sizing : border-box;
     }
     html {
-        height:100%; 
+        /* height:100%;  */
     }
     body {
-        height:100%; 
+        /* height:100%;  */
         min-width: 1200px;
         font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size : 1.2rem;
@@ -22,9 +22,9 @@ const globalStyles = createGlobalStyle`
     /* body::-webkit-scrollbar { 
         display: none; 
     } */
-    #__next {
+    /* #__next {
         height:100%;
-    }
+    } */
 `;
 
 export default globalStyles;

@@ -628,10 +628,10 @@ const globalStyles = styled_components__WEBPACK_IMPORTED_MODULE_0__["createGloba
         box-sizing : border-box;
     }
     html {
-        height:100%; 
+        /* height:100%;  */
     }
     body {
-        height:100%; 
+        /* height:100%;  */
         min-width: 1200px;
         font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size : 1.2rem;
@@ -639,9 +639,9 @@ const globalStyles = styled_components__WEBPACK_IMPORTED_MODULE_0__["createGloba
     /* body::-webkit-scrollbar { 
         display: none; 
     } */
-    #__next {
+    /* #__next {
         height:100%;
-    }
+    } */
 `;
 /* harmony default export */ __webpack_exports__["default"] = (globalStyles);
 
@@ -2607,7 +2607,7 @@ const configureStore = (initialState, options) => {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2616,15 +2616,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
-  boards: []
+  boards: [],
+  isAddingBoard: false,
+  boardAdded: false
 };
 const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
 const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
 const LOAD_BOARDS_FAILURE = `LOAD_BOARDS_FAILURE`;
+const ADD_BOARD_REQUEST = `ADD_BOARD_REQUEST`;
+const ADD_BOARD_SUCCESS = `ADD_BOARD_SUCCESS`;
+const ADD_BOARD_FAILURE = `ADD_BOARD_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -2640,6 +2648,20 @@ const reducer = (state = initalState, action) => {
         break;
 
       case LOAD_BOARDS_FAILURE:
+        break;
+
+      case ADD_BOARD_REQUEST:
+        draft.isAddingBoard = true;
+        draft.boardAdded = false;
+        break;
+
+      case ADD_BOARD_SUCCESS:
+        draft.isAddingBoard = false;
+        draft.boardAdded = true;
+        draft.boards.unshift(action.data);
+        break;
+
+      case ADD_BOARD_FAILURE:
         break;
 
       default:
@@ -2881,8 +2903,30 @@ function* watchLoadBords() {
   });
 }
 
+function* watchAddBoard() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_BOARD_REQUEST"], function* addBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(boardData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/board`, boardData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_BOARD_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_BOARD_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
 function* bookSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBoard)]);
 }
 
 /***/ }),

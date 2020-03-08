@@ -130,7 +130,12 @@ const BoardTable = ({
   board
 }) => {
   const goBoard = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(boardId => e => {
-    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push(`/detailboard/${boardId}`);
+    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+      pathname: '/detailboard',
+      query: {
+        id: boardId
+      }
+    }, `/detailboard/${boardId}`);
   }, []);
   return __jsx(Table, null, __jsx("thead", null, __jsx("tr", null, __jsx("th", null, "\uBC88\uD638 "), __jsx("th", null, "\uC81C\uBAA9"), __jsx("th", null, "\uC791\uC131\uC790"), __jsx("th", null, "\uC791\uC131\uC77C\uC2DC"))), __jsx("tbody", null, board.map(v => {
     return __jsx("tr", {
@@ -2023,7 +2028,7 @@ Board.getInitialProps = async context => {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2032,15 +2037,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
-  boards: []
+  boards: [],
+  isAddingBoard: false,
+  boardAdded: false
 };
 const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
 const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
 const LOAD_BOARDS_FAILURE = `LOAD_BOARDS_FAILURE`;
+const ADD_BOARD_REQUEST = `ADD_BOARD_REQUEST`;
+const ADD_BOARD_SUCCESS = `ADD_BOARD_SUCCESS`;
+const ADD_BOARD_FAILURE = `ADD_BOARD_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -2056,6 +2069,20 @@ const reducer = (state = initalState, action) => {
         break;
 
       case LOAD_BOARDS_FAILURE:
+        break;
+
+      case ADD_BOARD_REQUEST:
+        draft.isAddingBoard = true;
+        draft.boardAdded = false;
+        break;
+
+      case ADD_BOARD_SUCCESS:
+        draft.isAddingBoard = false;
+        draft.boardAdded = true;
+        draft.boards.unshift(action.data);
+        break;
+
+      case ADD_BOARD_FAILURE:
         break;
 
       default:

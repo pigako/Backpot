@@ -537,7 +537,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function _templateObject() {
-  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        height:100%; \n    }\n    body {\n        height:100%; \n        min-width: 1200px;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    /* body::-webkit-scrollbar { \n        display: none; \n    } */\n    #__next {\n        height:100%;\n    }\n"]);
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n    ", ";\n    a{\n        text-decoration : none;\n        color : inherit;\n    }\n    *{\n        box-sizing : border-box;\n    }\n    html {\n        /* height:100%;  */\n    }\n    body {\n        /* height:100%;  */\n        min-width: 1200px;\n        font-family : -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n        font-size : 1.2rem;\n    }\n    /* body::-webkit-scrollbar { \n        display: none; \n    } */\n    /* #__next {\n        height:100%;\n    } */\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -19345,7 +19345,7 @@ module.exports = (__webpack_require__(/*! dll-reference dll_ef0ff7c60362f24a921f
 /*!***********************************************************************!*\
   !*** ./node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
   \***********************************************************************/
-/*! exports provided: default, CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
+/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23891,7 +23891,7 @@ var configureStore = function configureStore(initialState, options) {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23900,14 +23900,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
 var initalState = {
-  boards: []
+  boards: [],
+  isAddingBoard: false,
+  boardAdded: false
 };
 var LOAD_BOARDS_REQUEST = "LOAD_BOARDS_REQUEST";
 var LOAD_BOARDS_SUCCESS = "LOAD_BOARDS_SUCCESS";
 var LOAD_BOARDS_FAILURE = "LOAD_BOARDS_FAILURE";
+var ADD_BOARD_REQUEST = "ADD_BOARD_REQUEST";
+var ADD_BOARD_SUCCESS = "ADD_BOARD_SUCCESS";
+var ADD_BOARD_FAILURE = "ADD_BOARD_FAILURE";
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
@@ -23925,6 +23933,20 @@ var reducer = function reducer() {
         break;
 
       case LOAD_BOARDS_FAILURE:
+        break;
+
+      case ADD_BOARD_REQUEST:
+        draft.isAddingBoard = true;
+        draft.boardAdded = false;
+        break;
+
+      case ADD_BOARD_SUCCESS:
+        draft.isAddingBoard = false;
+        draft.boardAdded = true;
+        draft.boards.unshift(action.data);
+        break;
+
+      case ADD_BOARD_FAILURE:
         break;
 
       default:
@@ -24151,6 +24173,9 @@ var _marked =
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadBords),
     _marked2 =
 /*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchAddBoard),
+    _marked3 =
+/*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(bookSaga);
 
 
@@ -24217,20 +24242,80 @@ function watchLoadBords() {
   }, _marked);
 }
 
-function bookSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function bookSaga$(_context3) {
+function watchAddBoard() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchAddBoard$(_context4) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          _context3.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadBords)]);
+          _context4.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_3__["ADD_BOARD_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function addBoard(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function addBoard$(_context3) {
+              while (1) {
+                switch (_context3.prev = _context3.next) {
+                  case 0:
+                    _context3.prev = 0;
+                    _context3.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (boardData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/board", boardData, {
+                        withCredentials: true
+                      });
+                    }, action.data);
+
+                  case 3:
+                    result = _context3.sent;
+                    _context3.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_board__WEBPACK_IMPORTED_MODULE_3__["ADD_BOARD_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context3.next = 13;
+                    break;
+
+                  case 8:
+                    _context3.prev = 8;
+                    _context3.t0 = _context3["catch"](0);
+                    console.log(_context3.t0);
+                    _context3.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_board__WEBPACK_IMPORTED_MODULE_3__["ADD_BOARD_FAILURE"],
+                      error: _context3.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context3.stop();
+                }
+              }
+            }, addBoard, null, [[0, 8]]);
+          }));
 
         case 2:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
     }
   }, _marked2);
+}
+
+function bookSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function bookSaga$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddBoard)]);
+
+        case 2:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, _marked3);
 }
 
 /***/ }),

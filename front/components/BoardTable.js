@@ -48,7 +48,10 @@ const Table = styled.table`
 const BoardTable = ({ board }) => {
   const goBoard = useCallback(
     boardId => e => {
-      Router.push(`/detailboard/${boardId}`);
+      Router.push(
+        { pathname: '/detailboard', query: { id: boardId } },
+        `/detailboard/${boardId}`,
+      );
     },
     [],
   );
