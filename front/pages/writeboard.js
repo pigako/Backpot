@@ -118,7 +118,11 @@ const WriteBoard = () => {
           )}
         </Button>
       </WriteBoardDivTop>
-      <BoardTitleInput value={title} onChange={onChangeTitle} />
+      <BoardTitleInput
+        value={title}
+        onChange={onChangeTitle}
+        placeholder="제목"
+      />
       {editorLoded ? (
         <CKEditor
           editor={ClassicEditor}

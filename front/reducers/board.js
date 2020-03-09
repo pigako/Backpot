@@ -2,6 +2,7 @@ import produce from 'immer';
 
 export const initalState = {
   boards: [],
+  board: null,
   isAddingBoard: false,
   boardAdded: false,
 };
@@ -9,6 +10,10 @@ export const initalState = {
 export const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
 export const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
 export const LOAD_BOARDS_FAILURE = `LOAD_BOARDS_FAILURE`;
+
+export const LOAD_BOARD_REQUEST = `LOAD_BOARD_REQUEST`;
+export const LOAD_BOARD_SUCCESS = `LOAD_BOARD_SUCCESS`;
+export const LOAD_BOARD_FAILURE = `LOAD_BOARD_FAILURE`;
 
 export const ADD_BOARD_REQUEST = `ADD_BOARD_REQUEST`;
 export const ADD_BOARD_SUCCESS = `ADD_BOARD_SUCCESS`;
@@ -26,6 +31,14 @@ const reducer = (state = initalState, action) => {
         draft.hasMoreBoards = action.data.length === 30;
         break;
       case LOAD_BOARDS_FAILURE:
+        break;
+      case LOAD_BOARD_REQUEST:
+        draft.board = null;
+        break;
+      case LOAD_BOARD_SUCCESS:
+        draft.board = action.data;
+        break;
+      case LOAD_BOARD_FAILURE:
         break;
       case ADD_BOARD_REQUEST:
         draft.isAddingBoard = true;

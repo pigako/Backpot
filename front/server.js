@@ -42,6 +42,10 @@ app.prepare().then(() => {
     return app.render(req, res, '/profile', { id: req.params.id });
   });
 
+  server.get('/detailboard/:id', (req, res) => {
+    return app.render(req, res, '/detailboard', { id: req.params.id });
+  });
+
   server.get('*', (req, res) => {
     return handle(req, res);
   });

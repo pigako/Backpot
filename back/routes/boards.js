@@ -20,6 +20,7 @@ router.get('/', async (req, res, next) => {
           attributes: ['id', 'nickname'],
         },
       ],
+      attributes: ['id', 'title', 'createdAt'],
       limit: parseInt(req.query.limit, 10),
       order: [['id', 'DESC']],
     });

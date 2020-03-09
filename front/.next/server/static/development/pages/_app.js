@@ -2607,7 +2607,7 @@ const configureStore = (initialState, options) => {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2616,6 +2616,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_REQUEST", function() { return LOAD_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_SUCCESS", function() { return LOAD_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_FAILURE", function() { return LOAD_BOARD_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
@@ -2624,12 +2627,16 @@ __webpack_require__.r(__webpack_exports__);
 
 const initalState = {
   boards: [],
+  board: null,
   isAddingBoard: false,
   boardAdded: false
 };
 const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
 const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
 const LOAD_BOARDS_FAILURE = `LOAD_BOARDS_FAILURE`;
+const LOAD_BOARD_REQUEST = `LOAD_BOARD_REQUEST`;
+const LOAD_BOARD_SUCCESS = `LOAD_BOARD_SUCCESS`;
+const LOAD_BOARD_FAILURE = `LOAD_BOARD_FAILURE`;
 const ADD_BOARD_REQUEST = `ADD_BOARD_REQUEST`;
 const ADD_BOARD_SUCCESS = `ADD_BOARD_SUCCESS`;
 const ADD_BOARD_FAILURE = `ADD_BOARD_FAILURE`;
@@ -2648,6 +2655,17 @@ const reducer = (state = initalState, action) => {
         break;
 
       case LOAD_BOARDS_FAILURE:
+        break;
+
+      case LOAD_BOARD_REQUEST:
+        draft.board = null;
+        break;
+
+      case LOAD_BOARD_SUCCESS:
+        draft.board = action.data;
+        break;
+
+      case LOAD_BOARD_FAILURE:
         break;
 
       case ADD_BOARD_REQUEST:
@@ -2881,7 +2899,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/board */ "./reducers/board.js");
 
 
-
+ // 전체 게시글 가져오기
 
 function* watchLoadBords() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["throttle"])(1000, _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_REQUEST"], function* loadBoards(action) {
@@ -2901,7 +2919,29 @@ function* watchLoadBords() {
       });
     }
   });
-}
+} // 게시글 가져오기
+
+
+function* watchLoadBoard() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARD_REQUEST"], function* loadBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(boardId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/board/${boardId}`);
+      }, action.boardId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARD_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARD_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 게시글 추가하기
+
 
 function* watchAddBoard() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_BOARD_REQUEST"], function* addBoard(action) {
@@ -2926,7 +2966,7 @@ function* watchAddBoard() {
 }
 
 function* bookSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBoard)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBoard)]);
 }
 
 /***/ }),

@@ -3,6 +3,37 @@ const db = require('../models');
 const router = express.Router();
 const { isLoggedIn } = require('./middleware');
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const board = await db.Board.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: db.Comment,
+          attributes: ['id', 'content', 'createdAt'],
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+      ],
+      order: [[db.Comment, 'id', 'DESC']],
+    });
+    return res.json(board);
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
+
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const newBoard = await db.Board.create({
