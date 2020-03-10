@@ -1,16 +1,22 @@
-import React, { useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
+import Helmet from 'react-helmet';
+import Router from 'next/router';
 
 import Button from '../components/designs/Button';
-import Router from 'next/router';
-import { LOAD_BOARD_REQUEST } from '../reducers/board';
+import {
+  LOAD_BOARD_REQUEST,
+  DELETE_BOARD_REQUEST,
+  UPDATE_BOARD_REQUEST,
+  ADD_COMMENT_REQUEST,
+} from '../reducers/board';
+import CommnetCard from '../components/CommentCard';
 
 const SBoard = styled.div`
-  margin-top: 10px;
   width: 98%;
+  margin-top: 10px;
 `;
 const SDetailBoardTitle = styled.h1`
   display: inline-block;
@@ -47,7 +53,7 @@ const SBoardTitleButtonDiv = styled.div`
 const SBoardContent = styled.div`
   margin: 1.5rem;
 
-  & > p {
+  & > div {
     font-size: 1rem;
     line-height: 1.5rem;
   }
@@ -67,46 +73,123 @@ const SBoardCommentCountDiv = styled.div`
     margin-left: 1rem;
   }
 `;
-const CommentCard = styled.div`
-  margin: 1.5rem;
-`;
-const CommentCardTop = styled.div`
-  height: 2rem;
-  background: #f7f7f7;
-  border-bottom: solid 1px #6441a5;
-  display: inline-block;
-  width: 100%;
 
-  & > label {
-    line-height: 2rem;
-  }
+const CommentDiv = styled.div`
+  height: 330px;
 `;
-const CommentCardNickname = styled.label`
-  font-size: 1rem;
-  font-weight: bold;
-  margin-left: 1rem;
-`;
-const CommentCardCreateLabel = styled.label`
-  display: block;
+
+const CommentButton = styled(Button)`
+  width: 8rem;
+  margin-right: 1.5rem;
   float: right;
 `;
-const CommentCardContent = styled.div`
-  margin: 1.5rem;
-  & > p {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
+
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
 `;
 
 const DetailBoard = () => {
-  const board = useSelector(state => state.board.board);
-  const { id: myId } = useSelector(state => state.user.me) || '';
-  const onUpdateBoard = useCallback(e => {}, []);
+  const {
+    boardDeleted,
+    board,
+    isUpdatingBoard,
+    isAddingComment,
+    commentAdded,
+  } = useSelector(state => state.board);
+  const { id: myId } = useSelector(state => state.user.me) || false;
+  const dispatch = useDispatch();
 
-  const onDeleteBoard = useCallback(e => {}, []);
+  const editorRef = useRef();
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+  const [editorLoded, setEditorLoded] = useState(false);
 
+  const [userComment, setUserComment] = useState('');
+  const [updateText, setUpdateText] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require('@ckeditor/ckeditor5-react'),
+      ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
+    };
+    setEditorLoded(true);
+  }, []);
+
+  useEffect(() => {
+    if (boardDeleted) {
+      Router.push('/board');
+    }
+  }, [boardDeleted]);
+
+  useEffect(() => {
+    if (commentAdded) {
+      setUserComment('');
+    }
+  }, [commentAdded]);
+
+  const onUpdateBoard = useCallback(
+    e => {
+      if (isUpdating) {
+        dispatch({
+          type: UPDATE_BOARD_REQUEST,
+          data: {
+            id: board.id,
+            content: updateText,
+          },
+        });
+        setIsUpdating(false);
+      } else {
+        setIsUpdating(true);
+      }
+    },
+    [isUpdating, board && board.id, updateText],
+  );
+
+  const onUpdateBoardCancle = useCallback(
+    e => {
+      setIsUpdating(false);
+      setUpdateText(board && board.content);
+    },
+    [isUpdating],
+  );
+
+  const onDeleteBoard = useCallback(
+    e => {
+      dispatch({
+        type: DELETE_BOARD_REQUEST,
+        boardId: board.id,
+      });
+    },
+    [board && board.id],
+  );
+
+  const onCreateComment = useCallback(
+    e => {
+      if (!userComment.trim()) {
+        return;
+      }
+      dispatch({
+        type: ADD_COMMENT_REQUEST,
+        data: {
+          boardId: board.id,
+          content: userComment,
+        },
+      });
+    },
+    [board && board.id, userComment],
+  );
   return (
     <SBoard>
+      <Helmet>
+        <title>{board && board.title}</title>
+        <style type="text/css">
+          {`
+            .ck-editor__editable { height: 200px;}
+            .ck.ck-reset.ck-editor.ck-rounded-corners {margin: 1.5rem;}
+          `}
+        </style>
+      </Helmet>
       <SDetailBoardTitle>추천게시글</SDetailBoardTitle>
       <SBoardTop>
         <SBoardTitle>
@@ -120,7 +203,16 @@ const DetailBoard = () => {
         </SBoardTitle>
         {myId === (board && board.User.id) ? (
           <SBoardTitleButtonDiv>
-            <Button onClick={onUpdateBoard}>수정</Button>
+            {isUpdating ? (
+              <Button onClick={onUpdateBoardCancle}>취소</Button>
+            ) : null}
+            <Button onClick={onUpdateBoard}>
+              {isUpdatingBoard ? (
+                <LoadingImg src="/static/icons/loading_blue.gif" />
+              ) : (
+                `수정`
+              )}
+            </Button>
             <Button color={'pink'} onClick={onDeleteBoard}>
               삭제
             </Button>
@@ -128,7 +220,23 @@ const DetailBoard = () => {
         ) : null}
       </SBoardTop>
       <SBoardContent>
-        <p dangerouslySetInnerHTML={{ __html: board && board.content }} />
+        {isUpdating ? (
+          editorLoded ? (
+            <CKEditor
+              key={'board'}
+              editor={ClassicEditor}
+              data={board && board.content}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setUpdateText(data);
+              }}
+            />
+          ) : (
+            <p>Editor Loding</p>
+          )
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: board && board.content }} />
+        )}
       </SBoardContent>
       <SBoardComment>
         <SBoardCommentCountDiv>
@@ -137,23 +245,33 @@ const DetailBoard = () => {
 
         {board &&
           board.Comments.map(comment => {
-            return (
-              <CommentCard key={+comment.id}>
-                <CommentCardTop>
-                  <CommentCardNickname>
-                    {comment.User.nickname}
-                  </CommentCardNickname>
-                  <CommentCardCreateLabel>
-                    {moment(comment.createdAt).format('YY.MM.DD HH시 mm분')}
-                  </CommentCardCreateLabel>
-                </CommentCardTop>
-                <CommentCardContent>
-                  <p dangerouslySetInnerHTML={{ __html: comment.content }}></p>
-                </CommentCardContent>
-              </CommentCard>
-            );
+            return <CommnetCard key={+comment.id} comment={comment} />;
           })}
       </SBoardComment>
+      {myId && (
+        <CommentDiv>
+          {editorLoded ? (
+            <CKEditor
+              key={'comment'}
+              editor={ClassicEditor}
+              data={userComment}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setUserComment(data);
+              }}
+            />
+          ) : (
+            <p>Editor Loding</p>
+          )}
+          <CommentButton onClick={onCreateComment}>
+            {isAddingComment ? (
+              <LoadingImg src="/static/icons/loading_blue.gif" />
+            ) : (
+              `댓글쓰기`
+            )}
+          </CommentButton>
+        </CommentDiv>
+      )}
     </SBoard>
   );
 };

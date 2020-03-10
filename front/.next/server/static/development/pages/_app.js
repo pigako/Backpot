@@ -2607,7 +2607,7 @@ const configureStore = (initialState, options) => {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2622,14 +2622,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_REQUEST", function() { return UPDATE_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_SUCCESS", function() { return UPDATE_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_FAILURE", function() { return UPDATE_BOARD_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_REQUEST", function() { return DELETE_BOARD_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_SUCCESS", function() { return DELETE_BOARD_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_FAILURE", function() { return DELETE_BOARD_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_REQUEST", function() { return ADD_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_SUCCESS", function() { return ADD_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_FAILURE", function() { return ADD_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_REQUEST", function() { return UPDATE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_SUCCESS", function() { return UPDATE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_FAILURE", function() { return UPDATE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_REQUEST", function() { return DELETE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_SUCCESS", function() { return DELETE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_FAILURE", function() { return DELETE_COMMENT_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
   boards: [],
+  hasMoreBoards: false,
   board: null,
   isAddingBoard: false,
-  boardAdded: false
+  boardAdded: false,
+  boardDeleted: false,
+  isUpdatingBoard: false,
+  isAddingComment: false,
+  commentAdded: false,
+  isUpdatingComment: false
 };
 const LOAD_BOARDS_REQUEST = `LOAD_BOARDS_REQUEST`;
 const LOAD_BOARDS_SUCCESS = `LOAD_BOARDS_SUCCESS`;
@@ -2640,50 +2661,192 @@ const LOAD_BOARD_FAILURE = `LOAD_BOARD_FAILURE`;
 const ADD_BOARD_REQUEST = `ADD_BOARD_REQUEST`;
 const ADD_BOARD_SUCCESS = `ADD_BOARD_SUCCESS`;
 const ADD_BOARD_FAILURE = `ADD_BOARD_FAILURE`;
+const UPDATE_BOARD_REQUEST = `UPDATE_BOARD_REQUEST`;
+const UPDATE_BOARD_SUCCESS = `UPDATE_BOARD_SUCCESS`;
+const UPDATE_BOARD_FAILURE = `UPDATE_BOARD_FAILURE`;
+const DELETE_BOARD_REQUEST = `DELETE_BOARD_REQUEST`;
+const DELETE_BOARD_SUCCESS = `DELETE_BOARD_SUCCESS`;
+const DELETE_BOARD_FAILURE = `DELETE_BOARD_FAILURE`;
+const ADD_COMMENT_REQUEST = `ADD_COMMENT_REQUEST`;
+const ADD_COMMENT_SUCCESS = `ADD_COMMENT_SUCCESS`;
+const ADD_COMMENT_FAILURE = `ADD_COMMENT_FAILURE`;
+const UPDATE_COMMENT_REQUEST = `UPDATE_COMMENT_REQUEST`;
+const UPDATE_COMMENT_SUCCESS = `UPDATE_COMMENT_SUCCESS`;
+const UPDATE_COMMENT_FAILURE = `UPDATE_COMMENT_FAILURE`;
+const DELETE_COMMENT_REQUEST = `DELETE_COMMENT_REQUEST`;
+const DELETE_COMMENT_SUCCESS = `DELETE_COMMENT_SUCCESS`;
+const DELETE_COMMENT_FAILURE = `DELETE_COMMENT_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
     switch (action.type) {
+      // 전체 게시글 조회
       case LOAD_BOARDS_REQUEST:
-        draft.boards = !action.lastId ? [] : draft.boards;
-        draft.hasMoreBoards = action.lastId ? draft.hasMoreBoards : true;
-        break;
+        {
+          draft.boards = !action.lastId ? [] : draft.boards;
+
+          if (draft.hasMoreBoards) {
+            draft.hasMoreBoards = action.lastId ? draft.hasMoreBoards : false;
+          }
+
+          break;
+        }
 
       case LOAD_BOARDS_SUCCESS:
-        draft.boards = draft.boards.concat(action.data);
-        draft.hasMoreBoards = action.data.length === 30;
-        break;
+        {
+          draft.boards = draft.boards.concat(action.data);
+          draft.hasMoreBoards = action.data.length === 30;
+          break;
+        }
 
       case LOAD_BOARDS_FAILURE:
-        break;
+        {
+          break;
+        }
+      // 게시글 조회
 
       case LOAD_BOARD_REQUEST:
-        draft.board = null;
-        break;
+        {
+          draft.boardDeleted = false;
+          draft.board = null;
+          break;
+        }
 
       case LOAD_BOARD_SUCCESS:
-        draft.board = action.data;
-        break;
+        {
+          draft.board = action.data;
+          break;
+        }
 
       case LOAD_BOARD_FAILURE:
-        break;
+        {
+          break;
+        }
+      // 게시글 작성
 
       case ADD_BOARD_REQUEST:
-        draft.isAddingBoard = true;
-        draft.boardAdded = false;
-        break;
+        {
+          draft.isAddingBoard = true;
+          draft.boardAdded = false;
+          break;
+        }
 
       case ADD_BOARD_SUCCESS:
-        draft.isAddingBoard = false;
-        draft.boardAdded = true;
-        draft.boards.unshift(action.data);
-        break;
+        {
+          draft.isAddingBoard = false;
+          draft.boardAdded = true;
+          draft.boards.unshift(action.data);
+          break;
+        }
 
       case ADD_BOARD_FAILURE:
-        break;
+        {
+          break;
+        }
+      // 게시글 수정
+
+      case UPDATE_BOARD_REQUEST:
+        {
+          draft.isUpdatingBoard = true;
+          break;
+        }
+
+      case UPDATE_BOARD_SUCCESS:
+        {
+          draft.isUpdatingBoard = false;
+          draft.board.content = action.data;
+          break;
+        }
+
+      case UPDATE_BOARD_FAILURE:
+        {
+          break;
+        }
+      // 게시글 삭제
+
+      case DELETE_BOARD_REQUEST:
+        {
+          draft.boardDeleted = false;
+          break;
+        }
+
+      case DELETE_BOARD_SUCCESS:
+        {
+          const boardIndex = draft.boards.findIndex(v => v.id === action.data);
+          draft.boards.splice(boardIndex, 1);
+          draft.boardDeleted = true;
+          break;
+        }
+
+      case DELETE_BOARD_FAILURE:
+        {
+          break;
+        }
+      // 댓글 작성
+
+      case ADD_COMMENT_REQUEST:
+        {
+          draft.isAddingComment = true;
+          draft.commentAdded = false;
+          break;
+        }
+
+      case ADD_COMMENT_SUCCESS:
+        {
+          draft.isAddingComment = false;
+          draft.commentAdded = true;
+          draft.board.Comments.push(action.data);
+          break;
+        }
+
+      case ADD_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 수정
+
+      case UPDATE_COMMENT_REQUEST:
+        {
+          draft.isUpdatingBoard = true;
+          break;
+        }
+
+      case UPDATE_COMMENT_SUCCESS:
+        {
+          draft.isUpdatingBoard = false;
+          const commentIndex = draft.board.Comments.findIndex(v => v.id === action.data.id);
+          draft.board.Comments[commentIndex].content = action.data.content;
+          break;
+        }
+
+      case UPDATE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 삭제
+
+      case DELETE_COMMENT_REQUEST:
+        {
+          break;
+        }
+
+      case DELETE_COMMENT_SUCCESS:
+        {
+          const commentIndex = draft.board.Comments.findIndex(v => v.id === action.data);
+          draft.board.Comments.splice(commentIndex, 1); // draft.board.Comments = draft.board.Comments.filter(c => c.id !== action.data);
+
+          break;
+        }
+
+      case DELETE_COMMENT_FAILURE:
+        {
+          break;
+        }
 
       default:
-        break;
+        {
+          break;
+        }
     }
   });
 };
@@ -2711,7 +2874,9 @@ const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
     switch (action.type) {
       default:
-        break;
+        {
+          break;
+        }
     }
   });
 };
@@ -2803,77 +2968,103 @@ const reducer = (state = initalState, action) => {
     switch (action.type) {
       // 로그인
       case LOG_IN_REQUEST:
-        draft.isLoggingIn = true;
-        draft.isLoggedIn = false;
-        draft.loginErrorReason = '';
-        break;
+        {
+          draft.isLoggingIn = true;
+          draft.isLoggedIn = false;
+          draft.loginErrorReason = '';
+          break;
+        }
 
       case LOG_IN_SUCCESS:
-        draft.isLoggingIn = false;
-        draft.isLoggedIn = true;
-        draft.me = action.data;
-        break;
+        {
+          draft.isLoggingIn = false;
+          draft.isLoggedIn = true;
+          draft.me = action.data;
+          break;
+        }
 
       case LOG_IN_FAILURE:
-        draft.isLoggingIn = false;
-        draft.loginErrorReason = action.error;
-        break;
+        {
+          draft.isLoggingIn = false;
+          draft.loginErrorReason = action.error;
+          break;
+        }
       // 로그아웃
 
       case LOG_OUT_REQUEST:
-        draft.isLoggingOut = true;
-        break;
+        {
+          draft.isLoggingOut = true;
+          break;
+        }
 
       case LOG_OUT_SUCCESS:
-        draft.isLoggingOut = false;
-        draft.isLoggedIn = false;
-        draft.me = null;
-        break;
+        {
+          draft.isLoggingOut = false;
+          draft.isLoggedIn = false;
+          draft.me = null;
+          break;
+        }
 
       case LOG_OUT_FAILURE:
-        draft.isLoggingOut = false;
-        break;
+        {
+          draft.isLoggingOut = false;
+          break;
+        }
       // 회원가입
 
       case SIGN_UP_REQUEST:
-        draft.isSigningUp = true;
-        draft.signUpErrorReason = '';
-        break;
+        {
+          draft.isSigningUp = true;
+          draft.signUpErrorReason = '';
+          break;
+        }
 
       case SIGN_UP_SUCCESS:
-        draft.isSigningUp = false;
-        draft.isSignedUp = true;
-        break;
+        {
+          draft.isSigningUp = false;
+          draft.isSignedUp = true;
+          break;
+        }
 
       case SIGN_UP_FAILURE:
-        draft.isSigningUp = false;
-        draft.signUpErrorReason = action.error;
-        break;
+        {
+          draft.isSigningUp = false;
+          draft.signUpErrorReason = action.error;
+          break;
+        }
       // 유저 정보 불러오기
 
       case LOAD_USER_REQUEST:
-        if (action.data) {
-          draft.otherUserInfo = null;
-        }
+        {
+          if (action.data) {
+            draft.otherUserInfo = null;
+          }
 
-        break;
+          break;
+        }
 
       case LOAD_USER_SUCCESS:
-        if (action.me) {
-          draft.me = action.data;
-        }
+        {
+          if (action.me) {
+            draft.me = action.data;
+          }
 
-        if (!action.me) {
-          draft.otherUserInfo = action.data;
-        }
+          if (!action.me) {
+            draft.otherUserInfo = action.data;
+          }
 
-        break;
+          break;
+        }
 
       case LOAD_USER_FAILURE:
-        break;
+        {
+          break;
+        }
 
       default:
-        break;
+        {
+          break;
+        }
     }
   });
 };
@@ -2963,10 +3154,125 @@ function* watchAddBoard() {
       });
     }
   });
+} // 게시글 수정
+
+
+function* watchUpdateBoard() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_BOARD_REQUEST"], function* updateBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateBoardData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch(`/board`, updateBoardData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_BOARD_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_BOARD_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 게시글 삭제
+
+
+function* watchDeleteBoard() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOARD_REQUEST"], function* deleteBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(boardId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/board/${boardId}`, {
+          withCredentials: true
+        });
+      }, action.boardId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOARD_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOARD_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 댓글 추가
+
+
+function* watchAddComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_COMMENT_REQUEST"], function* addComment(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(boardData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/board/comment`, boardData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["ADD_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 댓글 수정
+
+
+function* watchUpdateComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_COMMENT_REQUEST"], function* updateComment(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateCommentData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch(`/board/comment`, updateCommentData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["UPDATE_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 댓글 삭제
+
+
+function* watchDeleteComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_COMMENT_REQUEST"], function* deleteBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(commentId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/board/comment/${commentId}`, {
+          withCredentials: true
+        });
+      }, action.commentId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["DELETE_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
 }
 
 function* bookSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBoard)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBords), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteBoard), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteComment)]);
 }
 
 /***/ }),

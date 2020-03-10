@@ -34,52 +34,62 @@ const reducer = (state = initalState, action) => {
   return produce(state, draft => {
     switch (action.type) {
       // 로그인
-      case LOG_IN_REQUEST:
+      case LOG_IN_REQUEST: {
         draft.isLoggingIn = true;
         draft.isLoggedIn = false;
         draft.loginErrorReason = '';
         break;
-      case LOG_IN_SUCCESS:
+      }
+      case LOG_IN_SUCCESS: {
         draft.isLoggingIn = false;
         draft.isLoggedIn = true;
         draft.me = action.data;
         break;
-      case LOG_IN_FAILURE:
+      }
+      case LOG_IN_FAILURE: {
         draft.isLoggingIn = false;
         draft.loginErrorReason = action.error;
         break;
+      }
       // 로그아웃
-      case LOG_OUT_REQUEST:
+      case LOG_OUT_REQUEST: {
         draft.isLoggingOut = true;
         break;
-      case LOG_OUT_SUCCESS:
+      }
+      case LOG_OUT_SUCCESS: {
         draft.isLoggingOut = false;
         draft.isLoggedIn = false;
         draft.me = null;
         break;
-      case LOG_OUT_FAILURE:
+      }
+      case LOG_OUT_FAILURE: {
         draft.isLoggingOut = false;
         break;
+      }
       // 회원가입
-      case SIGN_UP_REQUEST:
+      case SIGN_UP_REQUEST: {
         draft.isSigningUp = true;
         draft.signUpErrorReason = '';
         break;
-      case SIGN_UP_SUCCESS:
+      }
+      case SIGN_UP_SUCCESS: {
         draft.isSigningUp = false;
         draft.isSignedUp = true;
         break;
-      case SIGN_UP_FAILURE:
+      }
+      case SIGN_UP_FAILURE: {
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
         break;
+      }
       // 유저 정보 불러오기
-      case LOAD_USER_REQUEST:
+      case LOAD_USER_REQUEST: {
         if (action.data) {
           draft.otherUserInfo = null;
         }
         break;
-      case LOAD_USER_SUCCESS:
+      }
+      case LOAD_USER_SUCCESS: {
         if (action.me) {
           draft.me = action.data;
         }
@@ -87,10 +97,13 @@ const reducer = (state = initalState, action) => {
           draft.otherUserInfo = action.data;
         }
         break;
-      case LOAD_USER_FAILURE:
+      }
+      case LOAD_USER_FAILURE: {
         break;
-      default:
+      }
+      default: {
         break;
+      }
     }
   });
 };

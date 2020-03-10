@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import Router from 'next/router';
 import { LOAD_BOARDS_REQUEST } from '../reducers/board';
@@ -64,31 +64,34 @@ const Board = () => {
   const { boards, hasMoreBoards } = useSelector(state => state.board);
   const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const countRef = useRef([]);
+  const [lastIdArray, setLastIdArray] = useState([]);
 
-  const onScroll = useCallback(() => {
-    console.log(window.scrollY + document.documentElement.clientHeight);
-    if (
-      window.scrollY + document.documentElement.clientHeight >
-      document.documentElement.scrollHeight - 300
-    ) {
-      if (hasMoreBoards) {
-        let lastId = boards[boards.length - 1].id;
-        if (!countRef.current.includes(lastId)) {
-          dispatch({
-            type: LOAD_BOARDS_REQUEST,
-            lastId,
-          });
-          countRef.current.push(lastId);
+  const onScroll = useCallback(
+    e => {
+      if (
+        window.scrollY + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
+        if (hasMoreBoards) {
+          let lastId = boards[boards.length - 1].id;
+          if (!lastIdArray.includes(lastId)) {
+            dispatch({
+              type: LOAD_BOARDS_REQUEST,
+              lastId,
+            });
+            setLastIdArray([...lastIdArray, lastId]);
+          }
         }
       }
-    }
-  }, [hasMoreBoards, boards.length]);
+    },
+    [hasMoreBoards, boards.length],
+  );
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
+      setLastIdArray([]);
     };
   }, [boards.length]);
 

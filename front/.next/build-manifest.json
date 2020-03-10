@@ -17,11 +17,15 @@
       "static/runtime/polyfills.js",
       "static/runtime/polyfills.js.map"
     ],
-    "/booklist": [
+    "/board": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
     "/detailboard": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/librery": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]
