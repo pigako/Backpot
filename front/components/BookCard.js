@@ -14,7 +14,7 @@ const Card = styled.div`
   border: solid 1px #495057;
   float: left;
   cursor: pointer;
-
+  transition: 0.5s ease;
   & > img,
   div,
   label {
@@ -22,8 +22,7 @@ const Card = styled.div`
   }
 
   &:hover {
-    border: solid 1px #148cff;
-    outline: solid 2px #148cff;
+    box-shadow: -10px 10px 5px 0px #148cff;
   }
 
   @media (max-width: 1620px) {

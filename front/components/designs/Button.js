@@ -21,6 +21,10 @@ const StyledButton = styled.button`
       return css`
         width: 100%;
       `;
+    } else if (props.size === 'middle') {
+      return css`
+        width: 33%;
+      `;
     }
   }}
 
@@ -65,7 +69,7 @@ const Button = ({ children, ...rest }) => {
 
 Button.defaultProps = {
   color: 'blue',
-  size: 'middle',
+  size: 'small',
 };
 
 export default Button;

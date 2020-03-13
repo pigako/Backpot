@@ -13,6 +13,7 @@ const Table = styled.table`
   overflow: hidden;
   margin: 1rem auto;
   width: 98%;
+
   & th {
     padding: 1rem;
     background: #148cff;

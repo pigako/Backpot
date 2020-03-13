@@ -29,8 +29,7 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   width: 75.666663%;
-  /* height: calc(100% - 10px); */
-  overflow: scroll;
+  overflow: auto;
   min-width: calc(100% - 410px);
   max-width: calc(100% - 310px);
   float: right;

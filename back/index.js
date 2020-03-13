@@ -10,8 +10,10 @@ const passportConfig = require('./passport');
 const db = require('./models'); // DB model
 const userAPIRouter = require('./routes/user'); // Router 등록
 // const postAPIRouter = require('./routes/post');
-const boardsAPIRouter = require('./routes/boards');
 const boardAPIRouter = require('./routes/board');
+const boardsAPIRouter = require('./routes/boards');
+const bookAPIRouter = require('./routes/book');
+const booksAPIRouter = require('./routes/books');
 
 dotenv.config(); // dotenv 실행
 const app = express();
@@ -46,8 +48,10 @@ app.use(passport.session()); // express session
 
 app.use('/api/user', userAPIRouter);
 // app.use('/api/post', postAPIRouter);
-app.use('/api/boards', boardsAPIRouter);
 app.use('/api/board', boardAPIRouter);
+app.use('/api/boards', boardsAPIRouter);
+app.use('/api/book', bookAPIRouter);
+app.use('/api/books', booksAPIRouter);
 
 // 서버시작
 app.listen(5000, () => {

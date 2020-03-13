@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
@@ -43,7 +43,7 @@ const MyBoard = styled.div`
   overflow: hidden;
   margin-top: 1rem;
   border: solid 2px #495057;
-
+  margin-bottom: 3rem;
   & > p {
     font-weight: bold;
     margin: 1rem 0rem 1rem 1rem;
@@ -72,6 +72,12 @@ const Librery = () => {
     ? useSelector(state => state.user.otherUserInfo)
     : useSelector(state => state.user.me);
 
+  const { id: myId } = useSelector(state => state.user.me);
+
+  const onGoWriteBook = useCallback(e => {
+    Router.push('/writebook');
+  }, []);
+
   return (
     <div>
       <LibreryTitle>{user.nickname} 님의 서재입니다.</LibreryTitle>
@@ -88,17 +94,19 @@ const Librery = () => {
           {user && user.Books[0] ? null : (
             <p>연재중인 소설이 존재하지 않습니다.</p>
           )}
-          <Button>새 작품</Button>
+          {user && user.id === myId ? (
+            <Button onClick={onGoWriteBook}>새 작품</Button>
+          ) : null}
         </NovelButtonDiv>
       </NovelList>
       <MyBoard>
-        <p>작성한 게시글 목록</p>
+        <p>작성한 게시글 목록 * {user && user.Boards.length} 개 *</p>
         {user && user.Boards.length ? <BoardTable board={user.Boards} /> : null}
         <BoardButtonDiv>
           {user && user.Boards.length ? null : (
             <p>작성한 게시글이 존재하지 않습니다.</p>
           )}
-          <Button>새 게시글</Button>
+          {user && user.id === myId ? <Button>새 게시글</Button> : null}
         </BoardButtonDiv>
       </MyBoard>
     </div>

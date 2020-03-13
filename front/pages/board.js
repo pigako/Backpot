@@ -1,10 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import Router from 'next/router';
-import { LOAD_BOARDS_REQUEST } from '../reducers/board';
 import { useSelector, useDispatch } from 'react-redux';
-import BoardTable from '../components/BoardTable';
+
 import Button from '../components/designs/Button';
+import BoardTable from '../components/BoardTable';
+import { LOAD_BOARDS_REQUEST } from '../reducers/board';
 
 const SBoard = styled.div`
   margin-top: 10px;
