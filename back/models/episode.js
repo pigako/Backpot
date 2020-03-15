@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
-      recomends: {
+      recommends: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,

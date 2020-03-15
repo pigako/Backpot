@@ -78,6 +78,10 @@ const Librery = () => {
     Router.push('/writebook');
   }, []);
 
+  const onGoWriteBoard = useCallback(e => {
+    Router.push('/writeboard');
+  }, []);
+
   return (
     <div>
       <LibreryTitle>{user.nickname} 님의 서재입니다.</LibreryTitle>
@@ -106,7 +110,9 @@ const Librery = () => {
           {user && user.Boards.length ? null : (
             <p>작성한 게시글이 존재하지 않습니다.</p>
           )}
-          {user && user.id === myId ? <Button>새 게시글</Button> : null}
+          {user && user.id === myId ? (
+            <Button onClick={onGoWriteBoard}>새 게시글</Button>
+          ) : null}
         </BoardButtonDiv>
       </MyBoard>
     </div>

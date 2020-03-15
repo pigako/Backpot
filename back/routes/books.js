@@ -12,16 +12,27 @@ router.get('/', async (req, res, next) => {
         },
       };
     }
-    // const books = await db.Book.findAll({
-    //   where,
-    //   include: [{
-
-    //   }],
-    //   attributes: [],
-    //   limit: parseInt(req.query.limit, 10);
-    //   order: [['updatedAt', 'DESC']]
-    // })
-    // return res.json(books);
+    const books = await db.Book.findAll({
+      where,
+      include: [
+        {
+          model: db.User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: db.Episode,
+        },
+        {
+          model: db.Genre,
+          as: 'BookGenre',
+          attributes: ['name'],
+        },
+      ],
+      attributes: ['id', 'name', 'thumbnail', 'serialDay', 'likersCount', 'createdAt'],
+      limit: parseInt(req.query.limit, 10),
+      order: [[db.Episode, 'updatedAt', 'DESC']],
+    });
+    return res.json(books);
   } catch (e) {
     console.log(e);
     return next(e);

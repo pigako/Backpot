@@ -141,7 +141,6 @@ const UserProfile = () => {
             <Label>선호작 목록이 존재하지 않습니다.</Label>
           )}
         </LikeBookList>
-        {likingBookList && <Button size={'large'}>더 보기</Button>}
       </BottomProfile>
     </Profile>
   );

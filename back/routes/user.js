@@ -48,7 +48,7 @@ router.get('/:id', async (req, res, next) => {
           include: [
             {
               model: db.User,
-              attributes: ['nickname'],
+              attributes: ['id', 'userId', 'nickname'],
             },
           ],
         },
@@ -107,7 +107,7 @@ router.post('/login', (req, res, next) => {
               include: [
                 {
                   model: db.User,
-                  attributes: ['nickname'],
+                  attributes: ['id', 'userId', 'nickname'],
                 },
               ],
             },

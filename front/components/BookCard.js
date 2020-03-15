@@ -72,12 +72,15 @@ const BookCard = ({ book, nickname }) => {
   const dispatch = useDispatch();
 
   const goBook = useCallback(e => {
-    Router.push(`/book/${book.id}`);
-  });
+    Router.push(
+      { pathname: `/book`, query: { bookid: book.id } },
+      `/book/${book.id}`,
+    );
+  }, []);
 
   return (
     <Card onClick={goBook}>
-      <Thumbnail src={book.thumbnail}></Thumbnail>
+      <Thumbnail src={`http://localhost:5000/${book.thumbnail}`}></Thumbnail>
       <CardContent>
         <Title>{book.name}</Title>
         <Genre>{book.BookGenre[0].name}</Genre>

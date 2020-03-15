@@ -310,7 +310,13 @@ const LikedBook = ({
   book
 }) => {
   return __jsx(LikingList, null, __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
-    href: `/writer`
+    href: {
+      pathname: 'librery',
+      query: {
+        id: book.User.userId
+      }
+    },
+    as: `/librery/${book.User.userId}`
   }, __jsx("a", null, __jsx(Writer, null, book.User.nickname))), __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: {
       pathname: '/book',
@@ -541,9 +547,7 @@ const UserProfile = () => {
       key: i,
       book: v
     });
-  }) : __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D\uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.")), likingBookList && __jsx(_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    size: 'large'
-  }, "\uB354 \uBCF4\uAE30")));
+  }) : __jsx(Label, null, "\uC120\uD638\uC791 \uBAA9\uB85D\uC774 \uC874\uC7AC\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (UserProfile);
@@ -2861,7 +2865,7 @@ const reducer = (state = initalState, action) => {
 /*!**************************!*\
   !*** ./reducers/book.js ***!
   \**************************/
-/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2870,16 +2874,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_REQUEST", function() { return LOAD_BOOKS_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_SUCCESS", function() { return LOAD_BOOKS_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_FAILURE", function() { return LOAD_BOOKS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_REQUEST", function() { return LOAD_BOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_SUCCESS", function() { return LOAD_BOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_FAILURE", function() { return LOAD_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_REQUEST", function() { return ADD_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_SUCCESS", function() { return ADD_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_FAILURE", function() { return ADD_LIKEBOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_REQUEST", function() { return REMOVE_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_SUCCESS", function() { return REMOVE_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_FAILURE", function() { return REMOVE_LIKEBOOK_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
   books: [],
-  book: null
+  book: null,
+  isAddingLikeBook: false,
+  isRemovingLikeBook: false
 };
 const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
 const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
 const LOAD_BOOKS_FAILURE = `LOAD_BOOKS_FAILURE`;
+const LOAD_BOOK_REQUEST = `LOAD_BOOK_REQUEST`;
+const LOAD_BOOK_SUCCESS = `LOAD_BOOK_SUCCESS`;
+const LOAD_BOOK_FAILURE = `LOAD_BOOK_FAILURE`;
+const ADD_LIKEBOOK_REQUEST = `ADD_LIKEBOOK_REQUEST`;
+const ADD_LIKEBOOK_SUCCESS = `ADD_LIKEBOOK_SUCCESS`;
+const ADD_LIKEBOOK_FAILURE = `ADD_LIKEBOOK_FAILURE`;
+const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
+const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
+const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -2901,6 +2925,58 @@ const reducer = (state = initalState, action) => {
         }
 
       case LOAD_BOOKS_FAILURE:
+        {
+          break;
+        }
+
+      case LOAD_BOOK_REQUEST:
+        {
+          break;
+        }
+
+      case LOAD_BOOK_SUCCESS:
+        {
+          draft.book = action.data;
+          break;
+        }
+
+      case LOAD_BOOK_FAILURE:
+        {
+          break;
+        }
+
+      case ADD_LIKEBOOK_REQUEST:
+        {
+          draft.isAddingLikeBook = true;
+          break;
+        }
+
+      case ADD_LIKEBOOK_SUCCESS:
+        {
+          draft.isAddingLikeBook = false;
+          draft.book.likersCount += 1;
+          break;
+        }
+
+      case ADD_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_REQUEST:
+        {
+          draft.isRemovingLikeBook = true;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_SUCCESS:
+        {
+          draft.isRemovingLikeBook = false;
+          draft.book.likersCount -= 1;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_FAILURE:
         {
           break;
         }
@@ -2948,7 +3024,7 @@ const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, default */
+/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2966,6 +3042,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_REQUEST", function() { return LOAD_USER_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_SUCCESS", function() { return LOAD_USER_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_FAILURE", function() { return LOAD_USER_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOKLIST", function() { return ADD_LIKEBOOKLIST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOKLIST", function() { return REMOVE_LIKEBOOKLIST; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -2994,6 +3072,8 @@ const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
 const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
 const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
 const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
+const ADD_LIKEBOOKLIST = `ADD_LIKEBOOKLIST`;
+const REMOVE_LIKEBOOKLIST = `REMOVE_LIKEBOOKLIST`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -3090,6 +3170,27 @@ const reducer = (state = initalState, action) => {
 
       case LOAD_USER_FAILURE:
         {
+          break;
+        }
+      // 선호작 리스트 추가
+
+      case ADD_LIKEBOOKLIST:
+        {
+          draft.me.LikingBook.push({
+            id: action.data.id,
+            name: action.data.name,
+            User: {
+              userId: action.data.userId,
+              nickname: action.data.userNickname
+            }
+          });
+          break;
+        }
+
+      case REMOVE_LIKEBOOKLIST:
+        {
+          const index = draft.me.LikingBook.findIndex(v => v.id === action.data);
+          draft.me.LikingBook.splice(index, 1);
           break;
         }
 
@@ -3324,6 +3425,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _reducers_book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/book */ "./reducers/book.js");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../reducers/user */ "./reducers/user.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
  // 전체 연재글 가져오기
@@ -3335,7 +3444,7 @@ function* watchLoadBooks() {
         return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/books?lastId=${lastId}&limit=${limit}`);
       }, action.lastId);
       yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
-        type: LOAD_BOARDS_SUCCESS,
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOKS_SUCCESS"],
         data: result.data
       });
     } catch (e) {
@@ -3346,10 +3455,87 @@ function* watchLoadBooks() {
       });
     }
   });
+} // 게시글 하나 조회
+
+
+function* watchLoadBook() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOK_REQUEST"], function* loadBook(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(bookId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/book/${bookId}`);
+      }, action.id);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOK_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOK_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 선호작 추가
+
+
+function* watchAddLikebook() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["ADD_LIKEBOOK_REQUEST"], function* addLikebook(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(bookId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(`/book/${bookId}/like`, {}, {
+          withCredentials: true
+        });
+      }, action.bookId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["ADD_LIKEBOOK_SUCCESS"],
+        data: result.data
+      });
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["ADD_LIKEBOOKLIST"],
+        data: _objectSpread({
+          id: result.data
+        }, action.data)
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["ADD_LIKEBOOK_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 선호작 해제
+
+
+function* watchRemoveLikebook() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["REMOVE_LIKEBOOK_REQUEST"], function* removeLikebook(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(bookId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/book/${bookId}/unlike`, {
+          withCredentials: true
+        });
+      }, action.bookId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["REMOVE_LIKEBOOK_SUCCESS"],
+        data: result.data
+      });
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["REMOVE_LIKEBOOKLIST"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["REMOVE_LIKEBOOK_FAILURE"],
+        error: e
+      });
+    }
+  });
 }
 
 function* bookSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBooks)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBooks), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddLikebook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchRemoveLikebook)]);
 }
 
 /***/ }),

@@ -88,10 +88,98 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./components/BookCard.js":
+/*!********************************!*\
+  !*** ./components/BookCard.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "styled-components");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_6__);
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
+
+
+
+
+
+const Card = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
+  displayName: "BookCard__Card",
+  componentId: "lzuq87-0"
+})(["width:31%;margin:1%;height:15rem;border:solid 1px #495057;float:left;cursor:pointer;transition:0.5s ease;& > img,div,label{cursor:pointer;}&:hover{box-shadow:-10px 10px 5px 0px #148cff;}@media (max-width:1620px){width:47%;}"]);
+const Thumbnail = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.img.withConfig({
+  displayName: "BookCard__Thumbnail",
+  componentId: "lzuq87-1"
+})(["width:32%;height:13rem;float:left;margin-top:1rem;margin-left:4%;"]);
+const CardContent = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
+  displayName: "BookCard__CardContent",
+  componentId: "lzuq87-2"
+})(["width:56%;height:9rem;float:right;margin-top:3rem;margin-right:4%;display:flex;flex-direction:column;justify-content:space-between;"]);
+const Title = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
+  displayName: "BookCard__Title",
+  componentId: "lzuq87-3"
+})(["display:block;font-weight:bold;"]);
+const Genre = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
+  displayName: "BookCard__Genre",
+  componentId: "lzuq87-4"
+})(["display:block;"]);
+const Writer = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
+  displayName: "BookCard__Writer",
+  componentId: "lzuq87-5"
+})(["display:block;"]);
+const CreatedDate = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
+  displayName: "BookCard__CreatedDate",
+  componentId: "lzuq87-6"
+})(["display:block;"]);
+
+const BookCard = ({
+  book,
+  nickname
+}) => {
+  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
+  const goBook = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+    next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+      pathname: `/book`,
+      query: {
+        bookid: book.id
+      }
+    }, `/book/${book.id}`);
+  }, []);
+  return __jsx(Card, {
+    onClick: goBook
+  }, __jsx(Thumbnail, {
+    src: `http://localhost:5000/${book.thumbnail}`
+  }), __jsx(CardContent, null, __jsx(Title, null, book.name), __jsx(Genre, null, book.BookGenre[0].name), __jsx(Writer, null, nickname), __jsx(CreatedDate, null, "\uB4F1\uB85D\uC77C ", moment__WEBPACK_IMPORTED_MODULE_4___default()(book.createdAt).format('YYYY.MM.DD'))));
+};
+
+BookCard.propTypes = {
+  book: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object.isRequired,
+  nickname: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (BookCard);
+
+/***/ }),
 
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js":
 /*!*******************************************************************************!*\
@@ -1812,7 +1900,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "react-redux");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _components_BookCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/BookCard */ "./components/BookCard.js");
+/* harmony import */ var _reducers_book__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/book */ "./reducers/book.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
 
 
 
@@ -1824,17 +1916,164 @@ const BookListTitle = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.h
 const NovelList = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "booklist__NovelList",
   componentId: "sc-1s39sfx-1"
-})(["width:98%;overflow:hidden;border:solid 2px #495057;& > p{font-weight:bold;margin:1rem 0rem 1rem 1rem;}"]);
+})(["width:98%;overflow:hidden;"]);
 
 const BookList = () => {
-  return __jsx("div", null, __jsx(BookListTitle, null, "\uC5F0\uC7AC\uC18C\uC124 \uBAA9\uB85D"), __jsx(NovelList, null, __jsx("p", null, "\uC778\uAE30 \uC5F0\uC7AC \uBAA9\uB85D")));
+  const {
+    books
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(state => state.book);
+  return __jsx("div", null, __jsx(BookListTitle, null, "\uC5F0\uC7AC\uC18C\uC124 \uBAA9\uB85D"), __jsx(NovelList, null, books && books.map(book => {
+    return __jsx(_components_BookCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      key: +book.id,
+      book: book,
+      nickname: book.User.nickname
+    });
+  })));
+};
+
+BookList.getInitialProps = async context => {
+  context.store.dispatch({
+    type: _reducers_book__WEBPACK_IMPORTED_MODULE_5__["LOAD_BOOKS_REQUEST"]
+  });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (BookList);
 
 /***/ }),
 
-/***/ 4:
+/***/ "./reducers/book.js":
+/*!**************************!*\
+  !*** ./reducers/book.js ***!
+  \**************************/
+/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_REQUEST", function() { return LOAD_BOOKS_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_SUCCESS", function() { return LOAD_BOOKS_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_FAILURE", function() { return LOAD_BOOKS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_REQUEST", function() { return LOAD_BOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_SUCCESS", function() { return LOAD_BOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_FAILURE", function() { return LOAD_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_REQUEST", function() { return ADD_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_SUCCESS", function() { return ADD_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_FAILURE", function() { return ADD_LIKEBOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_REQUEST", function() { return REMOVE_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_SUCCESS", function() { return REMOVE_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_FAILURE", function() { return REMOVE_LIKEBOOK_FAILURE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
+
+const initalState = {
+  books: [],
+  book: null,
+  isAddingLikeBook: false,
+  isRemovingLikeBook: false
+};
+const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
+const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
+const LOAD_BOOKS_FAILURE = `LOAD_BOOKS_FAILURE`;
+const LOAD_BOOK_REQUEST = `LOAD_BOOK_REQUEST`;
+const LOAD_BOOK_SUCCESS = `LOAD_BOOK_SUCCESS`;
+const LOAD_BOOK_FAILURE = `LOAD_BOOK_FAILURE`;
+const ADD_LIKEBOOK_REQUEST = `ADD_LIKEBOOK_REQUEST`;
+const ADD_LIKEBOOK_SUCCESS = `ADD_LIKEBOOK_SUCCESS`;
+const ADD_LIKEBOOK_FAILURE = `ADD_LIKEBOOK_FAILURE`;
+const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
+const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
+const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
+
+const reducer = (state = initalState, action) => {
+  return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
+    switch (action.type) {
+      case LOAD_BOOKS_REQUEST:
+        {
+          draft.books = !action.lastId ? [] : draft.books;
+          draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+          break;
+        }
+
+      case LOAD_BOOKS_SUCCESS:
+        {
+          action.data.forEach(d => {
+            draft.books.push(d);
+          });
+          draft.hasMoreBooks = action.data.length === 20;
+          break;
+        }
+
+      case LOAD_BOOKS_FAILURE:
+        {
+          break;
+        }
+
+      case LOAD_BOOK_REQUEST:
+        {
+          break;
+        }
+
+      case LOAD_BOOK_SUCCESS:
+        {
+          draft.book = action.data;
+          break;
+        }
+
+      case LOAD_BOOK_FAILURE:
+        {
+          break;
+        }
+
+      case ADD_LIKEBOOK_REQUEST:
+        {
+          draft.isAddingLikeBook = true;
+          break;
+        }
+
+      case ADD_LIKEBOOK_SUCCESS:
+        {
+          draft.isAddingLikeBook = false;
+          draft.book.likersCount += 1;
+          break;
+        }
+
+      case ADD_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_REQUEST:
+        {
+          draft.isRemovingLikeBook = true;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_SUCCESS:
+        {
+          draft.isRemovingLikeBook = false;
+          draft.book.likersCount -= 1;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+
+      default:
+        {
+          break;
+        }
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
+/***/ 5:
 /*!*********************************!*\
   !*** multi ./pages/booklist.js ***!
   \*********************************/
@@ -1898,6 +2137,39 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/weak-map");
+
+/***/ }),
+
+/***/ "immer":
+/*!************************!*\
+  !*** external "immer" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("immer");
+
+/***/ }),
+
+/***/ "moment":
+/*!*************************!*\
+  !*** external "moment" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
+
+/***/ }),
+
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/router");
 
 /***/ }),
 

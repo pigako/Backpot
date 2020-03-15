@@ -30,6 +30,9 @@ export const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
 export const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
 export const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
 
+export const ADD_LIKEBOOKLIST = `ADD_LIKEBOOKLIST`;
+export const REMOVE_LIKEBOOKLIST = `REMOVE_LIKEBOOKLIST`;
+
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
     switch (action.type) {
@@ -99,6 +102,23 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case LOAD_USER_FAILURE: {
+        break;
+      }
+      // 선호작 리스트 추가
+      case ADD_LIKEBOOKLIST: {
+        draft.me.LikingBook.push({
+          id: action.data.id,
+          name: action.data.name,
+          User: {
+            userId: action.data.userId,
+            nickname: action.data.userNickname,
+          },
+        });
+        break;
+      }
+      case REMOVE_LIKEBOOKLIST: {
+        const index = draft.me.LikingBook.findIndex(v => v.id === action.data);
+        draft.me.LikingBook.splice(index, 1);
         break;
       }
       default: {

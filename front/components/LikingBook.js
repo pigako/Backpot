@@ -45,7 +45,10 @@ const Bookname = styled.label`
 const LikedBook = ({ book }) => {
   return (
     <LikingList>
-      <Link href={`/writer`}>
+      <Link
+        href={{ pathname: 'librery', query: { id: book.User.userId } }}
+        as={`/librery/${book.User.userId}`}
+      >
         <a>
           <Writer>{book.User.nickname}</Writer>
         </a>

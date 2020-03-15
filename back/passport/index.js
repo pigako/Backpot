@@ -32,7 +32,7 @@ module.exports = () => {
             include: [
               {
                 model: db.User,
-                attributes: ['nickname'],
+                attributes: ['id', 'userId', 'nickname'],
               },
             ],
           },
