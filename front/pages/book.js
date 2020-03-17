@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import Link from 'next/link';
@@ -40,10 +40,6 @@ const BookTopRightDiv = styled.div`
     font-size: 1rem;
     display: block;
     margin-top: 1rem;
-
-    & > a {
-      cursor: pointer;
-    }
   }
 
   & > div {
@@ -54,6 +50,9 @@ const BookTopRightDiv = styled.div`
       display: block;
       margin-top: 1rem;
       flex: 1;
+      & > a {
+        cursor: pointer;
+      }
     }
   }
 `;
@@ -91,6 +90,7 @@ const BookButtonDiv = styled.div`
 const Book = () => {
   const { book } = useSelector(state => state.book);
   const { me } = useSelector(state => state.user);
+  const [isASC, setIsASC] = useState(true);
   const dispatch = useDispatch();
 
   const onGoWriter = useCallback(
@@ -112,6 +112,7 @@ const Book = () => {
           name: book.name,
           userId: book.User.userId,
           userNickname: book.User.nickname,
+          recentDay: book.recentDay,
         },
       });
     },
@@ -120,6 +121,7 @@ const Book = () => {
       book && book.name,
       book && book.User.userId,
       book && book.User.nickname,
+      book && book.recentDay,
     ],
   );
   const onRemoveLikeBook = useCallback(
@@ -130,6 +132,12 @@ const Book = () => {
       });
     },
     [book && book.id],
+  );
+  const onIsASC = useCallback(
+    e => {
+      setIsASC(!isASC);
+    },
+    [isASC],
   );
 
   return (
@@ -197,8 +205,11 @@ const Book = () => {
             <Button onClick={onAddLikeBook}>선호작추가</Button>
           )
         ) : null}
+        <Button onClick={onIsASC}>
+          {isASC ? `오름차순정렬` : `내림차순정렬`}
+        </Button>
       </BookButtonDiv>
-      {book && <BookTable episode={book.Episodes} />}
+      {book && <BookTable episode={book.Episodes} isASC={isASC} />}
     </SBookDiv>
   );
 };

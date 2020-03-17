@@ -35,6 +35,7 @@ module.exports = () => {
                 attributes: ['id', 'userId', 'nickname'],
               },
             ],
+            attributes: ['id', 'name', 'recentDay'],
           },
           {
             model: db.User,
@@ -42,6 +43,7 @@ module.exports = () => {
             attributes: ['id'],
           },
         ],
+        order: [[{ model: db.Book, as: 'LikingBook' }, 'recentDay', 'DESC']],
         attributes: ['id', 'userId', 'nickname'],
       });
       return done(null, user); // req.user

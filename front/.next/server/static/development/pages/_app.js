@@ -288,7 +288,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 
 
@@ -304,7 +307,7 @@ const Writer = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.label.wi
 const Bookname = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.label.withConfig({
   displayName: "LikingBook__Bookname",
   componentId: "sc-1befqkz-2"
-})(["display:block;width:calc(65% -5px);line-height:2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;"]);
+})(["display:block;width:calc(50% -5px);line-height:2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;& > p{color:red;display:contents;}"]);
 
 const LikedBook = ({
   book
@@ -325,12 +328,19 @@ const LikedBook = ({
       }
     },
     as: `/book/${book.id}`
-  }, __jsx("a", null, __jsx(Bookname, null, book.name))));
+  }, __jsx("a", null, __jsx(Bookname, null, moment__WEBPACK_IMPORTED_MODULE_4___default.a.duration(moment__WEBPACK_IMPORTED_MODULE_4___default()(book.recentDay, 'YYYY-MM-DD HH:mm').diff(moment__WEBPACK_IMPORTED_MODULE_4___default()().format('YYYY-MM-DD HH:mm'))).asHours() > -24 ? __jsx("p", null, "New") : null, book.name))));
 };
 
 LikedBook.propTypes = {
   book: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object
-};
+}; // {moment
+//   .duration(
+//     moment('2020-03-17T02:26:58.000Z', 'YYYY-MM-DD HH:mm').diff(
+//       moment().format('YYYY-MM-DD HH:mm'),
+//     ),
+//   )
+//   .asHours()}
+
 /* harmony default export */ __webpack_exports__["default"] = (LikedBook);
 
 /***/ }),
@@ -2865,7 +2875,7 @@ const reducer = (state = initalState, action) => {
 /*!**************************!*\
   !*** ./reducers/book.js ***!
   \**************************/
-/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, ADD_BOOK_REQEUST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, UPLOAD_IMAGE_REQEUST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE, REMOVE_IMAGE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2883,6 +2893,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_REQUEST", function() { return REMOVE_LIKEBOOK_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_SUCCESS", function() { return REMOVE_LIKEBOOK_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_FAILURE", function() { return REMOVE_LIKEBOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_REQEUST", function() { return ADD_BOOK_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_SUCCESS", function() { return ADD_BOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_FAILURE", function() { return ADD_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_REQEUST", function() { return UPLOAD_IMAGE_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_SUCCESS", function() { return UPLOAD_IMAGE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_FAILURE", function() { return UPLOAD_IMAGE_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_IMAGE", function() { return REMOVE_IMAGE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -2890,7 +2907,8 @@ const initalState = {
   books: [],
   book: null,
   isAddingLikeBook: false,
-  isRemovingLikeBook: false
+  isRemovingLikeBook: false,
+  thumbnailPath: ''
 };
 const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
 const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
@@ -2904,10 +2922,18 @@ const ADD_LIKEBOOK_FAILURE = `ADD_LIKEBOOK_FAILURE`;
 const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
 const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
 const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
+const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
+const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
+const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
+const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
+const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
+const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
+const REMOVE_IMAGE = `REMOVE_IMAGE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
     switch (action.type) {
+      // 전체 작품 조회
       case LOAD_BOOKS_REQUEST:
         {
           draft.books = !action.lastId ? [] : draft.books;
@@ -2928,6 +2954,7 @@ const reducer = (state = initalState, action) => {
         {
           break;
         }
+      // 작품 한개 조회
 
       case LOAD_BOOK_REQUEST:
         {
@@ -2944,6 +2971,7 @@ const reducer = (state = initalState, action) => {
         {
           break;
         }
+      // 선호작 등록
 
       case ADD_LIKEBOOK_REQUEST:
         {
@@ -2962,6 +2990,7 @@ const reducer = (state = initalState, action) => {
         {
           break;
         }
+      // 선호작 제거
 
       case REMOVE_LIKEBOOK_REQUEST:
         {
@@ -2977,6 +3006,44 @@ const reducer = (state = initalState, action) => {
         }
 
       case REMOVE_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+      // 작품 만들기
+
+      case ADD_BOOK_REQEUST:
+        {
+          break;
+        }
+
+      case ADD_BOOK_SUCCESS:
+        {
+          break;
+        }
+
+      case ADD_BOOK_FAILURE:
+        {
+          break;
+        }
+      // 작품 썸네일 등록
+
+      case UPLOAD_IMAGE_REQEUST:
+        {
+          break;
+        }
+
+      case UPLOAD_IMAGE_SUCCESS:
+        {
+          break;
+        }
+
+      case UPLOAD_IMAGE_FAILURE:
+        {
+          break;
+        }
+      // 작품 썸네일 취소
+
+      case REMOVE_IMAGE:
         {
           break;
         }
@@ -3179,6 +3246,7 @@ const reducer = (state = initalState, action) => {
           draft.me.LikingBook.push({
             id: action.data.id,
             name: action.data.name,
+            recentDay: action.data.recentDay,
             User: {
               userId: action.data.userId,
               nickname: action.data.userNickname
@@ -3797,6 +3865,17 @@ module.exports = require("core-js/library/fn/weak-map");
 /***/ (function(module, exports) {
 
 module.exports = require("immer");
+
+/***/ }),
+
+/***/ "moment":
+/*!*************************!*\
+  !*** external "moment" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
 
 /***/ }),
 

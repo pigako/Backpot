@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
+      recentDay: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       charset: 'utf8mb4',

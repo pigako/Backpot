@@ -35520,6 +35520,7 @@ var reducer = function reducer() {
           draft.me.LikingBook.push({
             id: action.data.id,
             name: action.data.name,
+            recentDay: action.data.recentDay,
             User: {
               userId: action.data.userId,
               nickname: action.data.userNickname
@@ -35549,7 +35550,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 2:
+/***/ 5:
 /*!******************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Flibrery&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Clibrery.js ***!
   \******************************************************************************************************************************/
@@ -35572,5 +35573,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[5,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=librery.js.map

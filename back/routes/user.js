@@ -110,6 +110,7 @@ router.post('/login', (req, res, next) => {
                   attributes: ['id', 'userId', 'nickname'],
                 },
               ],
+              attributes: ['id', 'name', 'recentDay'],
             },
             {
               model: db.User,
@@ -117,6 +118,7 @@ router.post('/login', (req, res, next) => {
               attributes: ['id'],
             },
           ],
+          order: [[{ model: db.Book, as: 'LikingBook' }, 'recentDay', 'DESC']],
           attributes: ['id', 'userId', 'nickname'],
         });
         return res.json(fullUser);

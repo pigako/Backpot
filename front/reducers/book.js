@@ -5,6 +5,7 @@ export const initalState = {
   book: null,
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
+  thumbnailPath: '',
 };
 
 export const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
@@ -23,9 +24,20 @@ export const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
 export const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
 export const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
 
+export const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
+export const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
+export const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
+
+export const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
+export const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
+export const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
+
+export const REMOVE_IMAGE = `REMOVE_IMAGE`;
+
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
     switch (action.type) {
+      // 전체 작품 조회
       case LOAD_BOOKS_REQUEST: {
         draft.books = !action.lastId ? [] : draft.books;
         draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
@@ -41,6 +53,7 @@ const reducer = (state = initalState, action) => {
       case LOAD_BOOKS_FAILURE: {
         break;
       }
+      // 작품 한개 조회
       case LOAD_BOOK_REQUEST: {
         break;
       }
@@ -51,6 +64,7 @@ const reducer = (state = initalState, action) => {
       case LOAD_BOOK_FAILURE: {
         break;
       }
+      // 선호작 등록
       case ADD_LIKEBOOK_REQUEST: {
         draft.isAddingLikeBook = true;
         break;
@@ -63,6 +77,7 @@ const reducer = (state = initalState, action) => {
       case ADD_LIKEBOOK_FAILURE: {
         break;
       }
+      // 선호작 제거
       case REMOVE_LIKEBOOK_REQUEST: {
         draft.isRemovingLikeBook = true;
         break;
@@ -73,6 +88,30 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case REMOVE_LIKEBOOK_FAILURE: {
+        break;
+      }
+      // 작품 만들기
+      case ADD_BOOK_REQEUST: {
+        break;
+      }
+      case ADD_BOOK_SUCCESS: {
+        break;
+      }
+      case ADD_BOOK_FAILURE: {
+        break;
+      }
+      // 작품 썸네일 등록
+      case UPLOAD_IMAGE_REQEUST: {
+        break;
+      }
+      case UPLOAD_IMAGE_SUCCESS: {
+        break;
+      }
+      case UPLOAD_IMAGE_FAILURE: {
+        break;
+      }
+      // 작품 썸네일 취소
+      case REMOVE_IMAGE: {
         break;
       }
       default: {

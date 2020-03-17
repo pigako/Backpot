@@ -109,6 +109,7 @@ const reducer = (state = initalState, action) => {
         draft.me.LikingBook.push({
           id: action.data.id,
           name: action.data.name,
+          recentDay: action.data.recentDay,
           User: {
             userId: action.data.userId,
             nickname: action.data.userNickname,

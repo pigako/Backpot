@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2253,6 +2253,7 @@ const reducer = (state = initalState, action) => {
           draft.me.LikingBook.push({
             id: action.data.id,
             name: action.data.name,
+            recentDay: action.data.recentDay,
             User: {
               userId: action.data.userId,
               nickname: action.data.userNickname
@@ -2280,7 +2281,7 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
-/***/ 3:
+/***/ 7:
 /*!********************************!*\
   !*** multi ./pages/librery.js ***!
   \********************************/

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import moment from 'moment';
 
 const LikingList = styled.li`
   display: block;
@@ -34,12 +35,17 @@ const Writer = styled.label`
 
 const Bookname = styled.label`
   display: block;
-  width: calc(65% -5px);
+  width: calc(50% -5px);
   line-height: 2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+
+  & > p {
+    color: red;
+    display: contents;
+  }
 `;
 
 const LikedBook = ({ book }) => {
@@ -53,12 +59,24 @@ const LikedBook = ({ book }) => {
           <Writer>{book.User.nickname}</Writer>
         </a>
       </Link>
+
       <Link
         href={{ pathname: '/book', query: { bookid: book.id } }}
         as={`/book/${book.id}`}
       >
         <a>
-          <Bookname>{book.name}</Bookname>
+          <Bookname>
+            {moment
+              .duration(
+                moment(book.recentDay, 'YYYY-MM-DD HH:mm').diff(
+                  moment().format('YYYY-MM-DD HH:mm'),
+                ),
+              )
+              .asHours() > -24 ? (
+              <p>New</p>
+            ) : null}
+            {book.name}
+          </Bookname>
         </a>
       </Link>
     </LikingList>
@@ -68,5 +86,13 @@ const LikedBook = ({ book }) => {
 LikedBook.propTypes = {
   book: PropTypes.object,
 };
+
+// {moment
+//   .duration(
+//     moment('2020-03-17T02:26:58.000Z', 'YYYY-MM-DD HH:mm').diff(
+//       moment().format('YYYY-MM-DD HH:mm'),
+//     ),
+//   )
+//   .asHours()}
 
 export default LikedBook;

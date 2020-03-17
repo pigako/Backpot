@@ -44,7 +44,7 @@ const Table = styled.table`
   }
 `;
 
-const BookTable = ({ episode }) => {
+const BookTable = ({ episode, isASC = true }) => {
   const goEpisode = useCallback(
     episodeId => e => {
       Router.push(
@@ -57,6 +57,8 @@ const BookTable = ({ episode }) => {
     },
     [],
   );
+
+  const reverseEpisode = episode.slice().reverse();
 
   // 번호 제목 날짜 조회 추천
   return (
@@ -72,17 +74,31 @@ const BookTable = ({ episode }) => {
       </thead>
       <tbody>
         {episode.length ? (
-          episode.map(v => {
-            return (
-              <tr key={+v.id} onClick={goEpisode(+v.id)} hover="ok">
-                <td>{v.id}</td>
-                <td>{v.title}</td>
-                <td>{moment(v.createdAt).format('YYYY.MM.DD')}</td>
-                <td>{v.views}</td>
-                <td>{v.recommends}</td>
-              </tr>
-            );
-          })
+          isASC ? (
+            episode.map((v, index) => {
+              return (
+                <tr key={+v.id} onClick={goEpisode(+v.id)}>
+                  <td>{index + 1}</td>
+                  <td>{v.title}</td>
+                  <td>{moment(v.createdAt).format('YYYY.MM.DD')}</td>
+                  <td>{v.views}</td>
+                  <td>{v.recommends}</td>
+                </tr>
+              );
+            })
+          ) : (
+            reverseEpisode.map((v, index) => {
+              return (
+                <tr key={+v.id} onClick={goEpisode(+v.id)}>
+                  <td>{reverseEpisode.length - index}</td>
+                  <td>{v.title}</td>
+                  <td>{moment(v.createdAt).format('YYYY.MM.DD')}</td>
+                  <td>{v.views}</td>
+                  <td>{v.recommends}</td>
+                </tr>
+              );
+            })
+          )
         ) : (
           <tr>
             <td colSpan={5}>
@@ -97,6 +113,7 @@ const BookTable = ({ episode }) => {
 
 BookTable.propTypes = {
   episode: PropTypes.array.isRequired,
+  isASC: PropTypes.bool.isRequired,
 };
 
 export default BookTable;
