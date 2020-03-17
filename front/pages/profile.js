@@ -284,28 +284,6 @@ const Profile = ({ id }) => {
           <SButton onClick={onUpdateProfile}>수정하기</SButton>
         </ButtonDiv>
       </InfoCardWrap>
-      {/* <table>
-        <tr>
-          <td>아이디</td>
-          <td>{me && me.userId}</td>
-        </tr>
-        <tr>
-          <td>닉네임</td>
-          <td>{me && me.nickname}</td>
-        </tr>
-        <tr>
-          <td>연재한 글 수</td>
-          <td>{me && me.Books.length}</td>
-        </tr>
-        <tr>
-          <td>선호작 수</td>
-          <td>{me && me.LikingBook.length}</td>
-        </tr>
-        <tr>
-          <td>선호작가 수</td>
-          <td>{me && me.LikingUser.length}</td>
-        </tr>
-      </table> */}
     </SProfileDiv>
   );
 };

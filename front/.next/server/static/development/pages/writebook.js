@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -168,6 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "react-redux");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _reducers_book__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../reducers/book */ "./reducers/book.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -175,6 +176,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -210,14 +212,30 @@ const DivCardRight = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.di
   displayName: "writebook__DivCardRight",
   componentId: "sc-1skj1bk-6"
 })(["flex:4;display:flex;& > input{width:100%;height:2rem;font-size:1rem;line-height:2rem;padding-left:10px;border:solid 2px #495057;border-radius:4px;transition:0.55s ease;&:hover{border:solid 2px #148cff;}&:focus{border:solid 2px #148cff;}}"]);
+const GenreDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
+  displayName: "writebook__GenreDiv",
+  componentId: "sc-1skj1bk-7"
+})(["display:block;flex:4;"]);
+const GenreButton = styled_components__WEBPACK_IMPORTED_MODULE_1___default()(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"]).withConfig({
+  displayName: "writebook__GenreButton",
+  componentId: "sc-1skj1bk-8"
+})(["display:block;width:7.5rem;float:left;color:black;background:white;border:solid 2px #148cff;&:hover{color:white;}&:active{color:white;}margin:10px 10px 0px 0px;& + &{margin-left:0px;}", ""], props => {
+  if (props.check) {
+    return Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["css"])(["color:white;background:#148cff;"]);
+  }
+});
+const ThumbnailDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
+  displayName: "writebook__ThumbnailDiv",
+  componentId: "sc-1skj1bk-9"
+})(["display:inline-block;& > img{width:200px;}& > div{display:flex;justify-content:center;}"]);
 const DayDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "writebook__DayDiv",
-  componentId: "sc-1skj1bk-7"
+  componentId: "sc-1skj1bk-10"
 })([""]);
 const DayButton = styled_components__WEBPACK_IMPORTED_MODULE_1___default()(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"]).withConfig({
   displayName: "writebook__DayButton",
-  componentId: "sc-1skj1bk-8"
-})(["width:2rem;padding:0;color:black;background:#ffffff;border:solid 2px #148cff;transition:0.5s ease;&:hover{background:none;}&:active{background:none;}", ""], props => {
+  componentId: "sc-1skj1bk-11"
+})(["width:2rem;padding:0;color:black;background:#ffffff;border:solid 2px #148cff;transition:0.5s ease;&:hover{color:white;}&:active{color:white;}", ""], props => {
   if (props.check) {
     return Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["css"])(["color:white;background:#148cff;"]);
   }
@@ -235,12 +253,20 @@ const WriteBook = () => {
   } = editorRef.current || {};
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useDispatch"])();
   const {
-    thumbnailPath
+    thumbnailPath,
+    isAddedBook
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.book);
   const {
     0: bookName,
     1: setBookName
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+  const {
+    genre
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.book);
+  const {
+    0: genreArr,
+    1: setGenreArr
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
   const {
     0: serialDay,
     1: setSerialDay
@@ -253,6 +279,15 @@ const WriteBook = () => {
     fri: false,
     sat: false
   });
+  const dayName = {
+    sun: '일',
+    mon: '월',
+    tue: '화',
+    wed: '수',
+    thu: '목',
+    fri: '금',
+    sat: '토'
+  };
   const {
     sun,
     mon,
@@ -277,7 +312,17 @@ const WriteBook = () => {
       imageFormData.append('image', f);
     });
     console.log(imageFormData);
+    dispatch({
+      type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["UPLOAD_IMAGE_REQEUST"],
+      data: imageFormData
+    });
   }, []);
+  const onRemoveThumbnail = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
+    dispatch({
+      type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["REMOVE_IMAGE"]
+    });
+    imageInput.current.value = null;
+  }, [imageInput.current]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     editorRef.current = {
       CKEditor: __webpack_require__(/*! @ckeditor/ckeditor5-react */ "@ckeditor/ckeditor5-react"),
@@ -285,15 +330,44 @@ const WriteBook = () => {
     };
     setEditorLoded(true);
   }, []);
-  const onCancle = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+  const onChangeBookName = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
+    setBookName(e.target.value);
+  }, []);
+  const onClickGenreButton = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(id => e => {
+    if (genreArr.includes(id)) {
+      setGenreArr(genreArr.filter(g => g !== id));
+    } else {
+      setGenreArr([...genreArr, id]);
+    }
+  }, [genreArr]);
+  const onCancle = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
     next_router__WEBPACK_IMPORTED_MODULE_4___default.a.back();
   }, []);
   const onSubmitForm = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
     e.preventDefault();
-  }, []);
+    const serialDayJoin = Object.keys(serialDay).reduce((acc, cur) => serialDay[cur] ? acc.concat(dayName[cur]) : acc, []).join(',');
+    dispatch({
+      type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["ADD_BOOK_REQEUST"],
+      data: {
+        name: bookName,
+        thumbnail: thumbnailPath,
+        serialDay: serialDayJoin,
+        summary: summaryText,
+        genre: genreArr
+      }
+    });
+  }, [bookName, thumbnailPath, serialDay, summaryText]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (isAddedBook) {
+      dispatch({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["CHANGE_ADDEDBOOK"]
+      });
+      next_router__WEBPACK_IMPORTED_MODULE_4___default.a.push('/booklist');
+    }
+  }, [isAddedBook]);
   const onChangeDay = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(e => {
     setSerialDay(_objectSpread({}, serialDay, {
-      [e.target.name]: !!e.target.value
+      [e.target.name]: !serialDay[e.target.name]
     }));
   }, [serialDay]);
   return __jsx(SWriteBookDiv, null, __jsx(react_helmet__WEBPACK_IMPORTED_MODULE_2___default.a, null, __jsx("title", null, "\uC0C8 \uC791\uD488"), __jsx("style", {
@@ -304,51 +378,74 @@ const WriteBook = () => {
           `)), __jsx(SWriteBookTitle, null, "\uC0C8 \uC5F0\uC7AC\uC791\uD488 \uB9CC\uB4E4\uAE30"), __jsx(FormBook, {
     onSubmit: onSubmitForm
   }, __jsx(ButtonDiv, null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "button",
     color: "pink",
     onClick: onCancle
   }, "\uCDE8\uC18C"), __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "submit"
   }, "\uB9CC\uB4E4\uAE30")), __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC81C\uBAA9")), __jsx(DivCardRight, null, __jsx("input", {
-    type: "text"
+    type: "text",
+    value: bookName,
+    onChange: onChangeBookName
+  }))), __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC7A5\uB974")), __jsx(GenreDiv, null, genre.map(g => {
+    return __jsx(GenreButton, {
+      key: +g.id,
+      type: "button",
+      onClick: onClickGenreButton(+g.id),
+      check: genreArr.includes(+g.id)
+    }, g.name);
   }))), __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC378\uB124\uC77C")), __jsx(DivCardRight, null, __jsx("input", {
     type: "file",
     hidden: true,
     ref: imageInput,
     onChange: onChagneImage
-  }), thumbnailPath ? __jsx("div", null) : __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), thumbnailPath ? __jsx(ThumbnailDiv, null, __jsx("img", {
+    src: `http://localhost:5000/${thumbnailPath}`
+  }), __jsx("div", null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "button",
+    onClick: onRemoveThumbnail
+  }, "\uC81C\uAC70"))) : __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "button",
     onClick: onClickImageUpload
   }, "\uC5C5\uB85C\uB4DC"))), __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC5F0\uC7AC\uC694\uC77C")), __jsx(DivCardRight, null, __jsx(DayDiv, null, __jsx(DayButton, {
     name: "sun",
+    type: "button",
     value: sun,
     onClick: onChangeDay,
     check: sun
   }, "\uC77C"), __jsx(DayButton, {
     name: "mon",
+    type: "button",
     value: mon,
     onClick: onChangeDay,
     check: mon
   }, "\uC6D4"), __jsx(DayButton, {
     name: "tue",
+    type: "button",
     value: tue,
     onClick: onChangeDay,
     check: tue
   }, "\uD654"), __jsx(DayButton, {
     name: "wed",
+    type: "button",
     value: wed,
     onClick: onChangeDay,
     check: wed
   }, "\uC218"), __jsx(DayButton, {
     name: "thu",
+    type: "button",
     value: thu,
     onClick: onChangeDay,
     check: thu
   }, "\uBAA9"), __jsx(DayButton, {
     name: "fri",
+    type: "button",
     value: fri,
     onClick: onChangeDay,
     check: fri
   }, "\uAE08"), __jsx(DayButton, {
     name: "sat",
+    type: "button",
     value: sat,
     onClick: onChangeDay,
     check: sat
@@ -362,11 +459,248 @@ const WriteBook = () => {
   }) : __jsx("p", null, "Editor Loding")))));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (WriteBook); // arr.reduce((acc, cur) => acc.concat(cur), []).join(',')
+WriteBook.getInitialProps = async context => {
+  context.store.dispatch({
+    type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["LOAD_GENRE_REQUEST"]
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (WriteBook);
 
 /***/ }),
 
-/***/ 3:
+/***/ "./reducers/book.js":
+/*!**************************!*\
+  !*** ./reducers/book.js ***!
+  \**************************/
+/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, ADD_BOOK_REQEUST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, LOAD_GENRE_REQUEST, LOAD_GENRE_SUCCESS, LOAD_GENRE_FAILURE, CHANGE_ADDEDBOOK, UPLOAD_IMAGE_REQEUST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE, REMOVE_IMAGE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_REQUEST", function() { return LOAD_BOOKS_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_SUCCESS", function() { return LOAD_BOOKS_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOKS_FAILURE", function() { return LOAD_BOOKS_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_REQUEST", function() { return LOAD_BOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_SUCCESS", function() { return LOAD_BOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOOK_FAILURE", function() { return LOAD_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_REQUEST", function() { return ADD_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_SUCCESS", function() { return ADD_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOK_FAILURE", function() { return ADD_LIKEBOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_REQUEST", function() { return REMOVE_LIKEBOOK_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_SUCCESS", function() { return REMOVE_LIKEBOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_FAILURE", function() { return REMOVE_LIKEBOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_REQEUST", function() { return ADD_BOOK_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_SUCCESS", function() { return ADD_BOOK_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_FAILURE", function() { return ADD_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_REQUEST", function() { return LOAD_GENRE_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_SUCCESS", function() { return LOAD_GENRE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_FAILURE", function() { return LOAD_GENRE_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_ADDEDBOOK", function() { return CHANGE_ADDEDBOOK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_REQEUST", function() { return UPLOAD_IMAGE_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_SUCCESS", function() { return UPLOAD_IMAGE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_FAILURE", function() { return UPLOAD_IMAGE_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_IMAGE", function() { return REMOVE_IMAGE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
+
+const initalState = {
+  books: [],
+  book: null,
+  genre: [],
+  isAddingLikeBook: false,
+  isRemovingLikeBook: false,
+  thumbnailPath: '',
+  isAddingBook: false,
+  isAddedBook: false
+};
+const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
+const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
+const LOAD_BOOKS_FAILURE = `LOAD_BOOKS_FAILURE`;
+const LOAD_BOOK_REQUEST = `LOAD_BOOK_REQUEST`;
+const LOAD_BOOK_SUCCESS = `LOAD_BOOK_SUCCESS`;
+const LOAD_BOOK_FAILURE = `LOAD_BOOK_FAILURE`;
+const ADD_LIKEBOOK_REQUEST = `ADD_LIKEBOOK_REQUEST`;
+const ADD_LIKEBOOK_SUCCESS = `ADD_LIKEBOOK_SUCCESS`;
+const ADD_LIKEBOOK_FAILURE = `ADD_LIKEBOOK_FAILURE`;
+const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
+const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
+const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
+const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
+const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
+const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
+const LOAD_GENRE_REQUEST = `LOAD_GENRE_REQUEST`;
+const LOAD_GENRE_SUCCESS = `LOAD_GENRE_SUCCESS`;
+const LOAD_GENRE_FAILURE = `LOAD_GENRE_FAILURE`;
+const CHANGE_ADDEDBOOK = `CHANGE_ADDEDBOOK`;
+const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
+const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
+const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
+const REMOVE_IMAGE = `REMOVE_IMAGE`;
+
+const reducer = (state = initalState, action) => {
+  return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
+    switch (action.type) {
+      // 전체 작품 조회
+      case LOAD_BOOKS_REQUEST:
+        {
+          draft.books = !action.lastId ? [] : draft.books;
+          draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+          break;
+        }
+
+      case LOAD_BOOKS_SUCCESS:
+        {
+          action.data.forEach(d => {
+            draft.books.push(d);
+          });
+          draft.hasMoreBooks = action.data.length === 20;
+          break;
+        }
+
+      case LOAD_BOOKS_FAILURE:
+        {
+          break;
+        }
+      // 작품 한개 조회
+
+      case LOAD_BOOK_REQUEST:
+        {
+          break;
+        }
+
+      case LOAD_BOOK_SUCCESS:
+        {
+          draft.book = action.data;
+          break;
+        }
+
+      case LOAD_BOOK_FAILURE:
+        {
+          break;
+        }
+      // 선호작 등록
+
+      case ADD_LIKEBOOK_REQUEST:
+        {
+          draft.isAddingLikeBook = true;
+          break;
+        }
+
+      case ADD_LIKEBOOK_SUCCESS:
+        {
+          draft.isAddingLikeBook = false;
+          draft.book.likersCount += 1;
+          break;
+        }
+
+      case ADD_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+      // 선호작 제거
+
+      case REMOVE_LIKEBOOK_REQUEST:
+        {
+          draft.isRemovingLikeBook = true;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_SUCCESS:
+        {
+          draft.isRemovingLikeBook = false;
+          draft.book.likersCount -= 1;
+          break;
+        }
+
+      case REMOVE_LIKEBOOK_FAILURE:
+        {
+          break;
+        }
+      // 작품 만들기
+
+      case ADD_BOOK_REQEUST:
+        {
+          draft.isAddingBook = true;
+          draft.isAddedBook = false;
+          break;
+        }
+
+      case ADD_BOOK_SUCCESS:
+        {
+          draft.isAddingBook = false;
+          draft.isAddedBook = true;
+          break;
+        }
+
+      case ADD_BOOK_FAILURE:
+        {
+          break;
+        }
+      //
+
+      case CHANGE_ADDEDBOOK:
+        {
+          draft.isAddedBook = false;
+          break;
+        }
+
+      case LOAD_GENRE_REQUEST:
+        {
+          draft.genre = [];
+          break;
+        }
+
+      case LOAD_GENRE_SUCCESS:
+        {
+          draft.genre = action.data;
+          break;
+        }
+
+      case LOAD_GENRE_FAILURE:
+        {
+          break;
+        }
+      // 작품 썸네일 등록
+
+      case UPLOAD_IMAGE_REQEUST:
+        {
+          draft.thumbnailPath = '';
+          break;
+        }
+
+      case UPLOAD_IMAGE_SUCCESS:
+        {
+          draft.thumbnailPath = action.data;
+          break;
+        }
+
+      case UPLOAD_IMAGE_FAILURE:
+        {
+          break;
+        }
+      // 작품 썸네일 취소
+
+      case REMOVE_IMAGE:
+        {
+          draft.thumbnailPath = '';
+          break;
+        }
+
+      default:
+        {
+          break;
+        }
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
+/***/ 5:
 /*!**********************************!*\
   !*** multi ./pages/writebook.js ***!
   \**********************************/
@@ -397,6 +731,17 @@ module.exports = require("@ckeditor/ckeditor5-build-classic");
 /***/ (function(module, exports) {
 
 module.exports = require("@ckeditor/ckeditor5-react");
+
+/***/ }),
+
+/***/ "immer":
+/*!************************!*\
+  !*** external "immer" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("immer");
 
 /***/ }),
 

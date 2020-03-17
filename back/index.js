@@ -9,11 +9,11 @@ const passport = require('passport');
 const passportConfig = require('./passport');
 const db = require('./models'); // DB model
 const userAPIRouter = require('./routes/user'); // Router 등록
-// const postAPIRouter = require('./routes/post');
 const boardAPIRouter = require('./routes/board');
 const boardsAPIRouter = require('./routes/boards');
 const bookAPIRouter = require('./routes/book');
 const booksAPIRouter = require('./routes/books');
+const genresAPIRouter = require('./routes/genres');
 
 dotenv.config(); // dotenv 실행
 const app = express();
@@ -47,11 +47,11 @@ app.use(passport.initialize()); // 로그인 미들웨어
 app.use(passport.session()); // express session
 
 app.use('/api/user', userAPIRouter);
-// app.use('/api/post', postAPIRouter);
 app.use('/api/board', boardAPIRouter);
 app.use('/api/boards', boardsAPIRouter);
 app.use('/api/book', bookAPIRouter);
 app.use('/api/books', booksAPIRouter);
+app.use('/api/genres', genresAPIRouter);
 
 // 서버시작
 app.listen(5000, () => {

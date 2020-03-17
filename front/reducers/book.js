@@ -3,9 +3,12 @@ import produce from 'immer';
 export const initalState = {
   books: [],
   book: null,
+  genre: [],
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
   thumbnailPath: '',
+  isAddingBook: false,
+  isAddedBook: false,
 };
 
 export const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
@@ -27,6 +30,12 @@ export const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
 export const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
 export const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
 export const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
+
+export const LOAD_GENRE_REQUEST = `LOAD_GENRE_REQUEST`;
+export const LOAD_GENRE_SUCCESS = `LOAD_GENRE_SUCCESS`;
+export const LOAD_GENRE_FAILURE = `LOAD_GENRE_FAILURE`;
+
+export const CHANGE_ADDEDBOOK = `CHANGE_ADDEDBOOK`;
 
 export const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
 export const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
@@ -92,19 +101,41 @@ const reducer = (state = initalState, action) => {
       }
       // 작품 만들기
       case ADD_BOOK_REQEUST: {
+        draft.isAddingBook = true;
+        draft.isAddedBook = false;
         break;
       }
       case ADD_BOOK_SUCCESS: {
+        draft.isAddingBook = false;
+        draft.isAddedBook = true;
         break;
       }
       case ADD_BOOK_FAILURE: {
         break;
       }
+      //
+      case CHANGE_ADDEDBOOK: {
+        draft.isAddedBook = false;
+        break;
+      }
+      case LOAD_GENRE_REQUEST: {
+        draft.genre = [];
+        break;
+      }
+      case LOAD_GENRE_SUCCESS: {
+        draft.genre = action.data;
+        break;
+      }
+      case LOAD_GENRE_FAILURE: {
+        break;
+      }
       // 작품 썸네일 등록
       case UPLOAD_IMAGE_REQEUST: {
+        draft.thumbnailPath = '';
         break;
       }
       case UPLOAD_IMAGE_SUCCESS: {
+        draft.thumbnailPath = action.data;
         break;
       }
       case UPLOAD_IMAGE_FAILURE: {
@@ -112,6 +143,7 @@ const reducer = (state = initalState, action) => {
       }
       // 작품 썸네일 취소
       case REMOVE_IMAGE: {
+        draft.thumbnailPath = '';
         break;
       }
       default: {

@@ -5,6 +5,13 @@ import Helmet from 'react-helmet';
 import Button from '../components/designs/Button';
 import Router from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  UPLOAD_IMAGE_REQEUST,
+  REMOVE_IMAGE,
+  ADD_BOOK_REQEUST,
+  CHANGE_ADDEDBOOK,
+  LOAD_GENRE_REQUEST,
+} from '../reducers/book';
 
 const SWriteBookDiv = styled.div`
   width: 98%;
@@ -59,6 +66,52 @@ const DivCardRight = styled.div`
     }
   }
 `;
+
+const GenreDiv = styled.div`
+  display: block;
+  flex: 4;
+`;
+const GenreButton = styled(Button)`
+  display: block;
+  width: 7.5rem;
+  float: left;
+  color: black;
+  background: white;
+  border: solid 2px #148cff;
+
+  &:hover {
+    color: white;
+  }
+  &:active {
+    color: white;
+  }
+
+  margin: 10px 10px 0px 0px;
+
+  & + & {
+    margin-left: 0px;
+  }
+
+  ${props => {
+    if (props.check) {
+      return css`
+        color: white;
+        background: #148cff;
+      `;
+    }
+  }}
+`;
+
+const ThumbnailDiv = styled.div`
+  display: inline-block;
+  & > img {
+    width: 200px;
+  }
+  & > div {
+    display: flex;
+    justify-content: center;
+  }
+`;
 const DayDiv = styled.div``;
 
 const DayButton = styled(Button)`
@@ -71,10 +124,10 @@ const DayButton = styled(Button)`
   transition: 0.5s ease;
 
   &:hover {
-    background: none;
+    color: white;
   }
   &:active {
-    background: none;
+    color: white;
   }
 
   ${props => {
@@ -93,9 +146,11 @@ const WriteBook = () => {
   const { CKEditor, ClassicEditor } = editorRef.current || {};
   const dispatch = useDispatch();
 
-  const { thumbnailPath } = useSelector(state => state.book);
+  const { thumbnailPath, isAddedBook } = useSelector(state => state.book);
 
   const [bookName, setBookName] = useState('');
+  const { genre } = useSelector(state => state.book);
+  const [genreArr, setGenreArr] = useState([]);
   const [serialDay, setSerialDay] = useState({
     sun: false,
     mon: false,
@@ -105,6 +160,15 @@ const WriteBook = () => {
     fri: false,
     sat: false,
   });
+  const dayName = {
+    sun: '일',
+    mon: '월',
+    tue: '화',
+    wed: '수',
+    thu: '목',
+    fri: '금',
+    sat: '토',
+  };
   const { sun, mon, tue, wed, thu, fri, sat } = serialDay;
   const [summaryText, setSummaryText] = useState('');
 
@@ -121,7 +185,18 @@ const WriteBook = () => {
       imageFormData.append('image', f);
     });
     console.log(imageFormData);
+    dispatch({
+      type: UPLOAD_IMAGE_REQEUST,
+      data: imageFormData,
+    });
   }, []);
+
+  const onRemoveThumbnail = useCallback(() => {
+    dispatch({
+      type: REMOVE_IMAGE,
+    });
+    imageInput.current.value = null;
+  }, [imageInput.current]);
 
   useEffect(() => {
     editorRef.current = {
@@ -131,19 +206,62 @@ const WriteBook = () => {
     setEditorLoded(true);
   }, []);
 
-  const onCancle = useCallback(e => {
+  const onChangeBookName = useCallback(e => {
+    setBookName(e.target.value);
+  }, []);
+
+  const onClickGenreButton = useCallback(
+    id => e => {
+      if (genreArr.includes(id)) {
+        setGenreArr(genreArr.filter(g => g !== id));
+      } else {
+        setGenreArr([...genreArr, id]);
+      }
+    },
+    [genreArr],
+  );
+
+  const onCancle = useCallback(() => {
     Router.back();
   }, []);
 
-  const onSubmitForm = useCallback(e => {
-    e.preventDefault();
-  }, []);
+  const onSubmitForm = useCallback(
+    e => {
+      e.preventDefault();
+      const serialDayJoin = Object.keys(serialDay)
+        .reduce(
+          (acc, cur) => (serialDay[cur] ? acc.concat(dayName[cur]) : acc),
+          [],
+        )
+        .join(',');
+      dispatch({
+        type: ADD_BOOK_REQEUST,
+        data: {
+          name: bookName,
+          thumbnail: thumbnailPath,
+          serialDay: serialDayJoin,
+          summary: summaryText,
+          genre: genreArr,
+        },
+      });
+    },
+    [bookName, thumbnailPath, serialDay, summaryText],
+  );
+
+  useEffect(() => {
+    if (isAddedBook) {
+      dispatch({
+        type: CHANGE_ADDEDBOOK,
+      });
+      Router.push('/booklist');
+    }
+  }, [isAddedBook]);
 
   const onChangeDay = useCallback(
     e => {
       setSerialDay({
         ...serialDay,
-        [e.target.name]: !!e.target.value,
+        [e.target.name]: !serialDay[e.target.name],
       });
     },
     [serialDay],
@@ -163,7 +281,7 @@ const WriteBook = () => {
       <SWriteBookTitle>새 연재작품 만들기</SWriteBookTitle>
       <FormBook onSubmit={onSubmitForm}>
         <ButtonDiv>
-          <Button color="pink" onClick={onCancle}>
+          <Button type="button" color="pink" onClick={onCancle}>
             취소
           </Button>
           <Button type="submit">만들기</Button>
@@ -173,8 +291,31 @@ const WriteBook = () => {
             <label>제목</label>
           </DivCardLeft>
           <DivCardRight>
-            <input type="text"></input>
+            <input
+              type="text"
+              value={bookName}
+              onChange={onChangeBookName}
+            ></input>
           </DivCardRight>
+        </DivCard>
+        <DivCard>
+          <DivCardLeft>
+            <label>장르</label>
+          </DivCardLeft>
+          <GenreDiv>
+            {genre.map(g => {
+              return (
+                <GenreButton
+                  key={+g.id}
+                  type="button"
+                  onClick={onClickGenreButton(+g.id)}
+                  check={genreArr.includes(+g.id)}
+                >
+                  {g.name}
+                </GenreButton>
+              );
+            })}
+          </GenreDiv>
         </DivCard>
         <DivCard>
           <DivCardLeft>
@@ -188,9 +329,18 @@ const WriteBook = () => {
               onChange={onChagneImage}
             />
             {thumbnailPath ? (
-              <div></div>
+              <ThumbnailDiv>
+                <img src={`http://localhost:5000/${thumbnailPath}`} />
+                <div>
+                  <Button type="button" onClick={onRemoveThumbnail}>
+                    제거
+                  </Button>
+                </div>
+              </ThumbnailDiv>
             ) : (
-              <Button onClick={onClickImageUpload}>업로드</Button>
+              <Button type="button" onClick={onClickImageUpload}>
+                업로드
+              </Button>
             )}
           </DivCardRight>
         </DivCard>
@@ -202,6 +352,7 @@ const WriteBook = () => {
             <DayDiv>
               <DayButton
                 name="sun"
+                type="button"
                 value={sun}
                 onClick={onChangeDay}
                 check={sun}
@@ -210,6 +361,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="mon"
+                type="button"
                 value={mon}
                 onClick={onChangeDay}
                 check={mon}
@@ -218,6 +370,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="tue"
+                type="button"
                 value={tue}
                 onClick={onChangeDay}
                 check={tue}
@@ -226,6 +379,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="wed"
+                type="button"
                 value={wed}
                 onClick={onChangeDay}
                 check={wed}
@@ -234,6 +388,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="thu"
+                type="button"
                 value={thu}
                 onClick={onChangeDay}
                 check={thu}
@@ -242,6 +397,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="fri"
+                type="button"
                 value={fri}
                 onClick={onChangeDay}
                 check={fri}
@@ -250,6 +406,7 @@ const WriteBook = () => {
               </DayButton>
               <DayButton
                 name="sat"
+                type="button"
                 value={sat}
                 onClick={onChangeDay}
                 check={sat}
@@ -283,6 +440,10 @@ const WriteBook = () => {
   );
 };
 
-export default WriteBook;
+WriteBook.getInitialProps = async context => {
+  context.store.dispatch({
+    type: LOAD_GENRE_REQUEST,
+  });
+};
 
-// arr.reduce((acc, cur) => acc.concat(cur), []).join(',')
+export default WriteBook;

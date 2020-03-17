@@ -13,6 +13,15 @@ import {
   REMOVE_LIKEBOOK_REQUEST,
   REMOVE_LIKEBOOK_SUCCESS,
   REMOVE_LIKEBOOK_FAILURE,
+  UPLOAD_IMAGE_REQEUST,
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAILURE,
+  ADD_BOOK_REQEUST,
+  ADD_BOOK_FAILURE,
+  ADD_BOOK_SUCCESS,
+  LOAD_GENRE_REQUEST,
+  LOAD_GENRE_SUCCESS,
+  LOAD_GENRE_FAILURE,
 } from '../reducers/book';
 import { ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST } from '../reducers/user';
 
@@ -115,11 +124,80 @@ function* watchRemoveLikebook() {
     }
   });
 }
+
+// 썸네일 이미지 업로드
+function* watchUploadImage() {
+  yield takeLatest(UPLOAD_IMAGE_REQEUST, function* uploadImage(action) {
+    try {
+      const result = yield call(formData => {
+        return axios.post('/book/thumbnail', formData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: UPLOAD_IMAGE_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: UPLOAD_IMAGE_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+// 작품 만들기
+function* watchAddBook() {
+  yield takeLatest(ADD_BOOK_REQEUST, function* addBook(action) {
+    try {
+      const result = yield call(bookData => {
+        return axios.post('/book', bookData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: ADD_BOOK_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: ADD_BOOK_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+// 장르 조회
+function* watchLoadGenre() {
+  yield takeLatest(LOAD_GENRE_REQUEST, function* loadGenre() {
+    try {
+      const result = yield call(() => {
+        return axios.get('/genres');
+      });
+      yield put({
+        type: LOAD_GENRE_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: LOAD_GENRE_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+
 export default function* bookSaga() {
   yield all([
     fork(watchLoadBooks),
     fork(watchLoadBook),
     fork(watchAddLikebook),
     fork(watchRemoveLikebook),
+    fork(watchUploadImage),
+    fork(watchAddBook),
+    fork(watchLoadGenre),
   ]);
 }
