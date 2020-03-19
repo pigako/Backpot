@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import styled, { css, withTheme } from 'styled-components';
+import styled, { css } from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import Router from 'next/router';
 import Helmet from 'react-helmet';
 
 import Button from '../components/designs/Button';
-import Router from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   UPLOAD_IMAGE_REQEUST,
   REMOVE_IMAGE,
@@ -71,6 +71,7 @@ const GenreDiv = styled.div`
   display: block;
   flex: 4;
 `;
+
 const GenreButton = styled(Button)`
   display: block;
   width: 7.5rem;
@@ -140,13 +141,20 @@ const DayButton = styled(Button)`
   }}
 `;
 
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
+`;
+
 const WriteBook = () => {
   const editorRef = useRef();
   const [editorLoded, setEditorLoded] = useState(false);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
   const dispatch = useDispatch();
 
-  const { thumbnailPath, isAddedBook } = useSelector(state => state.book);
+  const { thumbnailPath, isAddingBook, isAddedBook } = useSelector(
+    state => state.book,
+  );
 
   const [bookName, setBookName] = useState('');
   const { genre } = useSelector(state => state.book);
@@ -284,7 +292,13 @@ const WriteBook = () => {
           <Button type="button" color="pink" onClick={onCancle}>
             취소
           </Button>
-          <Button type="submit">만들기</Button>
+          <Button type="submit">
+            {isAddingBook ? (
+              <LoadingImg src="/static/icons/loading_blue.gif" />
+            ) : (
+              `만들기`
+            )}
+          </Button>
         </ButtonDiv>
         <DivCard>
           <DivCardLeft>

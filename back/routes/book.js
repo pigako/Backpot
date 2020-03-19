@@ -42,7 +42,7 @@ router.get('/:id', async (req, res, next) => {
         {
           model: db.Genre,
           as: 'BookGenre',
-          attributes: ['name'],
+          attributes: ['id', 'name'],
         },
       ],
     });

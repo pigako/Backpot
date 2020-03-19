@@ -36,6 +36,8 @@ const BookTopRightDiv = styled.div`
 
   border: solid 2px #495057;
 
+  position: relative;
+
   & > label {
     font-size: 1rem;
     display: block;
@@ -55,6 +57,12 @@ const BookTopRightDiv = styled.div`
       }
     }
   }
+`;
+
+const UpdateButton = styled(Button)`
+  position: absolute;
+  top: 5%;
+  left: 85%;
 `;
 const Thumbnail = styled.img`
   height: 13rem;
@@ -93,15 +101,19 @@ const Book = () => {
   const [isASC, setIsASC] = useState(true);
   const dispatch = useDispatch();
 
-  const onGoWriter = useCallback(
-    e => {
-      Router.push(
-        { pathname: '/librery', query: { id: book.User.userId } },
-        `/librery/${book.User.userId}`,
-      );
-    },
-    [book && book.User.id],
-  );
+  const onGoWriter = useCallback(() => {
+    Router.push(
+      { pathname: '/librery', query: { id: book.User.userId } },
+      `/librery/${book.User.userId}`,
+    );
+  }, [book && book.User.id]);
+
+  const onGoUpdateBook = useCallback(() => {
+    Router.push(
+      { pathname: '/updatebook', query: { id: book.id } },
+      `/updatebook/${book.id}`,
+    );
+  }, [book && book.id]);
 
   const onAddLikeBook = useCallback(
     e => {
@@ -148,6 +160,10 @@ const Book = () => {
         </BookTopLeftDiv>
         <BookTopRightDiv>
           <BookTitle>{book && book.name}</BookTitle>
+          {(me && me.id) === (book && book.User.id) ? (
+            <UpdateButton onClick={onGoUpdateBook}>수정</UpdateButton>
+          ) : null}
+
           <label>{book && book.BookGenre.map(v => v.name + ' ')}</label>
           <div>
             <label>

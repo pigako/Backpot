@@ -9,6 +9,8 @@ export const initalState = {
   thumbnailPath: '',
   isAddingBook: false,
   isAddedBook: false,
+  isUpdatingBook: false,
+  isUpdatedBook: false,
 };
 
 export const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
@@ -41,7 +43,18 @@ export const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
 export const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
 export const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
 
+export const REMOVE_THUMBNAIL = `REMOVE_THUMBNAIL`;
 export const REMOVE_IMAGE = `REMOVE_IMAGE`;
+
+export const UPDATE_BOOK_REQUEST = `UPDATE_BOOK_REQUEST`;
+export const UPDATE_BOOK_SUCCESS = `UPDATE_BOOK_SUCCESS`;
+export const UPDATE_BOOK_FAILURE = `UPDATE_BOOK_FAILURE`;
+
+export const CHANGE_UPDATEDBOOK = `CHANGE_UPDATEDBOOK`;
+
+export const DELETE_BOOK_REQUEST = `DELETE_BOOK_REQUEST`;
+export const DELETE_BOOK_SUCCESS = `DELETE_BOOK_SUCCESS`;
+export const DELETE_BOOK_FAILURE = `DELETE_BOOK_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
@@ -144,6 +157,37 @@ const reducer = (state = initalState, action) => {
       // 작품 썸네일 취소
       case REMOVE_IMAGE: {
         draft.thumbnailPath = '';
+        break;
+      }
+      // 등록된 썸네일 삭제
+      case REMOVE_THUMBNAIL: {
+        draft.book.thumbnail = '';
+        break;
+      }
+      // 작품 수정
+      case UPDATE_BOOK_REQUEST: {
+        draft.isUpdatingBook = true;
+        draft.isUpdatedBook = false;
+        break;
+      }
+      case UPDATE_BOOK_SUCCESS: {
+        draft.isUpdatingBook = false;
+        draft.isUpdatedBook = true;
+        break;
+      }
+      case UPDATE_BOOK_FAILURE: {
+        break;
+      }
+      case CHANGE_UPDATEDBOOK: {
+        break;
+      }
+      case DELETE_BOOK_REQUEST: {
+        break;
+      }
+      case DELETE_BOOK_SUCCESS: {
+        break;
+      }
+      case DELETE_BOOK_FAILURE: {
         break;
       }
       default: {

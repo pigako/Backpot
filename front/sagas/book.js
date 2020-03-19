@@ -22,6 +22,9 @@ import {
   LOAD_GENRE_REQUEST,
   LOAD_GENRE_SUCCESS,
   LOAD_GENRE_FAILURE,
+  UPDATE_BOOK_REQUEST,
+  UPDATE_BOOK_SUCCESS,
+  UPDATE_BOOK_FAILURE,
 } from '../reducers/book';
 import { ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST } from '../reducers/user';
 
@@ -189,6 +192,28 @@ function* watchLoadGenre() {
     }
   });
 }
+// 작품 수정
+function* watchUpdateBook() {
+  yield takeLatest(UPDATE_BOOK_REQUEST, function* updateBook(action) {
+    try {
+      const result = yield call(bookData => {
+        return axios.patch(`/book`, bookData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: UPDATE_BOOK_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: UPDATE_BOOK_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
 
 export default function* bookSaga() {
   yield all([
@@ -199,5 +224,6 @@ export default function* bookSaga() {
     fork(watchUploadImage),
     fork(watchAddBook),
     fork(watchLoadGenre),
+    fork(watchUpdateBook),
   ]);
 }
