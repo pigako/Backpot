@@ -8,7 +8,7 @@ import Button from '../components/designs/Button';
 import {
   UPLOAD_IMAGE_REQEUST,
   REMOVE_IMAGE,
-  ADD_BOOK_REQEUST,
+  ADD_BOOK_REQUEST,
   CHANGE_ADDEDBOOK,
   LOAD_GENRE_REQUEST,
 } from '../reducers/book';
@@ -243,7 +243,7 @@ const WriteBook = () => {
         )
         .join(',');
       dispatch({
-        type: ADD_BOOK_REQEUST,
+        type: ADD_BOOK_REQUEST,
         data: {
           name: bookName,
           thumbnail: thumbnailPath,

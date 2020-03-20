@@ -8,9 +8,11 @@ import Button from '../components/designs/Button';
 import {
   LOAD_GENRE_REQUEST,
   REMOVE_THUMBNAIL,
-  UPLOAD_IMAGE_REQEUST,
+  UPLOAD_IMAGE_REQUEST,
   REMOVE_IMAGE,
   LOAD_BOOK_REQUEST,
+  UPDATE_BOOK_REQUEST,
+  CHANGE_UPDATEDBOOK,
 } from '../reducers/book';
 
 const SUpdateBookDiv = styled.div`
@@ -198,7 +200,7 @@ const UpdateBook = () => {
     });
     console.log(imageFormData);
     dispatch({
-      type: UPLOAD_IMAGE_REQEUST,
+      type: UPLOAD_IMAGE_REQUEST,
       data: imageFormData,
     });
   }, []);
@@ -252,16 +254,16 @@ const UpdateBook = () => {
           [],
         )
         .join(',');
-      // dispatch({
-      //   type: ADD_BOOK_REQEUST,
-      //   data: {
-      //     name: bookName,
-      //     thumbnail: thumbnailPath,
-      //     serialDay: serialDayJoin,
-      //     summary: summaryText,
-      //     genre: genreArr,
-      //   },
-      // });
+      dispatch({
+        type: UPDATE_BOOK_REQUEST,
+        data: {
+          name: bookName,
+          thumbnail: thumbnailPath,
+          serialDay: serialDayJoin,
+          summary: summaryText,
+          genre: genreArr,
+        },
+      });
     },
     [bookName, thumbnailPath, serialDay, summaryText],
   );

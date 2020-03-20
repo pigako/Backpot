@@ -29,7 +29,7 @@ export const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
 export const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
 export const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
 
-export const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
+export const ADD_BOOK_REQUEST = `ADD_BOOK_REQUEST`;
 export const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
 export const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
 
@@ -39,7 +39,7 @@ export const LOAD_GENRE_FAILURE = `LOAD_GENRE_FAILURE`;
 
 export const CHANGE_ADDEDBOOK = `CHANGE_ADDEDBOOK`;
 
-export const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
+export const UPLOAD_IMAGE_REQUEST = `UPLOAD_IMAGE_REQUEST`;
 export const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
 export const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
 
@@ -113,7 +113,7 @@ const reducer = (state = initalState, action) => {
         break;
       }
       // 작품 만들기
-      case ADD_BOOK_REQEUST: {
+      case ADD_BOOK_REQUEST: {
         draft.isAddingBook = true;
         draft.isAddedBook = false;
         break;
@@ -143,7 +143,7 @@ const reducer = (state = initalState, action) => {
         break;
       }
       // 작품 썸네일 등록
-      case UPLOAD_IMAGE_REQEUST: {
+      case UPLOAD_IMAGE_REQUEST: {
         draft.thumbnailPath = '';
         break;
       }
