@@ -4,12 +4,10 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    let where = {};
+    let where = { flag: { $not: 3 } };
     if (parseInt(req.query.lastId, 10)) {
-      where = {
-        id: {
-          [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10),
-        },
+      where.id = {
+        [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10),
       };
     }
     const books = await db.Book.findAll({

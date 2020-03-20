@@ -33,6 +33,7 @@ app.prepare().then(() => {
   server.get('/book/:bookid', (req, res) => {
     return app.render(req, res, '/book', { bookid: req.params.bookid });
   });
+
   server.get('/updatebook/:bookid', (req, res) => {
     return app.render(req, res, '/updatebook', { bookid: req.params.bookid });
   });

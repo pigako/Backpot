@@ -24,11 +24,13 @@ module.exports = () => {
           {
             model: db.Book,
             as: 'Books',
+            where: { flag: { $not: 3 } },
             include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
           },
           {
             model: db.Book,
             as: 'LikingBook',
+            where: { flag: { $not: 3 } },
             include: [
               {
                 model: db.User,

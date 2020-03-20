@@ -21,7 +21,15 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/updatebook": [
+    "/booklist": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/librery": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/writebook": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

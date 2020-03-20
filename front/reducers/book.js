@@ -11,6 +11,8 @@ export const initalState = {
   isAddedBook: false,
   isUpdatingBook: false,
   isUpdatedBook: false,
+  isDeletingBook: false,
+  isDeletedBook: false,
 };
 
 export const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
@@ -55,6 +57,8 @@ export const CHANGE_UPDATEDBOOK = `CHANGE_UPDATEDBOOK`;
 export const DELETE_BOOK_REQUEST = `DELETE_BOOK_REQUEST`;
 export const DELETE_BOOK_SUCCESS = `DELETE_BOOK_SUCCESS`;
 export const DELETE_BOOK_FAILURE = `DELETE_BOOK_FAILURE`;
+
+export const CHANGE_DELETEDBOOK = `CHANGE_DELETEDBOOK`;
 
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
@@ -179,15 +183,24 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case CHANGE_UPDATEDBOOK: {
+        draft.isUpdatedBook = false;
         break;
       }
       case DELETE_BOOK_REQUEST: {
+        draft.isDeletingBook = true;
+        draft.isDeletedBook = false;
         break;
       }
       case DELETE_BOOK_SUCCESS: {
+        draft.isDeletedBook = true;
+        draft.isDeletingBook = false;
         break;
       }
       case DELETE_BOOK_FAILURE: {
+        break;
+      }
+      case CHANGE_DELETEDBOOK: {
+        draft.isDeletedBook = false;
         break;
       }
       default: {

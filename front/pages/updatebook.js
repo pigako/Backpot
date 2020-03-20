@@ -154,7 +154,7 @@ const UpdateBook = () => {
   const { CKEditor, ClassicEditor } = editorRef.current || {};
   const dispatch = useDispatch();
 
-  const { thumbnailPath, isUpdatedBook, book } = useSelector(
+  const { thumbnailPath, isUpdatedBook, isUpdatingBook, book } = useSelector(
     state => state.book,
   );
 
@@ -257,15 +257,24 @@ const UpdateBook = () => {
       dispatch({
         type: UPDATE_BOOK_REQUEST,
         data: {
+          id: book && book.id,
           name: bookName,
-          thumbnail: thumbnailPath,
+          thumbnail: (book && book.thumbnail) || thumbnailPath,
           serialDay: serialDayJoin,
           summary: summaryText,
           genre: genreArr,
         },
       });
     },
-    [bookName, thumbnailPath, serialDay, summaryText],
+    [
+      book && book.id,
+      bookName,
+      book && book.thumbnail,
+      thumbnailPath,
+      serialDay,
+      summaryText,
+      genreArr,
+    ],
   );
 
   useEffect(() => {

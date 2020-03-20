@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 
 import Button from '../components/designs/Button';
 import {
-  UPLOAD_IMAGE_REQEUST,
+  UPLOAD_IMAGE_REQUEST,
   REMOVE_IMAGE,
   ADD_BOOK_REQUEST,
   CHANGE_ADDEDBOOK,
@@ -194,7 +194,7 @@ const WriteBook = () => {
     });
     console.log(imageFormData);
     dispatch({
-      type: UPLOAD_IMAGE_REQEUST,
+      type: UPLOAD_IMAGE_REQUEST,
       data: imageFormData,
     });
   }, []);
@@ -253,7 +253,7 @@ const WriteBook = () => {
         },
       });
     },
-    [bookName, thumbnailPath, serialDay, summaryText],
+    [bookName, thumbnailPath, serialDay, summaryText, genreArr],
   );
 
   useEffect(() => {

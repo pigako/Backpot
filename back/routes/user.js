@@ -34,6 +34,7 @@ router.get('/:id', async (req, res, next) => {
         {
           model: db.Book,
           as: 'Books',
+          where: { flag: { $not: 3 } },
           include: [
             { model: db.Genre, as: 'BookGenre', attributes: ['name'] },
             {
@@ -45,6 +46,7 @@ router.get('/:id', async (req, res, next) => {
         {
           model: db.Book,
           as: 'LikingBook',
+          where: { flag: { $not: 3 } },
           include: [
             {
               model: db.User,
@@ -99,11 +101,13 @@ router.post('/login', (req, res, next) => {
             {
               model: db.Book,
               as: 'Books',
+              where: { flag: { $not: 3 } },
               include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
             },
             {
               model: db.Book,
               as: 'LikingBook',
+              where: { flag: { $not: 3 } },
               include: [
                 {
                   model: db.User,

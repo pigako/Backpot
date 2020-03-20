@@ -119,7 +119,9 @@ const reducer = (state = initalState, action) => {
       }
       case REMOVE_LIKEBOOKLIST: {
         const index = draft.me.LikingBook.findIndex(v => v.id === action.data);
-        draft.me.LikingBook.splice(index, 1);
+        if (index !== -1) {
+          draft.me.LikingBook.splice(index, 1);
+        }
         break;
       }
       default: {

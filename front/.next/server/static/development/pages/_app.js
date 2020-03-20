@@ -2875,7 +2875,7 @@ const reducer = (state = initalState, action) => {
 /*!**************************!*\
   !*** ./reducers/book.js ***!
   \**************************/
-/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, ADD_BOOK_REQEUST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, LOAD_GENRE_REQUEST, LOAD_GENRE_SUCCESS, LOAD_GENRE_FAILURE, CHANGE_ADDEDBOOK, UPLOAD_IMAGE_REQEUST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE, REMOVE_THUMBNAIL, REMOVE_IMAGE, UPDATE_BOOK_REQUEST, UPDATE_BOOK_SUCCESS, UPDATE_BOOK_FAILURE, CHANGE_UPDATEDBOOK, DELETE_BOOK_REQUEST, DELETE_BOOK_SUCCESS, DELETE_BOOK_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOOKS_REQUEST, LOAD_BOOKS_SUCCESS, LOAD_BOOKS_FAILURE, LOAD_BOOK_REQUEST, LOAD_BOOK_SUCCESS, LOAD_BOOK_FAILURE, ADD_LIKEBOOK_REQUEST, ADD_LIKEBOOK_SUCCESS, ADD_LIKEBOOK_FAILURE, REMOVE_LIKEBOOK_REQUEST, REMOVE_LIKEBOOK_SUCCESS, REMOVE_LIKEBOOK_FAILURE, ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, LOAD_GENRE_REQUEST, LOAD_GENRE_SUCCESS, LOAD_GENRE_FAILURE, CHANGE_ADDEDBOOK, UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE, REMOVE_THUMBNAIL, REMOVE_IMAGE, UPDATE_BOOK_REQUEST, UPDATE_BOOK_SUCCESS, UPDATE_BOOK_FAILURE, CHANGE_UPDATEDBOOK, DELETE_BOOK_REQUEST, DELETE_BOOK_SUCCESS, DELETE_BOOK_FAILURE, CHANGE_DELETEDBOOK, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2893,14 +2893,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_REQUEST", function() { return REMOVE_LIKEBOOK_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_SUCCESS", function() { return REMOVE_LIKEBOOK_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOK_FAILURE", function() { return REMOVE_LIKEBOOK_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_REQEUST", function() { return ADD_BOOK_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_REQUEST", function() { return ADD_BOOK_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_SUCCESS", function() { return ADD_BOOK_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOOK_FAILURE", function() { return ADD_BOOK_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_REQUEST", function() { return LOAD_GENRE_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_SUCCESS", function() { return LOAD_GENRE_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_GENRE_FAILURE", function() { return LOAD_GENRE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_ADDEDBOOK", function() { return CHANGE_ADDEDBOOK; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_REQEUST", function() { return UPLOAD_IMAGE_REQEUST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_REQUEST", function() { return UPLOAD_IMAGE_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_SUCCESS", function() { return UPLOAD_IMAGE_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPLOAD_IMAGE_FAILURE", function() { return UPLOAD_IMAGE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_THUMBNAIL", function() { return REMOVE_THUMBNAIL; });
@@ -2912,6 +2912,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOOK_REQUEST", function() { return DELETE_BOOK_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOOK_SUCCESS", function() { return DELETE_BOOK_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOOK_FAILURE", function() { return DELETE_BOOK_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_DELETEDBOOK", function() { return CHANGE_DELETEDBOOK; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -2925,7 +2926,9 @@ const initalState = {
   isAddingBook: false,
   isAddedBook: false,
   isUpdatingBook: false,
-  isUpdatedBook: false
+  isUpdatedBook: false,
+  isDeletingBook: false,
+  isDeletedBook: false
 };
 const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
 const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
@@ -2939,14 +2942,14 @@ const ADD_LIKEBOOK_FAILURE = `ADD_LIKEBOOK_FAILURE`;
 const REMOVE_LIKEBOOK_REQUEST = `REMOVE_LIKEBOOK_REQUEST`;
 const REMOVE_LIKEBOOK_SUCCESS = `REMOVE_LIKEBOOK_SUCCESS`;
 const REMOVE_LIKEBOOK_FAILURE = `REMOVE_LIKEBOOK_FAILURE`;
-const ADD_BOOK_REQEUST = `ADD_BOOK_REQEUST`;
+const ADD_BOOK_REQUEST = `ADD_BOOK_REQUEST`;
 const ADD_BOOK_SUCCESS = `ADD_BOOK_SUCCESS`;
 const ADD_BOOK_FAILURE = `ADD_BOOK_FAILURE`;
 const LOAD_GENRE_REQUEST = `LOAD_GENRE_REQUEST`;
 const LOAD_GENRE_SUCCESS = `LOAD_GENRE_SUCCESS`;
 const LOAD_GENRE_FAILURE = `LOAD_GENRE_FAILURE`;
 const CHANGE_ADDEDBOOK = `CHANGE_ADDEDBOOK`;
-const UPLOAD_IMAGE_REQEUST = `UPLOAD_IMAGE_REQEUST`;
+const UPLOAD_IMAGE_REQUEST = `UPLOAD_IMAGE_REQUEST`;
 const UPLOAD_IMAGE_SUCCESS = `UPLOAD_IMAGE_SUCCESS`;
 const UPLOAD_IMAGE_FAILURE = `UPLOAD_IMAGE_FAILURE`;
 const REMOVE_THUMBNAIL = `REMOVE_THUMBNAIL`;
@@ -2958,6 +2961,7 @@ const CHANGE_UPDATEDBOOK = `CHANGE_UPDATEDBOOK`;
 const DELETE_BOOK_REQUEST = `DELETE_BOOK_REQUEST`;
 const DELETE_BOOK_SUCCESS = `DELETE_BOOK_SUCCESS`;
 const DELETE_BOOK_FAILURE = `DELETE_BOOK_FAILURE`;
+const CHANGE_DELETEDBOOK = `CHANGE_DELETEDBOOK`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -3040,7 +3044,7 @@ const reducer = (state = initalState, action) => {
         }
       // 작품 만들기
 
-      case ADD_BOOK_REQEUST:
+      case ADD_BOOK_REQUEST:
         {
           draft.isAddingBook = true;
           draft.isAddedBook = false;
@@ -3084,7 +3088,7 @@ const reducer = (state = initalState, action) => {
         }
       // 작품 썸네일 등록
 
-      case UPLOAD_IMAGE_REQEUST:
+      case UPLOAD_IMAGE_REQUEST:
         {
           draft.thumbnailPath = '';
           break;
@@ -3137,21 +3141,32 @@ const reducer = (state = initalState, action) => {
 
       case CHANGE_UPDATEDBOOK:
         {
+          draft.isUpdatedBook = false;
           break;
         }
 
       case DELETE_BOOK_REQUEST:
         {
+          draft.isDeletingBook = true;
+          draft.isDeletedBook = false;
           break;
         }
 
       case DELETE_BOOK_SUCCESS:
         {
+          draft.isDeletedBook = true;
+          draft.isDeletingBook = false;
           break;
         }
 
       case DELETE_BOOK_FAILURE:
         {
+          break;
+        }
+
+      case CHANGE_DELETEDBOOK:
+        {
+          draft.isDeletedBook = false;
           break;
         }
 
@@ -3365,7 +3380,11 @@ const reducer = (state = initalState, action) => {
       case REMOVE_LIKEBOOKLIST:
         {
           const index = draft.me.LikingBook.findIndex(v => v.id === action.data);
-          draft.me.LikingBook.splice(index, 1);
+
+          if (index !== -1) {
+            draft.me.LikingBook.splice(index, 1);
+          }
+
           break;
         }
 
@@ -3711,7 +3730,7 @@ function* watchRemoveLikebook() {
 
 
 function* watchUploadImage() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["UPLOAD_IMAGE_REQEUST"], function* uploadImage(action) {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["UPLOAD_IMAGE_REQUEST"], function* uploadImage(action) {
     try {
       const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(formData => {
         return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/book/thumbnail', formData, {
@@ -3734,7 +3753,7 @@ function* watchUploadImage() {
 
 
 function* watchAddBook() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["ADD_BOOK_REQEUST"], function* addBook(action) {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["ADD_BOOK_REQUEST"], function* addBook(action) {
     try {
       const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(bookData => {
         return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/book', bookData, {
@@ -3799,8 +3818,34 @@ function* watchUpdateBook() {
   });
 }
 
+function* watchDeleteBook() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_book__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOOK_REQUEST"], function* deleteBook(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(bookId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/book/${bookId}`, {
+          withCredentials: true
+        });
+      }, action.id);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOOK_SUCCESS"],
+        data: result.data
+      });
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["REMOVE_LIKEBOOKLIST"],
+        data: action.id
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["DELETE_BOOK_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
 function* bookSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBooks), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddLikebook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchRemoveLikebook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUploadImage), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadGenre), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateBook)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBooks), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddLikebook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchRemoveLikebook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUploadImage), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadGenre), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateBook), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteBook)]);
 }
 
 /***/ }),

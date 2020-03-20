@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
 
@@ -9,6 +8,7 @@ import {
   LOAD_BOOK_REQUEST,
   ADD_LIKEBOOK_REQUEST,
   REMOVE_LIKEBOOK_REQUEST,
+  DELETE_BOOK_REQUEST,
 } from '../reducers/book';
 import BookTable from '../components/BookTable';
 import Button from '../components/designs/Button';
@@ -58,12 +58,15 @@ const BookTopRightDiv = styled.div`
     }
   }
 `;
-
-const UpdateButton = styled(Button)`
+const WriterButtonDiv = styled.div`
+  display: flex;
   position: absolute;
   top: 5%;
-  left: 85%;
+  right: 1%;
 `;
+
+const UpdateButton = styled(Button)``;
+const DeleteButton = styled(Button)``;
 const Thumbnail = styled.img`
   height: 13rem;
   display: block;
@@ -95,8 +98,15 @@ const BookButtonDiv = styled.div`
   }
 `;
 
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
+`;
+
 const Book = () => {
-  const { book } = useSelector(state => state.book);
+  const { book, isDeletingBook, isDeletedBook } = useSelector(
+    state => state.book,
+  );
   const { me } = useSelector(state => state.user);
   const [isASC, setIsASC] = useState(true);
   const dispatch = useDispatch();
@@ -110,10 +120,23 @@ const Book = () => {
 
   const onGoUpdateBook = useCallback(() => {
     Router.push(
-      { pathname: '/updatebook', query: { id: book.id } },
+      { pathname: '/updatebook', query: { bookid: book.id } },
       `/updatebook/${book.id}`,
     );
   }, [book && book.id]);
+
+  const onGoDeleteBook = useCallback(() => {
+    dispatch({
+      type: DELETE_BOOK_REQUEST,
+      id: book && book.id,
+    });
+  }, [book && book.id]);
+
+  useEffect(() => {
+    if (isDeletedBook) {
+      Router.push('/booklist');
+    }
+  }, [isDeletedBook]);
 
   const onAddLikeBook = useCallback(
     e => {
@@ -161,7 +184,16 @@ const Book = () => {
         <BookTopRightDiv>
           <BookTitle>{book && book.name}</BookTitle>
           {(me && me.id) === (book && book.User.id) ? (
-            <UpdateButton onClick={onGoUpdateBook}>수정</UpdateButton>
+            <WriterButtonDiv>
+              <UpdateButton onClick={onGoUpdateBook}>수정</UpdateButton>
+              <DeleteButton color="pink" onClick={onGoDeleteBook}>
+                {isDeletingBook ? (
+                  <LoadingImg src="/static/icons/loading_pink.gif" />
+                ) : (
+                  `삭제`
+                )}
+              </DeleteButton>
+            </WriterButtonDiv>
           ) : null}
 
           <label>{book && book.BookGenre.map(v => v.name + ' ')}</label>

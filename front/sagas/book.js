@@ -25,6 +25,9 @@ import {
   UPDATE_BOOK_REQUEST,
   UPDATE_BOOK_SUCCESS,
   UPDATE_BOOK_FAILURE,
+  DELETE_BOOK_REQUEST,
+  DELETE_BOOK_SUCCESS,
+  DELETE_BOOK_FAILURE,
 } from '../reducers/book';
 import { ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST } from '../reducers/user';
 
@@ -215,6 +218,32 @@ function* watchUpdateBook() {
   });
 }
 
+function* watchDeleteBook() {
+  yield takeLatest(DELETE_BOOK_REQUEST, function* deleteBook(action) {
+    try {
+      const result = yield call(bookId => {
+        return axios.delete(`/book/${bookId}`, {
+          withCredentials: true,
+        });
+      }, action.id);
+      yield put({
+        type: DELETE_BOOK_SUCCESS,
+        data: result.data,
+      });
+      yield put({
+        type: REMOVE_LIKEBOOKLIST,
+        data: action.id,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: DELETE_BOOK_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+
 export default function* bookSaga() {
   yield all([
     fork(watchLoadBooks),
@@ -225,5 +254,6 @@ export default function* bookSaga() {
     fork(watchAddBook),
     fork(watchLoadGenre),
     fork(watchUpdateBook),
+    fork(watchDeleteBook),
   ]);
 }
