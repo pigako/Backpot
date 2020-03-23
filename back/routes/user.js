@@ -42,6 +42,7 @@ router.get('/:id', async (req, res, next) => {
               attributes: ['nickname'],
             },
           ],
+          required: false,
         },
         {
           model: db.Book,
@@ -53,6 +54,7 @@ router.get('/:id', async (req, res, next) => {
               attributes: ['id', 'userId', 'nickname'],
             },
           ],
+          required: false,
         },
         {
           model: db.User,
@@ -103,6 +105,7 @@ router.post('/login', (req, res, next) => {
               as: 'Books',
               where: { flag: { $not: 3 } },
               include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
+              required: false,
             },
             {
               model: db.Book,
@@ -115,6 +118,7 @@ router.post('/login', (req, res, next) => {
                 },
               ],
               attributes: ['id', 'name', 'recentDay'],
+              required: false,
             },
             {
               model: db.User,

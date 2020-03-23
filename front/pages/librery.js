@@ -72,7 +72,7 @@ const Librery = () => {
     ? useSelector(state => state.user.otherUserInfo)
     : useSelector(state => state.user.me);
 
-  const { id: myId } = useSelector(state => state.user.me);
+  const { id: myId } = useSelector(state => state.user.me) || '';
 
   const onGoWriteBook = useCallback(e => {
     Router.push('/writebook');

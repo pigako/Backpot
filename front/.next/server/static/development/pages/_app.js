@@ -3182,6 +3182,61 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
+/***/ "./reducers/episode.js":
+/*!*****************************!*\
+  !*** ./reducers/episode.js ***!
+  \*****************************/
+/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_EPISODE_REQUEST", function() { return LOAD_EPISODE_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_EPISODE_SUCCESS", function() { return LOAD_EPISODE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_EPISODE_FAILURE", function() { return LOAD_EPISODE_FAILURE; });
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
+
+const initalState = {
+  episode: null
+};
+const LOAD_EPISODE_REQUEST = `LOAD_EPISODE_REQUEST`;
+const LOAD_EPISODE_SUCCESS = `LOAD_EPISODE_SUCCESS`;
+const LOAD_EPISODE_FAILURE = `LOAD_EPISODE_FAILURE`;
+
+const reducer = (state = initalState, action) => {
+  return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
+    switch (action.type) {
+      case LOAD_EPISODE_REQUEST:
+        {
+          draft.episode = null;
+          break;
+        }
+
+      case LOAD_EPISODE_SUCCESS:
+        {
+          draft.episode = action.data;
+          break;
+        }
+
+      case LOAD_EPISODE_FAILURE:
+        {
+          break;
+        }
+
+      default:
+        {
+          break;
+        }
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
 /***/ "./reducers/index.js":
 /*!***************************!*\
   !*** ./reducers/index.js ***!
@@ -3196,6 +3251,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./reducers/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./book */ "./reducers/book.js");
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./board */ "./reducers/board.js");
+/* harmony import */ var _episode__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./episode */ "./reducers/episode.js");
+
 
 
 
@@ -3203,7 +3260,8 @@ __webpack_require__.r(__webpack_exports__);
 const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   user: _user__WEBPACK_IMPORTED_MODULE_1__["default"],
   book: _book__WEBPACK_IMPORTED_MODULE_2__["default"],
-  board: _board__WEBPACK_IMPORTED_MODULE_3__["default"]
+  board: _board__WEBPACK_IMPORTED_MODULE_3__["default"],
+  episode: _episode__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (rootReducer);
 
@@ -3850,6 +3908,51 @@ function* bookSaga() {
 
 /***/ }),
 
+/***/ "./sagas/episode.js":
+/*!**************************!*\
+  !*** ./sagas/episode.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return episodeSaga; });
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-saga/effects */ "redux-saga/effects");
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _reducers_episode__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reducers/episode */ "./reducers/episode.js");
+
+
+
+
+function* watchLoadEpisode() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_2__["LOAD_EPISODE_REQUEST"], function* (action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(episodeId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/episode/${episodeId}`);
+      }, action.id);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["LOAD_EPISODE_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["LOAD_EPISODE_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
+
+function* episodeSaga() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadEpisode)]);
+}
+
+/***/ }),
+
 /***/ "./sagas/index.js":
 /*!************************!*\
   !*** ./sagas/index.js ***!
@@ -3867,6 +3970,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user */ "./sagas/user.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./book */ "./sagas/book.js");
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./board */ "./sagas/board.js");
+/* harmony import */ var _episode__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./episode */ "./sagas/episode.js");
+
 
 
 
@@ -3874,7 +3979,7 @@ __webpack_require__.r(__webpack_exports__);
 
 axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.baseURL = `http://localhost:5000/api`;
 function* rootSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_user__WEBPACK_IMPORTED_MODULE_2__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_book__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_board__WEBPACK_IMPORTED_MODULE_4__["default"])]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_user__WEBPACK_IMPORTED_MODULE_2__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_book__WEBPACK_IMPORTED_MODULE_3__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_board__WEBPACK_IMPORTED_MODULE_4__["default"]), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(_episode__WEBPACK_IMPORTED_MODULE_5__["default"])]);
 }
 
 /***/ }),

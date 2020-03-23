@@ -38,6 +38,10 @@ app.prepare().then(() => {
     return app.render(req, res, '/updatebook', { bookid: req.params.bookid });
   });
 
+  server.get('/episode/:id', (req, res) => {
+    return app.render(req, res, '/episode', { id: req.params.id });
+  });
+
   server.get('/librery/:id', (req, res) => {
     return app.render(req, res, '/librery', { id: req.params.id });
   });

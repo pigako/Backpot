@@ -14,6 +14,7 @@ const boardsAPIRouter = require('./routes/boards');
 const bookAPIRouter = require('./routes/book');
 const booksAPIRouter = require('./routes/books');
 const genresAPIRouter = require('./routes/genres');
+const episodeAPIRouter = require('./routes/episode');
 
 dotenv.config(); // dotenv 실행
 const app = express();
@@ -52,6 +53,7 @@ app.use('/api/boards', boardsAPIRouter);
 app.use('/api/book', bookAPIRouter);
 app.use('/api/books', booksAPIRouter);
 app.use('/api/genres', genresAPIRouter);
+app.use('/api/episode', episodeAPIRouter);
 
 // 서버시작
 app.listen(5000, () => {

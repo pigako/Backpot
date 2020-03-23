@@ -3,9 +3,10 @@ import axios from 'axios';
 import user from './user';
 import book from './book';
 import board from './board';
+import episode from './episode';
 
 axios.defaults.baseURL = `http://localhost:5000/api`;
 
 export default function* rootSaga() {
-  yield all([call(user), call(book), call(board)]);
+  yield all([call(user), call(book), call(board), call(episode)]);
 }

@@ -26,6 +26,7 @@ module.exports = () => {
             as: 'Books',
             where: { flag: { $not: 3 } },
             include: [{ model: db.Genre, as: 'BookGenre', attributes: ['name'] }],
+            required: false,
           },
           {
             model: db.Book,
@@ -38,6 +39,7 @@ module.exports = () => {
               },
             ],
             attributes: ['id', 'name', 'recentDay'],
+            required: false,
           },
           {
             model: db.User,

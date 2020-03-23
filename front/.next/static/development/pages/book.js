@@ -34697,7 +34697,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /*!************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fbook&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cbook.js ***!
   \************************************************************************************************************************/
@@ -34720,5 +34720,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[6,"static/runtime/webpack.js"]]]);
+},[[7,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=book.js.map
