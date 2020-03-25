@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -8,6 +8,8 @@ import Router from 'next/router';
 import {
   LOAD_EPISODE_REQUEST,
   ADD_RECOMMEND_REQUEST,
+  DELETE_EPISODE_REQUEST,
+  CHANGE_DELETEDEPISODE,
 } from '../../reducers/episode';
 import CommnetCard from '../../components/CommentCard';
 import Button from '../../components/designs/Button';
@@ -31,6 +33,7 @@ const EpisodeTitle = styled.h1`
   margin-bottom: 1rem;
 `;
 const TopButtonDiv = styled.div`
+  display: flex;
   position: absolute;
   top: 5%;
   right: 1%;
@@ -109,9 +112,17 @@ const NextButton = styled(Button)`
 const NextEpisodeTitle = styled.label`
   margin-right: 1rem;
 `;
-
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
+`;
 const Episode = () => {
-  const { episode } = useSelector(state => state.episode);
+  const {
+    episode,
+    isDeletingEpisode,
+    isDeletedEpisode,
+    isRecommending,
+  } = useSelector(state => state.episode);
   const { id: myId } = useSelector(state => state.user.me) || '';
 
   const dispatch = useDispatch();
@@ -133,7 +144,25 @@ const Episode = () => {
     );
   }, [episode && episode.id]);
 
-  const onDeleteEpisode = useCallback(() => {}, []);
+  const onDeleteEpisode = useCallback(() => {
+    dispatch({
+      type: DELETE_EPISODE_REQUEST,
+      id: episode.id,
+    });
+  }, [episode && episode.id]);
+
+  useEffect(() => {
+    if (isDeletedEpisode) {
+      dispatch({
+        type: CHANGE_DELETEDEPISODE,
+      });
+      Router.push(
+        { pathname: `/book`, query: { bookid: episode.Book.id } },
+        `/book/${episode.Book.id}`,
+      );
+    }
+  }, [isDeletedEpisode, episode && episode.Book]);
+
   const onRecommenmdEpisode = useCallback(() => {
     dispatch({
       type: ADD_RECOMMEND_REQUEST,
@@ -153,6 +182,7 @@ const Episode = () => {
       `/episode/${episode.prev.id}`,
     );
   }, [episode && episode.prev && episode.prev.id]);
+
   const onGoNextEpisode = useCallback(() => {
     if (!episode.next) {
       return alert('다음글이 존재하지 않습니다.');
@@ -186,10 +216,22 @@ const Episode = () => {
           ) : null}
           {episode && episode.Book.User.id === myId ? (
             <Button color="pink" onClick={onDeleteEpisode}>
-              삭제
+              {isDeletingEpisode ? (
+                <LoadingImg src="/static/icons/loading_pink.gif" />
+              ) : (
+                '삭제'
+              )}
             </Button>
           ) : null}
-          {myId ? <Button onClick={onRecommenmdEpisode}>추천</Button> : null}
+          {myId ? (
+            <Button onClick={onRecommenmdEpisode}>
+              {isRecommending ? (
+                <LoadingImg src="/static/icons/loading_blue.gif" />
+              ) : (
+                '추천'
+              )}
+            </Button>
+          ) : null}
           <Button onClick={onGoList}>목록</Button>
           <Button>
             <a href="#comment">댓글</a>

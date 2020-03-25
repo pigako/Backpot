@@ -101,12 +101,12 @@ const reducer = (state = initalState, action) => {
         draft.isDeletedEpisode = false;
         break;
       }
-      case DELETE_EPISODE_REQUEST: {
-        draft.isDeletedEpisode = true;
+      case DELETE_EPISODE_SUCCESS: {
         draft.isDeletingEpisode = false;
+        draft.isDeletedEpisode = true;
         break;
       }
-      case DELETE_EPISODE_REQUEST: {
+      case DELETE_EPISODE_FAILURE: {
         break;
       }
       case CHANGE_DELETEDEPISODE: {

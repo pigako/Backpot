@@ -29,6 +29,7 @@ const BookTitle = styled.h1`
 `;
 
 const TopButtonDiv = styled.div`
+  display: flex;
   position: absolute;
   top: 5%;
   right: 1%;
@@ -88,6 +89,11 @@ const WriteEditorDiv = styled.div`
     padding-bottom: 1rem;
     border-bottom: solid 2px #495057;
   }
+`;
+
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
 `;
 
 const Write = () => {
@@ -184,7 +190,13 @@ const Write = () => {
             <Button color="pink" type="button" onClick={onCancleWrite}>
               취소
             </Button>
-            <Button type="submit">작성</Button>
+            <Button type="submit">
+              {isAddingEpisode ? (
+                <LoadingImg src="/static/icons/loading_blue.gif" />
+              ) : (
+                '작성'
+              )}
+            </Button>
           </TopButtonDiv>
         </WriteEpisodeTopDiv>
         <WriteEpisodeContentDiv>

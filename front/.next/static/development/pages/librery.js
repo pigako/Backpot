@@ -35554,7 +35554,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 6:
+/***/ 4:
 /*!******************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Flibrery&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Clibrery.js ***!
   \******************************************************************************************************************************/
@@ -35577,5 +35577,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[6,"static/runtime/webpack.js"]]]);
+},[[4,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=librery.js.map

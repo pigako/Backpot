@@ -3364,14 +3364,14 @@ const reducer = (state = initalState, action) => {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -4173,7 +4173,26 @@ function* watchUpdateEpisode() {
 } // 삭제
 
 
-function* watchDeleteEpisode() {}
+function* watchDeleteEpisode() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_REQUEST"], function* (action) {
+    try {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(episodeId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/episode/${episodeId}`, {
+          withCredentials: true
+        });
+      }, action.id);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_SUCCESS"]
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
 
 function* episodeSaga() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteEpisode)]);

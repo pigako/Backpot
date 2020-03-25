@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -339,7 +339,7 @@ const EpisodeTitle = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.h1
 const TopButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "episode__TopButtonDiv",
   componentId: "sc-1oaq4eh-4"
-})(["position:absolute;top:5%;right:1%;"]);
+})(["display:flex;position:absolute;top:5%;right:1%;"]);
 const EpisodeSummaryDataDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "episode__EpisodeSummaryDataDiv",
   componentId: "sc-1oaq4eh-5"
@@ -396,10 +396,17 @@ const NextEpisodeTitle = styled_components__WEBPACK_IMPORTED_MODULE_1___default.
   displayName: "episode__NextEpisodeTitle",
   componentId: "sc-1oaq4eh-18"
 })(["margin-right:1rem;"]);
+const LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.img.withConfig({
+  displayName: "episode__LoadingImg",
+  componentId: "sc-1oaq4eh-19"
+})(["margin-top:4px;height:1.5rem;"]);
 
 const Episode = () => {
   const {
-    episode
+    episode,
+    isDeletingEpisode,
+    isDeletedEpisode,
+    isRecommending
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.episode);
   const {
     id: myId
@@ -421,7 +428,25 @@ const Episode = () => {
       }
     }, `/episode/update/${episode.id}`);
   }, [episode && episode.id]);
-  const onDeleteEpisode = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {}, []);
+  const onDeleteEpisode = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
+    dispatch({
+      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_6__["DELETE_EPISODE_REQUEST"],
+      id: episode.id
+    });
+  }, [episode && episode.id]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    if (isDeletedEpisode) {
+      dispatch({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_6__["CHANGE_DELETEDEPISODE"]
+      });
+      next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+        pathname: `/book`,
+        query: {
+          bookid: episode.Book.id
+        }
+      }, `/book/${episode.Book.id}`);
+    }
+  }, [isDeletedEpisode, episode && episode.Book]);
   const onRecommenmdEpisode = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
     dispatch({
       type: _reducers_episode__WEBPACK_IMPORTED_MODULE_6__["ADD_RECOMMEND_REQUEST"],
@@ -462,9 +487,13 @@ const Episode = () => {
   }, "\uC218\uC815") : null, episode && episode.Book.User.id === myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
     color: "pink",
     onClick: onDeleteEpisode
-  }, "\uC0AD\uC81C") : null, myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, isDeletingEpisode ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_pink.gif"
+  }) : '삭제') : null, myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
     onClick: onRecommenmdEpisode
-  }, "\uCD94\uCC9C") : null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, isRecommending ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : '추천') : null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
     onClick: onGoList
   }, "\uBAA9\uB85D"), __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_8__["default"], null, __jsx("a", {
     href: "#comment"
@@ -904,14 +933,14 @@ const reducer = (state = initalState, action) => {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -934,7 +963,7 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
-/***/ 5:
+/***/ 7:
 /*!**************************************!*\
   !*** multi ./pages/episode/index.js ***!
   \**************************************/

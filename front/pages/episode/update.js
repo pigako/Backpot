@@ -29,6 +29,7 @@ const BookTitle = styled.h1`
 `;
 
 const TopButtonDiv = styled.div`
+  display: flex;
   position: absolute;
   top: 5%;
   right: 1%;
@@ -88,6 +89,11 @@ const UpdateEditorDiv = styled.div`
     padding-bottom: 1rem;
     border-bottom: solid 2px #495057;
   }
+`;
+
+const LoadingImg = styled.img`
+  margin-top: 4px;
+  height: 1.5rem;
 `;
 
 const Update = () => {
@@ -190,7 +196,13 @@ const Update = () => {
             <Button color="pink" type="button" onClick={onCancleUpdate}>
               취소
             </Button>
-            <Button type="submit">수정</Button>
+            <Button type="submit">
+              {isUpdatingEpisode ? (
+                <LoadingImg src="/static/icons/loading_blue.gif" />
+              ) : (
+                '수정'
+              )}
+            </Button>
           </TopButtonDiv>
         </UpdateEpisodeTopDiv>
         <UpdateEpisodeContentDiv>

@@ -35505,7 +35505,7 @@ var EpisodeTitle = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].h1.
 var TopButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
   displayName: "episode__TopButtonDiv",
   componentId: "sc-1oaq4eh-4"
-})(["position:absolute;top:5%;right:1%;"]);
+})(["display:flex;position:absolute;top:5%;right:1%;"]);
 var EpisodeSummaryDataDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
   displayName: "episode__EpisodeSummaryDataDiv",
   componentId: "sc-1oaq4eh-5"
@@ -35562,12 +35562,19 @@ var NextEpisodeTitle = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"]
   displayName: "episode__NextEpisodeTitle",
   componentId: "sc-1oaq4eh-18"
 })(["margin-right:1rem;"]);
+var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].img.withConfig({
+  displayName: "episode__LoadingImg",
+  componentId: "sc-1oaq4eh-19"
+})(["margin-top:4px;height:1.5rem;"]);
 
 var Episode = function Episode() {
   var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
     return state.episode;
   }),
-      episode = _useSelector.episode;
+      episode = _useSelector.episode,
+      isDeletingEpisode = _useSelector.isDeletingEpisode,
+      isDeletedEpisode = _useSelector.isDeletedEpisode,
+      isRecommending = _useSelector.isRecommending;
 
   var _ref = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
     return state.user.me;
@@ -35591,7 +35598,25 @@ var Episode = function Episode() {
       }
     }, "/episode/update/".concat(episode.id));
   }, [episode && episode.id]);
-  var onDeleteEpisode = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {}, []);
+  var onDeleteEpisode = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
+    dispatch({
+      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_7__["DELETE_EPISODE_REQUEST"],
+      id: episode.id
+    });
+  }, [episode && episode.id]);
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (isDeletedEpisode) {
+      dispatch({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_7__["CHANGE_DELETEDEPISODE"]
+      });
+      next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+        pathname: "/book",
+        query: {
+          bookid: episode.Book.id
+        }
+      }, "/book/".concat(episode.Book.id));
+    }
+  }, [isDeletedEpisode, episode && episode.Book]);
   var onRecommenmdEpisode = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
     dispatch({
       type: _reducers_episode__WEBPACK_IMPORTED_MODULE_7__["ADD_RECOMMEND_REQUEST"],
@@ -35629,9 +35654,13 @@ var Episode = function Episode() {
   }, "\uC218\uC815") : null, episode && episode.Book.User.id === myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
     color: "pink",
     onClick: onDeleteEpisode
-  }, "\uC0AD\uC81C") : null, myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, isDeletingEpisode ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_pink.gif"
+  }) : '삭제') : null, myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onClick: onRecommenmdEpisode
-  }, "\uCD94\uCC9C") : null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, isRecommending ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : '추천') : null, __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onClick: onGoList
   }, "\uBAA9\uB85D"), __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], null, __jsx("a", {
     href: "#comment"
@@ -36092,14 +36121,14 @@ var reducer = function reducer() {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -36122,7 +36151,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 3:
+/***/ 5:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fepisode&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cepisode%5Cindex.js ***!
   \**************************************************************************************************************************************/
@@ -36145,5 +36174,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[3,"static/runtime/webpack.js"]]]);
+},[[5,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=episode.js.map

@@ -42258,14 +42258,14 @@ var reducer = function reducer() {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -44006,28 +44006,73 @@ function watchUpdateEpisode() {
 
 
 function watchDeleteEpisode() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchDeleteEpisode$(_context9) {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchDeleteEpisode$(_context10) {
     while (1) {
-      switch (_context9.prev = _context9.next) {
+      switch (_context10.prev = _context10.next) {
         case 0:
+          _context10.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(action) {
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context9) {
+              while (1) {
+                switch (_context9.prev = _context9.next) {
+                  case 0:
+                    _context9.prev = 0;
+                    _context9.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (episodeId) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/episode/".concat(episodeId), {
+                        withCredentials: true
+                      });
+                    }, action.id);
+
+                  case 3:
+                    _context9.next = 5;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_SUCCESS"]
+                    });
+
+                  case 5:
+                    _context9.next = 12;
+                    break;
+
+                  case 7:
+                    _context9.prev = 7;
+                    _context9.t0 = _context9["catch"](0);
+                    console.log(_context9.t0);
+                    _context9.next = 12;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_FAILURE"],
+                      error: _context9.t0
+                    });
+
+                  case 12:
+                  case "end":
+                    return _context9.stop();
+                }
+              }
+            }, _callee5, null, [[0, 7]]);
+          }));
+
+        case 2:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
     }
   }, _marked5);
 }
 
 function episodeSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function episodeSaga$(_context10) {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function episodeSaga$(_context11) {
     while (1) {
-      switch (_context10.prev = _context10.next) {
+      switch (_context11.prev = _context11.next) {
         case 0:
-          _context10.next = 2;
+          _context11.next = 2;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchDeleteEpisode)]);
 
         case 2:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
     }
   }, _marked6);

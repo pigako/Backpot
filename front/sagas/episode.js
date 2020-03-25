@@ -108,7 +108,26 @@ function* watchUpdateEpisode() {
   });
 }
 // 삭제
-function* watchDeleteEpisode() {}
+function* watchDeleteEpisode() {
+  yield takeLatest(DELETE_EPISODE_REQUEST, function*(action) {
+    try {
+      yield call(episodeId => {
+        return axios.delete(`/episode/${episodeId}`, {
+          withCredentials: true,
+        });
+      }, action.id);
+      yield put({
+        type: DELETE_EPISODE_SUCCESS,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: DELETE_EPISODE_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
 export default function* episodeSaga() {
   yield all([
     fork(watchLoadEpisode),

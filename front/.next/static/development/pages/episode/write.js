@@ -17753,7 +17753,7 @@ var BookTitle = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].h1.wit
 var TopButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
   displayName: "write__TopButtonDiv",
   componentId: "sc-1w592s4-3"
-})(["position:absolute;top:5%;right:1%;"]);
+})(["display:flex;position:absolute;top:5%;right:1%;"]);
 var EpisodeForm = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].form.withConfig({
   displayName: "write__EpisodeForm",
   componentId: "sc-1w592s4-4"
@@ -17782,6 +17782,10 @@ var WriteEditorDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].d
   displayName: "write__WriteEditorDiv",
   componentId: "sc-1w592s4-10"
 })(["margin:1rem;& > label{width:100%;display:inline-block;margin-bottom:1rem;padding-bottom:1rem;border-bottom:solid 2px #495057;}"]);
+var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].img.withConfig({
+  displayName: "write__LoadingImg",
+  componentId: "sc-1w592s4-11"
+})(["margin-top:4px;height:1.5rem;"]);
 
 var Write = function Write() {
   var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
@@ -17877,7 +17881,9 @@ var Write = function Write() {
     onClick: onCancleWrite
   }, "\uCDE8\uC18C"), __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "submit"
-  }, "\uC791\uC131"))), __jsx(WriteEpisodeContentDiv, null, __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC774 \uAE00\uC744 \uACF5\uC9C0\uB85C \uC791\uC131")), __jsx(DivCardRight, null, __jsx(CheckBox, {
+  }, isAddingEpisode ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : '작성'))), __jsx(WriteEpisodeContentDiv, null, __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC774 \uAE00\uC744 \uACF5\uC9C0\uB85C \uC791\uC131")), __jsx(DivCardRight, null, __jsx(CheckBox, {
     type: "checkbox",
     value: checkNotice,
     onChange: onChangeCheckNotice
@@ -18403,14 +18409,14 @@ var reducer = function reducer() {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -18433,7 +18439,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 8:
+/***/ 2:
 /*!**********************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fepisode%2Fwrite&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cepisode%5Cwrite.js ***!
   \**********************************************************************************************************************************************/
@@ -18456,5 +18462,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[8,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=write.js.map

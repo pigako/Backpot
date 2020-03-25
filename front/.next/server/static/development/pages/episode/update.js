@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -192,7 +192,7 @@ const BookTitle = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.h1.wi
 const TopButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.div.withConfig({
   displayName: "update__TopButtonDiv",
   componentId: "nxzyol-3"
-})(["position:absolute;top:5%;right:1%;"]);
+})(["display:flex;position:absolute;top:5%;right:1%;"]);
 const EpisodeForm = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.form.withConfig({
   displayName: "update__EpisodeForm",
   componentId: "nxzyol-4"
@@ -221,6 +221,10 @@ const UpdateEditorDiv = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a
   displayName: "update__UpdateEditorDiv",
   componentId: "nxzyol-10"
 })(["margin:1rem;& > label{width:100%;display:inline-block;margin-bottom:1rem;padding-bottom:1rem;border-bottom:solid 2px #495057;}"]);
+const LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.img.withConfig({
+  displayName: "update__LoadingImg",
+  componentId: "nxzyol-11"
+})(["margin-top:4px;height:1.5rem;"]);
 
 const Update = () => {
   const {
@@ -310,7 +314,9 @@ const Update = () => {
     onClick: onCancleUpdate
   }, "\uCDE8\uC18C"), __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
     type: "submit"
-  }, "\uC218\uC815"))), __jsx(UpdateEpisodeContentDiv, null, __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC774 \uAE00\uC744 \uACF5\uC9C0\uB85C \uC791\uC131")), __jsx(DivCardRight, null, __jsx(CheckBox, {
+  }, isUpdatingEpisode ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : '수정'))), __jsx(UpdateEpisodeContentDiv, null, __jsx(DivCard, null, __jsx(DivCardLeft, null, __jsx("label", null, "\uC774 \uAE00\uC744 \uACF5\uC9C0\uB85C \uC791\uC131")), __jsx(DivCardRight, null, __jsx(CheckBox, {
     type: "checkbox",
     value: checkNotice,
     onChange: onChangeCheckNotice
@@ -501,14 +507,14 @@ const reducer = (state = initalState, action) => {
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_SUCCESS:
         {
-          draft.isDeletedEpisode = true;
           draft.isDeletingEpisode = false;
+          draft.isDeletedEpisode = true;
           break;
         }
 
-      case DELETE_EPISODE_REQUEST:
+      case DELETE_EPISODE_FAILURE:
         {
           break;
         }
@@ -531,7 +537,7 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
-/***/ 4:
+/***/ 8:
 /*!***************************************!*\
   !*** multi ./pages/episode/update.js ***!
   \***************************************/
