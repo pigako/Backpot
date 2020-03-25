@@ -141,6 +141,9 @@ const Book = () => {
 
   useEffect(() => {
     if (isDeletedBook) {
+      dispatch({
+        type: CHANGE_DELETEDBOOK,
+      });
       Router.push('/booklist');
     }
   }, [isDeletedBook]);

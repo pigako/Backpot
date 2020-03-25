@@ -98,6 +98,28 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     return next(e);
   }
 });
+// 글 수정
+router.patch('/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const episode = await db.Episode.findOne({
+      where: {
+        id: parseInt(req.params.id, 10),
+      },
+    });
+    if (!episode) {
+      return status(404).send('수정할수 없는 글입니다.');
+    }
+    await episode.update({
+      title: req.body.title,
+      content: req.body.content,
+      isNotice: req.body.notice,
+    });
+    return res.send('');
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
 // 추천
 router.post('/:id', isLoggedIn, async (req, res, next) => {
   try {

@@ -10,6 +10,12 @@ import {
   ADD_RECOMMEND_REQUEST,
   ADD_RECOMMEND_SUCCESS,
   ADD_RECOMMEND_FAILURE,
+  UPDATE_EPISODE_REQUEST,
+  UPDATE_EPISODE_SUCCESS,
+  UPDATE_EPISODE_FAILURE,
+  DELETE_EPISODE_REQUEST,
+  DELETE_EPISODE_SUCCESS,
+  DELETE_EPISODE_FAILURE,
 } from '../reducers/episode';
 
 // 글 조회
@@ -80,11 +86,35 @@ function* watchAddRecommend() {
     }
   });
 }
-
+// 수정
+function* watchUpdateEpisode() {
+  yield takeLatest(UPDATE_EPISODE_REQUEST, function*(action) {
+    try {
+      yield call(updateData => {
+        return axios.patch(`/episode/${updateData.id}`, updateData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: UPDATE_EPISODE_SUCCESS,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: UPDATE_EPISODE_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+// 삭제
+function* watchDeleteEpisode() {}
 export default function* episodeSaga() {
   yield all([
     fork(watchLoadEpisode),
     fork(watchAddEpisode),
     fork(watchAddRecommend),
+    fork(watchUpdateEpisode),
+    fork(watchDeleteEpisode),
   ]);
 }

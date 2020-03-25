@@ -48,6 +48,12 @@ app.prepare().then(() => {
     });
   });
 
+  server.get('/episode/update/:episodeid', (req, res) => {
+    return app.render(req, res, '/episode/update', {
+      episodeid: req.params.episodeid,
+    });
+  });
+
   server.get('/librery/:id', (req, res) => {
     return app.render(req, res, '/librery', { id: req.params.id });
   });

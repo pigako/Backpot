@@ -135,7 +135,11 @@ const Write = () => {
     }
   }, [isAddedEpisode]);
 
-  const writeEpisode = useCallback(
+  const onCancleWrite = useCallback(() => {
+    Router.back();
+  }, []);
+
+  const onWriteEpisode = useCallback(
     e => {
       e.preventDefault();
       const episodeContent =
@@ -167,11 +171,17 @@ const Write = () => {
           `}
         </style>
       </Helmet>
-      <EpisodeForm onSubmit={writeEpisode}>
+      <EpisodeForm onSubmit={onWriteEpisode}>
         <WriteEpisodeTopDiv>
-          <BookTitle>{book && book.name}</BookTitle>
+          <BookTitle>
+            {book &&
+              book.name +
+                '  ' +
+                (book.Episodes.filter(v => v.isNotice !== 1).length + 1) +
+                '번째 글'}
+          </BookTitle>
           <TopButtonDiv>
-            <Button color="pink" type="button">
+            <Button color="pink" type="button" onClick={onCancleWrite}>
               취소
             </Button>
             <Button type="submit">작성</Button>

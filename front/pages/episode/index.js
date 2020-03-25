@@ -123,7 +123,16 @@ const Episode = () => {
     );
   }, [episode && episode.Book]);
 
-  const onUpdateEpisode = useCallback(() => {}, []);
+  const onUpdateEpisode = useCallback(() => {
+    Router.push(
+      {
+        pathname: `/episode/update`,
+        query: { episodeid: episode.id },
+      },
+      `/episode/update/${episode.id}`,
+    );
+  }, [episode && episode.id]);
+
   const onDeleteEpisode = useCallback(() => {}, []);
   const onRecommenmdEpisode = useCallback(() => {
     dispatch({

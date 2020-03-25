@@ -5,6 +5,10 @@ export const initalState = {
   isAddingEpisode: false,
   isAddedEpisode: false,
   isRecommending: false,
+  isUpdatingEpisode: false,
+  isUpdatedEpisode: false,
+  isDeletingEpisode: false,
+  isDeletedEpisode: false,
 };
 
 export const LOAD_EPISODE_REQUEST = `LOAD_EPISODE_REQUEST`;
@@ -21,11 +25,22 @@ export const ADD_RECOMMEND_REQUEST = `ADD_RECOMMEND_REQUEST`;
 export const ADD_RECOMMEND_SUCCESS = `ADD_RECOMMEND_SUCCESS`;
 export const ADD_RECOMMEND_FAILURE = `ADD_RECOMMEND_FAILURE`;
 
+export const UPDATE_EPISODE_REQUEST = `UPDATE_EPISODE_REQUEST`;
+export const UPDATE_EPISODE_SUCCESS = `UPDATE_EPISODE_SUCCESS`;
+export const UPDATE_EPISODE_FAILURE = `UPDATE_EPISODE_FAILURE`;
+
+export const CHANGE_UPDATEDEPISODE = `CHANGE_UPDATEDEPISODE`;
+
+export const DELETE_EPISODE_REQUEST = `DELETE_EPISODE_REQUEST`;
+export const DELETE_EPISODE_SUCCESS = `DELETE_EPISODE_SUCCESS`;
+export const DELETE_EPISODE_FAILURE = `DELETE_EPISODE_FAILURE`;
+
+export const CHANGE_DELETEDEPISODE = `CHANGE_DELETEDEPISODE`;
+
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case LOAD_EPISODE_REQUEST: {
-        draft.episode = null;
         break;
       }
       case LOAD_EPISODE_SUCCESS: {
@@ -62,6 +77,40 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case ADD_RECOMMEND_FAILURE: {
+        break;
+      }
+      case UPDATE_EPISODE_REQUEST: {
+        draft.isUpdatedEpisode = false;
+        draft.isUpdatingEpisode = true;
+        break;
+      }
+      case UPDATE_EPISODE_SUCCESS: {
+        draft.isUpdatedEpisode = true;
+        draft.isUpdatingEpisode = false;
+        break;
+      }
+      case UPDATE_EPISODE_FAILURE: {
+        break;
+      }
+      case CHANGE_UPDATEDEPISODE: {
+        draft.isUpdatedEpisode = false;
+        break;
+      }
+      case DELETE_EPISODE_REQUEST: {
+        draft.isDeletingEpisode = true;
+        draft.isDeletedEpisode = false;
+        break;
+      }
+      case DELETE_EPISODE_REQUEST: {
+        draft.isDeletedEpisode = true;
+        draft.isDeletingEpisode = false;
+        break;
+      }
+      case DELETE_EPISODE_REQUEST: {
+        break;
+      }
+      case CHANGE_DELETEDEPISODE: {
+        draft.isDeletedEpisode = false;
         break;
       }
       default: {
