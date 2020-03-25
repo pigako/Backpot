@@ -38,8 +38,11 @@ const BookList = () => {
 };
 
 BookList.getInitialProps = async context => {
+  const state = context.store.getState();
   context.store.dispatch({
     type: LOAD_BOOKS_REQUEST,
+    lastId: 0,
+    keyword: state.book.keyword,
   });
 };
 

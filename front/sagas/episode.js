@@ -7,6 +7,9 @@ import {
   ADD_EPISODE_REQUEST,
   ADD_EPISODE_SUCCESS,
   ADD_EPISODE_FAILURE,
+  ADD_RECOMMEND_REQUEST,
+  ADD_RECOMMEND_SUCCESS,
+  ADD_RECOMMEND_FAILURE,
 } from '../reducers/episode';
 
 // 글 조회
@@ -51,7 +54,37 @@ function* watchAddEpisode() {
     }
   });
 }
+// 추천
+function* watchAddRecommend() {
+  yield takeLatest(ADD_RECOMMEND_REQUEST, function*(action) {
+    try {
+      const result = yield call(episodeId => {
+        return axios.post(
+          `/episode/${episodeId}`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+      }, action.id);
+      yield put({
+        type: ADD_RECOMMEND_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: ADD_RECOMMEND_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
 
 export default function* episodeSaga() {
-  yield all([fork(watchLoadEpisode), fork(watchAddEpisode)]);
+  yield all([
+    fork(watchLoadEpisode),
+    fork(watchAddEpisode),
+    fork(watchAddRecommend),
+  ]);
 }

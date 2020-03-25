@@ -35,9 +35,15 @@ import { ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST } from '../reducers/user';
 function* watchLoadBooks() {
   yield throttle(1000, LOAD_BOOKS_REQUEST, function* loadBooks(action) {
     try {
-      const result = yield call((lastId = 0, limit = 20) => {
-        return axios.get(`/books?lastId=${lastId}&limit=${limit}`);
-      }, action.lastId);
+      const result = yield call(
+        (lastId = 0, keyword = '', limit = 20) => {
+          return axios.get(
+            `/books?lastId=${lastId}&keyword=${keyword}&limit=${limit}`,
+          );
+        },
+        action.lastId,
+        action.keyword,
+      );
       yield put({
         type: LOAD_BOOKS_SUCCESS,
         data: result.data,

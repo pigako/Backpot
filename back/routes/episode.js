@@ -98,5 +98,29 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     return next(e);
   }
 });
+// 추천
+router.post('/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const episode = await db.Episode.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+    });
+    if (!episode) {
+      return res.status(404).send('존재하지 않는 글입니다.');
+    }
+    await db.Episode.increment(
+      {
+        recommends: 1,
+      },
+      {
+        where: { id: parseInt(req.params.id, 10) },
+      },
+    );
+    const recommendCount = episode.recommends + 1;
+    return res.send(recommendCount.toString());
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
 
 module.exports = router;

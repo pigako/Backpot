@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import Button from './designs/Button';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { CHANGE_KEYWORD } from '../reducers/book';
 
 const Menu = styled.header`
   position: fixed;
@@ -86,13 +87,25 @@ const Header = () => {
   const { pathname, query } = useRouter();
   const [searchText, setSearchText] = useState('');
   const { userId } = useSelector(state => state.user.me) || false;
+  const { keyword } = useSelector(state => state.book);
+
+  const dispatch = useDispatch();
+
   const onChangeSearchText = useCallback(e => {
     setSearchText(e.target.value);
   }, []);
 
-  const onSubmitSearch = useCallback(e => {
-    e.preventDefault();
-  }, []);
+  const onSubmitSearch = useCallback(
+    e => {
+      e.preventDefault();
+      dispatch({
+        type: CHANGE_KEYWORD,
+        data: searchText,
+      });
+      Router.push('/booklist');
+    },
+    [searchText],
+  );
 
   return (
     <Menu>

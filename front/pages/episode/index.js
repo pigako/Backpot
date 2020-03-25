@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
 
-import { LOAD_EPISODE_REQUEST } from '../../reducers/episode';
+import {
+  LOAD_EPISODE_REQUEST,
+  ADD_RECOMMEND_REQUEST,
+} from '../../reducers/episode';
 import CommnetCard from '../../components/CommentCard';
 import Button from '../../components/designs/Button';
 
@@ -111,6 +114,8 @@ const Episode = () => {
   const { episode } = useSelector(state => state.episode);
   const { id: myId } = useSelector(state => state.user.me) || '';
 
+  const dispatch = useDispatch();
+
   const onGoList = useCallback(() => {
     Router.push(
       { pathname: `/book`, query: { bookid: episode.Book.id } },
@@ -120,7 +125,12 @@ const Episode = () => {
 
   const onUpdateEpisode = useCallback(() => {}, []);
   const onDeleteEpisode = useCallback(() => {}, []);
-  const onRecommenmdEpisode = useCallback(() => {}, []);
+  const onRecommenmdEpisode = useCallback(() => {
+    dispatch({
+      type: ADD_RECOMMEND_REQUEST,
+      id: episode.id,
+    });
+  }, [episode && episode.id]);
 
   const onGoPrevEpisode = useCallback(() => {
     if (!episode.prev) {

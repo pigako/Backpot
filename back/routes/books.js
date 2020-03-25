@@ -10,6 +10,11 @@ router.get('/', async (req, res, next) => {
         [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10),
       };
     }
+    if (req.query.keyword) {
+      where.name = {
+        [db.Sequelize.Op.like]: '%' + req.query.keyword + '%',
+      };
+    }
     const books = await db.Book.findAll({
       where,
       include: [

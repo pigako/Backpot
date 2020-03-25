@@ -3,6 +3,7 @@ import produce from 'immer';
 export const initalState = {
   books: [],
   book: null,
+  keyword: '',
   genre: [],
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
@@ -18,6 +19,8 @@ export const initalState = {
 export const LOAD_BOOKS_REQUEST = `LOAD_BOOKS_REQUEST`;
 export const LOAD_BOOKS_SUCCESS = `LOAD_BOOKS_SUCCESS`;
 export const LOAD_BOOKS_FAILURE = `LOAD_BOOKS_FAILURE`;
+
+export const CHANGE_KEYWORD = `CHANGE_KEYWORD`;
 
 export const LOAD_BOOK_REQUEST = `LOAD_BOOK_REQUEST`;
 export const LOAD_BOOK_SUCCESS = `LOAD_BOOK_SUCCESS`;
@@ -77,6 +80,11 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case LOAD_BOOKS_FAILURE: {
+        break;
+      }
+      // 검색어 설정
+      case CHANGE_KEYWORD: {
+        draft.keyword = action.data;
         break;
       }
       // 작품 한개 조회
