@@ -125,6 +125,13 @@ const Book = () => {
     );
   }, [book && book.id]);
 
+  const onGoWriteEpisode = useCallback(() => {
+    Router.push(
+      { pathname: '/episode/write', query: { bookid: book.id } },
+      `/episode/write/${book.id}`,
+    );
+  });
+
   const onGoDeleteBook = useCallback(() => {
     dispatch({
       type: DELETE_BOOK_REQUEST,
@@ -242,7 +249,7 @@ const Book = () => {
       />
       <BookButtonDiv>
         {(me && me.id) === (book && book.User.id) ? (
-          <Button>글쓰러가기</Button>
+          <Button onClick={onGoWriteEpisode}>글쓰러가기</Button>
         ) : null}
         {me ? (
           me.LikingBook.find(v => v.id === (book && book.id)) ? (

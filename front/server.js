@@ -42,6 +42,12 @@ app.prepare().then(() => {
     return app.render(req, res, '/episode', { id: req.params.id });
   });
 
+  server.get('/episode/write/:bookid', (req, res) => {
+    return app.render(req, res, '/episode/write', {
+      bookid: req.params.bookid,
+    });
+  });
+
   server.get('/librery/:id', (req, res) => {
     return app.render(req, res, '/librery', { id: req.params.id });
   });

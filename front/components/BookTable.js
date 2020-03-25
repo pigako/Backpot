@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useCallback, useEffect } from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import moment from 'moment';
@@ -58,7 +58,15 @@ const BookTable = ({ episode, isASC = true }) => {
     [],
   );
 
-  const reverseEpisode = episode.slice().reverse();
+  useEffect(() => {
+    console.log(episode);
+  }, [episode]);
+  const notice = episode
+    .filter(v => v.isNotice === 1)
+    .slice()
+    .reverse();
+  const ascEpisode = episode.filter(v => v.isNotice !== 1);
+  const reverseEpisode = ascEpisode.slice().reverse();
 
   // 번호 제목 날짜 조회 추천
   return (
@@ -73,9 +81,21 @@ const BookTable = ({ episode, isASC = true }) => {
         </tr>
       </thead>
       <tbody>
+        {notice &&
+          notice.map(v => {
+            return (
+              <tr key={+v.id} onClick={goEpisode(+v.id)}>
+                <td>공지</td>
+                <td>{v.title}</td>
+                <td>{moment(v.createdAt).format('YYYY.MM.DD')}</td>
+                <td>{v.views}</td>
+                <td>{v.recommends}</td>
+              </tr>
+            );
+          })}
         {episode.length ? (
           isASC ? (
-            episode.map((v, index) => {
+            ascEpisode.map((v, index) => {
               return (
                 <tr key={+v.id} onClick={goEpisode(+v.id)}>
                   <td>{index + 1}</td>
