@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Button from '../components/designs/Button';
 import { SIGN_UP_REQUEST } from '../reducers/user';
 
@@ -77,6 +77,7 @@ const LoadingImg = styled.img`
 const SignUp = () => {
   const { isSignedUp, isSigningUp, me } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -193,11 +194,11 @@ const SignUp = () => {
   useEffect(() => {
     if (me && me.userId) {
       alert('로그인한 사용자는 접근할 수 없습니다.');
-      Router.push('/');
+      router.push('/');
     }
     if (isSignedUp) {
       alert('회원가입 완료');
-      Router.push('/');
+      router.push('/');
     }
   }, [isSignedUp, me && me.userId]);
 

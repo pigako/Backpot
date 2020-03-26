@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import { LOAD_USER_REQUEST } from '../reducers/user';
@@ -73,13 +73,14 @@ const Librery = () => {
     : useSelector(state => state.user.me);
 
   const { id: myId } = useSelector(state => state.user.me) || '';
+  const router = useRouter();
 
   const onGoWriteBook = useCallback(e => {
-    Router.push('/writebook');
+    router.push('/writebook');
   }, []);
 
   const onGoWriteBoard = useCallback(e => {
-    Router.push('/writeboard');
+    router.push('/writeboard');
   }, []);
 
   return (

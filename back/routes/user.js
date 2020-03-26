@@ -64,7 +64,6 @@ router.get('/:id', async (req, res, next) => {
       ],
       attributes: ['id', 'userId', 'nickname'],
     });
-    console.log('LoadUser', user);
     return res.json(user);
   } catch (e) {
     console.log(e);
@@ -151,7 +150,6 @@ router.post('/logout', isLoggedIn, (req, res, next) => {
 // 회원가입
 router.post('/signup', async (req, res, next) => {
   try {
-    console.log('signUp', req.body);
     const existUser = await db.User.findOne({ where: { userId: req.body.userId } });
     if (existUser) {
       return res.status(403).send('이미 사용중인 아이디입니다.');
@@ -170,7 +168,6 @@ router.post('/signup', async (req, res, next) => {
 });
 // 중복확인
 router.post('/check', async (req, res, next) => {
-  console.log(req.body);
   try {
     if (req.body.type === 'userId') {
       const existUserId = await db.User.findOne({ where: { userId: req.body.userId } });

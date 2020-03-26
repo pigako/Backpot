@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 const Card = styled.div`
   width: 31%;
@@ -69,10 +69,11 @@ const CreatedDate = styled.label`
 `;
 
 const BookCard = ({ book, nickname }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const goBook = useCallback(e => {
-    Router.push(
+    router.push(
       { pathname: `/book`, query: { bookid: book.id } },
       `/book/${book.id}`,
     );

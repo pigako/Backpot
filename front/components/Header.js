@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 import Button from './designs/Button';
 import { useSelector, useDispatch } from 'react-redux';
@@ -84,6 +84,7 @@ const SearchInput = styled.input`
 `;
 
 const Header = () => {
+  const router = useRouter();
   const { pathname, query } = useRouter();
   const [searchText, setSearchText] = useState('');
   const { userId } = useSelector(state => state.user.me) || false;
@@ -102,7 +103,7 @@ const Header = () => {
         type: CHANGE_KEYWORD,
         data: searchText,
       });
-      Router.push('/booklist');
+      router.push('/booklist');
     },
     [searchText],
   );

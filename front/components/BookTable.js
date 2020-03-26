@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import moment from 'moment';
 
 const Table = styled.table`
@@ -45,9 +45,10 @@ const Table = styled.table`
 `;
 
 const BookTable = ({ episode, isASC = true }) => {
+  const router = useRouter();
   const goEpisode = useCallback(
     episodeId => e => {
-      Router.push(
+      router.push(
         {
           pathname: '/episode',
           query: { id: episodeId },

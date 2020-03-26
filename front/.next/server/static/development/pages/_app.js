@@ -144,6 +144,7 @@ const SearchInput = styled_components__WEBPACK_IMPORTED_MODULE_1___default.a.inp
 })(["margin-right:10px;outline:none;border:none;border-radius:4px;padding-left:10px;height:2.25rem;width:10rem;font-size:1.5rem;transition:0.55s ease;&:hover{width:30rem;}&:focus{width:30rem;}"]);
 
 const Header = () => {
+  const router = Object(next_router__WEBPACK_IMPORTED_MODULE_3__["useRouter"])();
   const {
     pathname,
     query
@@ -168,7 +169,7 @@ const Header = () => {
       type: _reducers_book__WEBPACK_IMPORTED_MODULE_6__["CHANGE_KEYWORD"],
       data: searchText
     });
-    next_router__WEBPACK_IMPORTED_MODULE_3___default.a.push('/booklist');
+    router.push('/booklist');
   }, [searchText]);
   return __jsx(Menu, null, __jsx(List, null, __jsx(Item, {
     key: "home",

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Helmet from 'react-helmet';
 
 import Button from '../components/designs/Button';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { ADD_BOARD_REQUEST } from '../reducers/board';
 
@@ -59,6 +59,7 @@ const WriteBoard = () => {
   const [title, setTitle] = useState('');
   const { isAddingBoard, boardAdded } = useSelector(state => state.board);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     editorRef.current = {
@@ -70,12 +71,12 @@ const WriteBoard = () => {
 
   useEffect(() => {
     if (boardAdded) {
-      Router.push('/board');
+      router.push('/board');
     }
   }, [boardAdded]);
 
   const onCancle = useCallback(e => {
-    Router.back();
+    router.back();
   }, []);
 
   const onChangeTitle = useCallback(e => {

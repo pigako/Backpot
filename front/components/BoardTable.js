@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 const Table = styled.table`
   border-collapse: separate;
@@ -47,9 +47,10 @@ const Table = styled.table`
 `;
 
 const BoardTable = ({ board }) => {
+  const router = useRouter();
   const goBoard = useCallback(
     boardId => e => {
-      Router.push(
+      router.push(
         { pathname: '/detailboard', query: { id: boardId } },
         `/detailboard/${boardId}`,
       );

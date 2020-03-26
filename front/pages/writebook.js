@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Helmet from 'react-helmet';
 
 import Button from '../components/designs/Button';
@@ -151,6 +151,7 @@ const WriteBook = () => {
   const [editorLoded, setEditorLoded] = useState(false);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { thumbnailPath, isAddingBook, isAddedBook } = useSelector(
     state => state.book,
@@ -230,7 +231,7 @@ const WriteBook = () => {
   );
 
   const onCancle = useCallback(() => {
-    Router.back();
+    router.back();
   }, []);
 
   const onSubmitForm = useCallback(
@@ -261,7 +262,7 @@ const WriteBook = () => {
       dispatch({
         type: CHANGE_ADDEDBOOK,
       });
-      Router.push('/booklist');
+      router.push('/booklist');
     }
   }, [isAddedBook]);
 

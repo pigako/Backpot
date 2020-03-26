@@ -88,15 +88,15 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./components/CommentCard.js":
-/*!***********************************!*\
-  !*** ./components/CommentCard.js ***!
-  \***********************************/
+/***/ "./components/EpisodeCommentCard.js":
+/*!******************************************!*\
+  !*** ./components/EpisodeCommentCard.js ***!
+  \******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -121,28 +121,28 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 const SCommentCard = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
-  displayName: "CommentCard__SCommentCard",
-  componentId: "sc-1fhrn1i-0"
+  displayName: "EpisodeCommentCard__SCommentCard",
+  componentId: "sc-1889k7p-0"
 })(["margin:1.5rem;"]);
 const CommentCardTop = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
-  displayName: "CommentCard__CommentCardTop",
-  componentId: "sc-1fhrn1i-1"
+  displayName: "EpisodeCommentCard__CommentCardTop",
+  componentId: "sc-1889k7p-1"
 })(["height:2rem;background:#f7f7f7;border-bottom:solid 1px #6441a5;display:inline-block;width:100%;font-size:1rem;& > label{line-height:2rem;}"]);
 const CommentCardNickname = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
-  displayName: "CommentCard__CommentCardNickname",
-  componentId: "sc-1fhrn1i-2"
+  displayName: "EpisodeCommentCard__CommentCardNickname",
+  componentId: "sc-1889k7p-2"
 })(["font-weight:bold;margin-left:1rem;"]);
 const CommentCardCreateLabel = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.label.withConfig({
-  displayName: "CommentCard__CommentCardCreateLabel",
-  componentId: "sc-1fhrn1i-3"
+  displayName: "EpisodeCommentCard__CommentCardCreateLabel",
+  componentId: "sc-1889k7p-3"
 })(["display:block;float:right;"]);
 const CommentUpDelButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
-  displayName: "CommentCard__CommentUpDelButtonDiv",
-  componentId: "sc-1fhrn1i-4"
+  displayName: "EpisodeCommentCard__CommentUpDelButtonDiv",
+  componentId: "sc-1889k7p-4"
 })(["font-size:1rem;display:inline-block;float:right;margin-right:1rem;line-height:2rem;& > a{margin-left:10px;margin-right:10px;cursor:pointer;&:hover{color:#148cff;}}"]);
 const CommentCardContent = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div.withConfig({
-  displayName: "CommentCard__CommentCardContent",
-  componentId: "sc-1fhrn1i-5"
+  displayName: "EpisodeCommentCard__CommentCardContent",
+  componentId: "sc-1889k7p-5"
 })(["margin:1.5rem;& > div{font-size:1rem;line-height:1.5rem;}"]);
 
 const CommentCard = ({
@@ -308,7 +308,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/router */ "next/router");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _reducers_episode__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../reducers/episode */ "./reducers/episode.js");
-/* harmony import */ var _components_CommentCard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/CommentCard */ "./components/CommentCard.js");
+/* harmony import */ var _components_EpisodeCommentCard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/EpisodeCommentCard */ "./components/EpisodeCommentCard.js");
 /* harmony import */ var _components_designs_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/designs/Button */ "./components/designs/Button.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -412,8 +412,9 @@ const Episode = () => {
     id: myId
   } = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.user.me) || '';
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+  const router = Object(next_router__WEBPACK_IMPORTED_MODULE_5__["useRouter"])();
   const onGoList = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
-    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+    router.push({
       pathname: `/book`,
       query: {
         bookid: episode.Book.id
@@ -421,7 +422,7 @@ const Episode = () => {
     }, `/book/${episode.Book.id}`);
   }, [episode && episode.Book]);
   const onUpdateEpisode = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
-    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+    router.push({
       pathname: `/episode/update`,
       query: {
         episodeid: episode.id
@@ -439,7 +440,7 @@ const Episode = () => {
       dispatch({
         type: _reducers_episode__WEBPACK_IMPORTED_MODULE_6__["CHANGE_DELETEDEPISODE"]
       });
-      next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+      router.push({
         pathname: `/book`,
         query: {
           bookid: episode.Book.id
@@ -458,7 +459,7 @@ const Episode = () => {
       return alert('이전글이 존재하지 않습니다.');
     }
 
-    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+    router.push({
       pathname: '/episode',
       query: {
         id: episode.prev.id
@@ -470,7 +471,7 @@ const Episode = () => {
       return alert('다음글이 존재하지 않습니다.');
     }
 
-    next_router__WEBPACK_IMPORTED_MODULE_5___default.a.push({
+    router.push({
       pathname: '/episode',
       query: {
         id: episode.next.id
@@ -508,7 +509,7 @@ const Episode = () => {
   }, 'Next >'))), __jsx(EpisodeComment, {
     id: "comment"
   }, __jsx(EpisodeCommentCountDiv, null, __jsx("label", null, "\uB313\uAE00 ", episode && episode.Episode_Comments.length, "\uAC1C")), episode && episode.Episode_Comments.map(comment => {
-    return __jsx(_components_CommentCard__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    return __jsx(_components_EpisodeCommentCard__WEBPACK_IMPORTED_MODULE_7__["default"], {
       key: +comment.id,
       comment: comment
     });
@@ -963,7 +964,7 @@ const reducer = (state = initalState, action) => {
 
 /***/ }),
 
-/***/ 7:
+/***/ 5:
 /*!**************************************!*\
   !*** multi ./pages/episode/index.js ***!
   \**************************************/

@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
@@ -98,6 +98,8 @@ const Profile = ({ id }) => {
     newUserPasswordCheck,
   } = inputs;
 
+  const router = useRouter();
+
   const onChangeInputs = useCallback(
     e => {
       if (e.target.name === 'newUserPasswordCheck') {
@@ -119,12 +121,12 @@ const Profile = ({ id }) => {
     e => {
       if (!(me && me.id)) {
         alert('로그인 하지 않은 사용자는 접근 할 수 없습니다.');
-        Router.push('/');
+        router.push('/');
         return;
       }
       if ((me && me.userId) !== id) {
         alert('잘 못된 접근입니다.');
-        Router.push('/');
+        router.push('/');
         return;
       }
     },

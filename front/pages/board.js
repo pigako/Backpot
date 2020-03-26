@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '../components/designs/Button';
@@ -65,6 +65,7 @@ const Board = () => {
   const { boards, hasMoreBoards } = useSelector(state => state.board);
   const { me } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [lastIdArray, setLastIdArray] = useState([]);
 
   const onScroll = useCallback(
@@ -97,7 +98,7 @@ const Board = () => {
   }, [boards.length]);
 
   const onCreateBoard = useCallback(e => {
-    Router.push('/writeboard');
+    router.push('/writeboard');
   }, []);
 
   const onSearchBoard = useCallback(e => {}, []);

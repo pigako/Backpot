@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import {
   LOAD_BOOK_REQUEST,
@@ -110,23 +110,24 @@ const Book = () => {
   const { me } = useSelector(state => state.user);
   const [isASC, setIsASC] = useState(true);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onGoWriter = useCallback(() => {
-    Router.push(
+    router.push(
       { pathname: '/librery', query: { id: book.User.userId } },
       `/librery/${book.User.userId}`,
     );
   }, [book && book.User.id]);
 
   const onGoUpdateBook = useCallback(() => {
-    Router.push(
+    router.push(
       { pathname: '/updatebook', query: { bookid: book.id } },
       `/updatebook/${book.id}`,
     );
   }, [book && book.id]);
 
   const onGoWriteEpisode = useCallback(() => {
-    Router.push(
+    router.push(
       { pathname: '/episode/write', query: { bookid: book.id } },
       `/episode/write/${book.id}`,
     );
@@ -144,7 +145,7 @@ const Book = () => {
       dispatch({
         type: CHANGE_DELETEDBOOK,
       });
-      Router.push('/booklist');
+      router.push('/booklist');
     }
   }, [isDeletedBook]);
 

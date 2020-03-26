@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import Button from '../../components/designs/Button';
 import { LOAD_BOOK_REQUEST } from '../../reducers/book';
@@ -107,6 +107,7 @@ const Write = () => {
   const { CKEditor, ClassicEditor } = editorRef.current || {};
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [checkNotice, setCheckNotice] = useState(false);
   const [title, setTitle] = useState('');
@@ -134,7 +135,7 @@ const Write = () => {
       dispatch({
         type: CHANGE_ADDEDEPISODE,
       });
-      Router.push(
+      router.push(
         { pathname: `/book`, query: { bookid: book.id } },
         `/book/${book.id}`,
       );
@@ -142,7 +143,7 @@ const Write = () => {
   }, [isAddedEpisode]);
 
   const onCancleWrite = useCallback(() => {
-    Router.back();
+    router.back();
   }, []);
 
   const onWriteEpisode = useCallback(

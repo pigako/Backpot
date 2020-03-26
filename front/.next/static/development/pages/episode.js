@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static\\development\\pages\\episode.js"],{
 
-/***/ "./components/CommentCard.js":
-/*!***********************************!*\
-  !*** ./components/CommentCard.js ***!
-  \***********************************/
+/***/ "./components/EpisodeCommentCard.js":
+/*!******************************************!*\
+  !*** ./components/EpisodeCommentCard.js ***!
+  \******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26,28 +26,28 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 var SCommentCard = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
-  displayName: "CommentCard__SCommentCard",
-  componentId: "sc-1fhrn1i-0"
+  displayName: "EpisodeCommentCard__SCommentCard",
+  componentId: "sc-1889k7p-0"
 })(["margin:1.5rem;"]);
 var CommentCardTop = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
-  displayName: "CommentCard__CommentCardTop",
-  componentId: "sc-1fhrn1i-1"
+  displayName: "EpisodeCommentCard__CommentCardTop",
+  componentId: "sc-1889k7p-1"
 })(["height:2rem;background:#f7f7f7;border-bottom:solid 1px #6441a5;display:inline-block;width:100%;font-size:1rem;& > label{line-height:2rem;}"]);
 var CommentCardNickname = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].label.withConfig({
-  displayName: "CommentCard__CommentCardNickname",
-  componentId: "sc-1fhrn1i-2"
+  displayName: "EpisodeCommentCard__CommentCardNickname",
+  componentId: "sc-1889k7p-2"
 })(["font-weight:bold;margin-left:1rem;"]);
 var CommentCardCreateLabel = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].label.withConfig({
-  displayName: "CommentCard__CommentCardCreateLabel",
-  componentId: "sc-1fhrn1i-3"
+  displayName: "EpisodeCommentCard__CommentCardCreateLabel",
+  componentId: "sc-1889k7p-3"
 })(["display:block;float:right;"]);
 var CommentUpDelButtonDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
-  displayName: "CommentCard__CommentUpDelButtonDiv",
-  componentId: "sc-1fhrn1i-4"
+  displayName: "EpisodeCommentCard__CommentUpDelButtonDiv",
+  componentId: "sc-1889k7p-4"
 })(["font-size:1rem;display:inline-block;float:right;margin-right:1rem;line-height:2rem;& > a{margin-left:10px;margin-right:10px;cursor:pointer;&:hover{color:#148cff;}}"]);
 var CommentCardContent = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
-  displayName: "CommentCard__CommentCardContent",
-  componentId: "sc-1fhrn1i-5"
+  displayName: "EpisodeCommentCard__CommentCardContent",
+  componentId: "sc-1889k7p-5"
 })(["margin:1.5rem;& > div{font-size:1rem;line-height:1.5rem;}"]);
 
 var CommentCard = function CommentCard(_ref) {
@@ -35473,7 +35473,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! next/router */ "./node_modules/next/dist/client/router.js");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _reducers_episode__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../reducers/episode */ "./reducers/episode.js");
-/* harmony import */ var _components_CommentCard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/CommentCard */ "./components/CommentCard.js");
+/* harmony import */ var _components_EpisodeCommentCard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/EpisodeCommentCard */ "./components/EpisodeCommentCard.js");
 /* harmony import */ var _components_designs_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/designs/Button */ "./components/designs/Button.js");
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
@@ -35582,8 +35582,9 @@ var Episode = function Episode() {
       myId = _ref.id;
 
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
+  var router = Object(next_router__WEBPACK_IMPORTED_MODULE_6__["useRouter"])();
   var onGoList = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
-    next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+    router.push({
       pathname: "/book",
       query: {
         bookid: episode.Book.id
@@ -35591,7 +35592,7 @@ var Episode = function Episode() {
     }, "/book/".concat(episode.Book.id));
   }, [episode && episode.Book]);
   var onUpdateEpisode = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
-    next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+    router.push({
       pathname: "/episode/update",
       query: {
         episodeid: episode.id
@@ -35609,7 +35610,7 @@ var Episode = function Episode() {
       dispatch({
         type: _reducers_episode__WEBPACK_IMPORTED_MODULE_7__["CHANGE_DELETEDEPISODE"]
       });
-      next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+      router.push({
         pathname: "/book",
         query: {
           bookid: episode.Book.id
@@ -35628,7 +35629,7 @@ var Episode = function Episode() {
       return alert('이전글이 존재하지 않습니다.');
     }
 
-    next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+    router.push({
       pathname: '/episode',
       query: {
         id: episode.prev.id
@@ -35640,7 +35641,7 @@ var Episode = function Episode() {
       return alert('다음글이 존재하지 않습니다.');
     }
 
-    next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push({
+    router.push({
       pathname: '/episode',
       query: {
         id: episode.next.id
@@ -35675,7 +35676,7 @@ var Episode = function Episode() {
   }, 'Next >'))), __jsx(EpisodeComment, {
     id: "comment"
   }, __jsx(EpisodeCommentCountDiv, null, __jsx("label", null, "\uB313\uAE00 ", episode && episode.Episode_Comments.length, "\uAC1C")), episode && episode.Episode_Comments.map(function (comment) {
-    return __jsx(_components_CommentCard__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    return __jsx(_components_EpisodeCommentCard__WEBPACK_IMPORTED_MODULE_8__["default"], {
       key: +comment.id,
       comment: comment
     });
@@ -36151,7 +36152,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 5:
+/***/ 3:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fepisode&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cepisode%5Cindex.js ***!
   \**************************************************************************************************************************************/
@@ -36174,5 +36175,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[5,"static/runtime/webpack.js"]]]);
+},[[3,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=episode.js.map

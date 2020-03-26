@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import Button from '../components/designs/Button';
 import {
@@ -12,7 +12,7 @@ import {
   UPDATE_BOARD_REQUEST,
   ADD_COMMENT_REQUEST,
 } from '../reducers/board';
-import CommnetCard from '../components/CommentCard';
+import CommentCard from '../components/CommentCard';
 
 const SBoard = styled.div`
   width: 98%;
@@ -99,6 +99,7 @@ const DetailBoard = () => {
   } = useSelector(state => state.board);
   const { id: myId } = useSelector(state => state.user.me) || false;
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const editorRef = useRef();
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -118,7 +119,7 @@ const DetailBoard = () => {
 
   useEffect(() => {
     if (boardDeleted) {
-      Router.push('/board');
+      router.push('/board');
     }
   }, [boardDeleted]);
 
@@ -245,7 +246,7 @@ const DetailBoard = () => {
 
         {board &&
           board.Comments.map(comment => {
-            return <CommnetCard key={+comment.id} comment={comment} />;
+            return <CommentCard key={+comment.id} comment={comment} />;
           })}
       </SBoardComment>
       {myId && (

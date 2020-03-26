@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import Button from '../../components/designs/Button';
 import {
@@ -102,6 +102,7 @@ const Update = () => {
   );
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [checkNotice, setCheckNotice] = useState(
     episode && episode.isNotice === 1 ? true : false,
@@ -146,7 +147,7 @@ const Update = () => {
       dispatch({
         type: CHANGE_UPDATEDEPISODE,
       });
-      Router.push(
+      router.push(
         { pathname: `/episode`, query: { id: episode.id } },
         `/episode/${episode.id}`,
       );
@@ -154,7 +155,7 @@ const Update = () => {
   }, [isUpdatedEpisode, episode && episode.id]);
 
   const onCancleUpdate = useCallback(() => {
-    Router.back();
+    router.back();
   }, []);
 
   //

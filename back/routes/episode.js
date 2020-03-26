@@ -23,6 +23,12 @@ router.get('/:id', async (req, res, next) => {
         },
         {
           model: db.EpisodeComment,
+          include: [
+            {
+              model: db.User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
         },
       ],
     });

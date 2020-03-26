@@ -181,7 +181,6 @@ router.delete('/:id/unlike', isLoggedIn, async (req, res, next) => {
 // 썸네일 이미지 업로드
 router.post('/thumbnail', isLoggedIn, upload.single('image'), (req, res, next) => {
   try {
-    console.log('req.file', req.file);
     res.json(req.file.filename);
   } catch (e) {
     console.log(e);

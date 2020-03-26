@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import {
   LOAD_EPISODE_REQUEST,
@@ -11,7 +11,7 @@ import {
   DELETE_EPISODE_REQUEST,
   CHANGE_DELETEDEPISODE,
 } from '../../reducers/episode';
-import CommnetCard from '../../components/CommentCard';
+import EpisodeCommentCard from '../../components/EpisodeCommentCard';
 import Button from '../../components/designs/Button';
 
 const EpisodeDiv = styled.div`
@@ -126,16 +126,17 @@ const Episode = () => {
   const { id: myId } = useSelector(state => state.user.me) || '';
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onGoList = useCallback(() => {
-    Router.push(
+    router.push(
       { pathname: `/book`, query: { bookid: episode.Book.id } },
       `/book/${episode.Book.id}`,
     );
   }, [episode && episode.Book]);
 
   const onUpdateEpisode = useCallback(() => {
-    Router.push(
+    router.push(
       {
         pathname: `/episode/update`,
         query: { episodeid: episode.id },
@@ -156,7 +157,7 @@ const Episode = () => {
       dispatch({
         type: CHANGE_DELETEDEPISODE,
       });
-      Router.push(
+      router.push(
         { pathname: `/book`, query: { bookid: episode.Book.id } },
         `/book/${episode.Book.id}`,
       );
@@ -174,7 +175,7 @@ const Episode = () => {
     if (!episode.prev) {
       return alert('이전글이 존재하지 않습니다.');
     }
-    Router.push(
+    router.push(
       {
         pathname: '/episode',
         query: { id: episode.prev.id },
@@ -187,7 +188,7 @@ const Episode = () => {
     if (!episode.next) {
       return alert('다음글이 존재하지 않습니다.');
     }
-    Router.push(
+    router.push(
       {
         pathname: '/episode',
         query: { id: episode.next.id },
@@ -285,7 +286,7 @@ const Episode = () => {
 
         {episode &&
           episode.Episode_Comments.map(comment => {
-            return <CommnetCard key={+comment.id} comment={comment} />;
+            return <EpisodeCommentCard key={+comment.id} comment={comment} />;
           })}
       </EpisodeComment>
     </EpisodeDiv>
