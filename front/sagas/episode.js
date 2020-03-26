@@ -16,6 +16,15 @@ import {
   DELETE_EPISODE_REQUEST,
   DELETE_EPISODE_SUCCESS,
   DELETE_EPISODE_FAILURE,
+  ADD_EPISODE_COMMENT_REQUEST,
+  ADD_EPISODE_COMMENT_SUCCESS,
+  ADD_EPISODE_COMMENT_FAILURE,
+  UPDATE_EPISODE_COMMENT_REQUEST,
+  UPDATE_EPISODE_COMMENT_SUCCESS,
+  UPDATE_EPISODE_COMMENT_FAILURE,
+  DELETE_EPISODE_COMMENT_REQUEST,
+  DELETE_EPISODE_COMMENT_SUCCESS,
+  DELETE_EPISODE_COMMENT_FAILURE,
 } from '../reducers/episode';
 
 // 글 조회
@@ -128,6 +137,77 @@ function* watchDeleteEpisode() {
     }
   });
 }
+// 댓글 작성
+function* watchAddComment() {
+  yield takeLatest(ADD_EPISODE_COMMENT_REQUEST, function*(action) {
+    try {
+      const result = yield call(commentData => {
+        return axios.post('/episode/comment', commentData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: ADD_EPISODE_COMMENT_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: ADD_EPISODE_COMMENT_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+// 댓글 수정
+function* watchUpdateComment() {
+  yield takeLatest(UPDATE_EPISODE_COMMENT_REQUEST, function* updateComment(
+    action,
+  ) {
+    try {
+      const result = yield call(updateCommentData => {
+        return axios.patch('/episode/comment', updateCommentData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: UPDATE_EPISODE_COMMENT_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: UPDATE_EPISODE_COMMENT_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+// 댓글 삭제
+function* watchDeleteComment() {
+  yield takeLatest(DELETE_EPISODE_COMMENT_REQUEST, function* deleteBoard(
+    action,
+  ) {
+    try {
+      const result = yield call(commentId => {
+        return axios.delete(`/episode/comment/${commentId}`, {
+          withCredentials: true,
+        });
+      }, action.commentId);
+      yield put({
+        type: DELETE_EPISODE_COMMENT_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: DELETE_EPISODE_COMMENT_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+
 export default function* episodeSaga() {
   yield all([
     fork(watchLoadEpisode),
@@ -135,5 +215,8 @@ export default function* episodeSaga() {
     fork(watchAddRecommend),
     fork(watchUpdateEpisode),
     fork(watchDeleteEpisode),
+    fork(watchAddComment),
+    fork(watchUpdateComment),
+    fork(watchDeleteComment),
   ]);
 }

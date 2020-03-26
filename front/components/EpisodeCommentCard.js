@@ -5,9 +5,9 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  DELETE_COMMENT_REQUEST,
-  UPDATE_COMMENT_REQUEST,
-} from '../reducers/board';
+  DELETE_EPISODE_COMMENT_REQUEST,
+  UPDATE_EPISODE_COMMENT_REQUEST,
+} from '../reducers/episode';
 
 const SCommentCard = styled.div`
   margin: 1.5rem;
@@ -80,7 +80,7 @@ const CommentCard = ({ comment }) => {
     e => {
       if (isUpdatingComment) {
         dispatch({
-          type: UPDATE_COMMENT_REQUEST,
+          type: UPDATE_EPISODE_COMMENT_REQUEST,
           data: {
             id: comment.id,
             content: updateCommentText,
@@ -106,7 +106,7 @@ const CommentCard = ({ comment }) => {
     e => {
       console.log('CommentCard', comment.id);
       dispatch({
-        type: DELETE_COMMENT_REQUEST,
+        type: DELETE_EPISODE_COMMENT_REQUEST,
         commentId: comment.id,
       });
     },

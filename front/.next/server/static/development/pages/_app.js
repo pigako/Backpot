@@ -3215,7 +3215,7 @@ const reducer = (state = initalState, action) => {
 /*!*****************************!*\
   !*** ./reducers/episode.js ***!
   \*****************************/
-/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, default */
+/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, ADD_EPISODE_COMMENT_REQUEST, ADD_EPISODE_COMMENT_SUCCESS, ADD_EPISODE_COMMENT_FAILURE, UPDATE_EPISODE_COMMENT_REQUEST, UPDATE_EPISODE_COMMENT_SUCCESS, UPDATE_EPISODE_COMMENT_FAILURE, DELETE_EPISODE_COMMENT_REQUEST, DELETE_EPISODE_COMMENT_SUCCESS, DELETE_EPISODE_COMMENT_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3239,6 +3239,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_SUCCESS", function() { return DELETE_EPISODE_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_FAILURE", function() { return DELETE_EPISODE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_DELETEDEPISODE", function() { return CHANGE_DELETEDEPISODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_REQUEST", function() { return ADD_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_SUCCESS", function() { return ADD_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_FAILURE", function() { return ADD_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_REQUEST", function() { return UPDATE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_SUCCESS", function() { return UPDATE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_FAILURE", function() { return UPDATE_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_REQUEST", function() { return DELETE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_SUCCESS", function() { return DELETE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_FAILURE", function() { return DELETE_EPISODE_COMMENT_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -3250,7 +3259,10 @@ const initalState = {
   isUpdatingEpisode: false,
   isUpdatedEpisode: false,
   isDeletingEpisode: false,
-  isDeletedEpisode: false
+  isDeletedEpisode: false,
+  isAddingComment: false,
+  commentAdded: false,
+  isUpdatingComment: false
 };
 const LOAD_EPISODE_REQUEST = `LOAD_EPISODE_REQUEST`;
 const LOAD_EPISODE_SUCCESS = `LOAD_EPISODE_SUCCESS`;
@@ -3270,6 +3282,15 @@ const DELETE_EPISODE_REQUEST = `DELETE_EPISODE_REQUEST`;
 const DELETE_EPISODE_SUCCESS = `DELETE_EPISODE_SUCCESS`;
 const DELETE_EPISODE_FAILURE = `DELETE_EPISODE_FAILURE`;
 const CHANGE_DELETEDEPISODE = `CHANGE_DELETEDEPISODE`;
+const ADD_EPISODE_COMMENT_REQUEST = `ADD_EPISODE_COMMENT_REQUEST`;
+const ADD_EPISODE_COMMENT_SUCCESS = `ADD_EPISODE_COMMENT_SUCCESS`;
+const ADD_EPISODE_COMMENT_FAILURE = `ADD_EPISODE_COMMENT_FAILURE`;
+const UPDATE_EPISODE_COMMENT_REQUEST = `UPDATE_EPISODE_COMMENT_REQUEST`;
+const UPDATE_EPISODE_COMMENT_SUCCESS = `UPDATE_EPISODE_COMMENT_SUCCESS`;
+const UPDATE_EPISODE_COMMENT_FAILURE = `UPDATE_EPISODE_COMMENT_FAILURE`;
+const DELETE_EPISODE_COMMENT_REQUEST = `DELETE_EPISODE_COMMENT_REQUEST`;
+const DELETE_EPISODE_COMMENT_SUCCESS = `DELETE_EPISODE_COMMENT_SUCCESS`;
+const DELETE_EPISODE_COMMENT_FAILURE = `DELETE_EPISODE_COMMENT_FAILURE`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -3380,6 +3401,65 @@ const reducer = (state = initalState, action) => {
       case CHANGE_DELETEDEPISODE:
         {
           draft.isDeletedEpisode = false;
+          break;
+        }
+      // 댓글 작성
+
+      case ADD_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isAddingComment = true;
+          draft.commentAdded = false;
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isAddingComment = false;
+          draft.commentAdded = true;
+          draft.episode.Episode_Comments.push(action.data);
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 수정
+
+      case UPDATE_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isUpdatingBoard = true;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isUpdatingBoard = false;
+          const commentIndex = draft.episode.Episode_Comments.findIndex(v => v.id === action.data.id);
+          draft.episode.Episode_Comments[commentIndex].content = action.data.content;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 삭제
+
+      case DELETE_EPISODE_COMMENT_REQUEST:
+        {
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_SUCCESS:
+        {
+          const commentIndex = draft.episode.Episode_Comments.findIndex(v => v.id === action.data);
+          draft.episode.Episode_Comments.splice(commentIndex, 1);
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_FAILURE:
+        {
           break;
         }
 
@@ -4193,10 +4273,79 @@ function* watchDeleteEpisode() {
       });
     }
   });
+} // 댓글 작성
+
+
+function* watchAddComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_2__["ADD_EPISODE_COMMENT_REQUEST"], function* (action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(commentData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/episode/comment', commentData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["ADD_EPISODE_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["ADD_EPISODE_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 댓글 수정
+
+
+function* watchUpdateComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_2__["UPDATE_EPISODE_COMMENT_REQUEST"], function* updateComment(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateCommentData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch('/episode/comment', updateCommentData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["UPDATE_EPISODE_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["UPDATE_EPISODE_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
+} // 댓글 삭제
+
+
+function* watchDeleteComment() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_COMMENT_REQUEST"], function* deleteBoard(action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(commentId => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.delete(`/episode/comment/${commentId}`, {
+          withCredentials: true
+        });
+      }, action.commentId);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_COMMENT_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_2__["DELETE_EPISODE_COMMENT_FAILURE"],
+        error: e
+      });
+    }
+  });
 }
 
 function* episodeSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteEpisode)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchDeleteComment)]);
 }
 
 /***/ }),

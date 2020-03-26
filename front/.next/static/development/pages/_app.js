@@ -42109,7 +42109,7 @@ var reducer = function reducer() {
 /*!*****************************!*\
   !*** ./reducers/episode.js ***!
   \*****************************/
-/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, default */
+/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, ADD_EPISODE_COMMENT_REQUEST, ADD_EPISODE_COMMENT_SUCCESS, ADD_EPISODE_COMMENT_FAILURE, UPDATE_EPISODE_COMMENT_REQUEST, UPDATE_EPISODE_COMMENT_SUCCESS, UPDATE_EPISODE_COMMENT_FAILURE, DELETE_EPISODE_COMMENT_REQUEST, DELETE_EPISODE_COMMENT_SUCCESS, DELETE_EPISODE_COMMENT_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42133,6 +42133,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_SUCCESS", function() { return DELETE_EPISODE_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_FAILURE", function() { return DELETE_EPISODE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_DELETEDEPISODE", function() { return CHANGE_DELETEDEPISODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_REQUEST", function() { return ADD_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_SUCCESS", function() { return ADD_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_FAILURE", function() { return ADD_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_REQUEST", function() { return UPDATE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_SUCCESS", function() { return UPDATE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_FAILURE", function() { return UPDATE_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_REQUEST", function() { return DELETE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_SUCCESS", function() { return DELETE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_FAILURE", function() { return DELETE_EPISODE_COMMENT_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
 var initalState = {
@@ -42143,7 +42152,10 @@ var initalState = {
   isUpdatingEpisode: false,
   isUpdatedEpisode: false,
   isDeletingEpisode: false,
-  isDeletedEpisode: false
+  isDeletedEpisode: false,
+  isAddingComment: false,
+  commentAdded: false,
+  isUpdatingComment: false
 };
 var LOAD_EPISODE_REQUEST = "LOAD_EPISODE_REQUEST";
 var LOAD_EPISODE_SUCCESS = "LOAD_EPISODE_SUCCESS";
@@ -42163,6 +42175,15 @@ var DELETE_EPISODE_REQUEST = "DELETE_EPISODE_REQUEST";
 var DELETE_EPISODE_SUCCESS = "DELETE_EPISODE_SUCCESS";
 var DELETE_EPISODE_FAILURE = "DELETE_EPISODE_FAILURE";
 var CHANGE_DELETEDEPISODE = "CHANGE_DELETEDEPISODE";
+var ADD_EPISODE_COMMENT_REQUEST = "ADD_EPISODE_COMMENT_REQUEST";
+var ADD_EPISODE_COMMENT_SUCCESS = "ADD_EPISODE_COMMENT_SUCCESS";
+var ADD_EPISODE_COMMENT_FAILURE = "ADD_EPISODE_COMMENT_FAILURE";
+var UPDATE_EPISODE_COMMENT_REQUEST = "UPDATE_EPISODE_COMMENT_REQUEST";
+var UPDATE_EPISODE_COMMENT_SUCCESS = "UPDATE_EPISODE_COMMENT_SUCCESS";
+var UPDATE_EPISODE_COMMENT_FAILURE = "UPDATE_EPISODE_COMMENT_FAILURE";
+var DELETE_EPISODE_COMMENT_REQUEST = "DELETE_EPISODE_COMMENT_REQUEST";
+var DELETE_EPISODE_COMMENT_SUCCESS = "DELETE_EPISODE_COMMENT_SUCCESS";
+var DELETE_EPISODE_COMMENT_FAILURE = "DELETE_EPISODE_COMMENT_FAILURE";
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
@@ -42275,6 +42296,70 @@ var reducer = function reducer() {
       case CHANGE_DELETEDEPISODE:
         {
           draft.isDeletedEpisode = false;
+          break;
+        }
+      // 댓글 작성
+
+      case ADD_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isAddingComment = true;
+          draft.commentAdded = false;
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isAddingComment = false;
+          draft.commentAdded = true;
+          draft.episode.Episode_Comments.push(action.data);
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 수정
+
+      case UPDATE_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isUpdatingBoard = true;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isUpdatingBoard = false;
+          var commentIndex = draft.episode.Episode_Comments.findIndex(function (v) {
+            return v.id === action.data.id;
+          });
+          draft.episode.Episode_Comments[commentIndex].content = action.data.content;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 삭제
+
+      case DELETE_EPISODE_COMMENT_REQUEST:
+        {
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_SUCCESS:
+        {
+          var _commentIndex = draft.episode.Episode_Comments.findIndex(function (v) {
+            return v.id === action.data;
+          });
+
+          draft.episode.Episode_Comments.splice(_commentIndex, 1);
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_FAILURE:
+        {
           break;
         }
 
@@ -43762,6 +43847,15 @@ _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(w
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchDeleteEpisode),
     _marked6 =
 /*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchAddComment),
+    _marked7 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchUpdateComment),
+    _marked8 =
+/*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchDeleteComment),
+    _marked9 =
+/*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(episodeSaga);
 
 
@@ -44062,22 +44156,205 @@ function watchDeleteEpisode() {
       }
     }
   }, _marked5);
-}
+} // 댓글 작성
 
-function episodeSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function episodeSaga$(_context11) {
+
+function watchAddComment() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchAddComment$(_context12) {
     while (1) {
-      switch (_context11.prev = _context11.next) {
+      switch (_context12.prev = _context12.next) {
         case 0:
-          _context11.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchDeleteEpisode)]);
+          _context12.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_3__["ADD_EPISODE_COMMENT_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context11) {
+              while (1) {
+                switch (_context11.prev = _context11.next) {
+                  case 0:
+                    _context11.prev = 0;
+                    _context11.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (commentData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/episode/comment', commentData, {
+                        withCredentials: true
+                      });
+                    }, action.data);
+
+                  case 3:
+                    result = _context11.sent;
+                    _context11.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["ADD_EPISODE_COMMENT_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context11.next = 13;
+                    break;
+
+                  case 8:
+                    _context11.prev = 8;
+                    _context11.t0 = _context11["catch"](0);
+                    console.log(_context11.t0);
+                    _context11.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["ADD_EPISODE_COMMENT_FAILURE"],
+                      error: _context11.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context11.stop();
+                }
+              }
+            }, _callee6, null, [[0, 8]]);
+          }));
 
         case 2:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
     }
   }, _marked6);
+} // 댓글 수정
+
+
+function watchUpdateComment() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchUpdateComment$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_3__["UPDATE_EPISODE_COMMENT_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function updateComment(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function updateComment$(_context13) {
+              while (1) {
+                switch (_context13.prev = _context13.next) {
+                  case 0:
+                    _context13.prev = 0;
+                    _context13.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (updateCommentData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.patch('/episode/comment', updateCommentData, {
+                        withCredentials: true
+                      });
+                    }, action.data);
+
+                  case 3:
+                    result = _context13.sent;
+                    _context13.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["UPDATE_EPISODE_COMMENT_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context13.next = 13;
+                    break;
+
+                  case 8:
+                    _context13.prev = 8;
+                    _context13.t0 = _context13["catch"](0);
+                    console.log(_context13.t0);
+                    _context13.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["UPDATE_EPISODE_COMMENT_FAILURE"],
+                      error: _context13.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context13.stop();
+                }
+              }
+            }, updateComment, null, [[0, 8]]);
+          }));
+
+        case 2:
+        case "end":
+          return _context14.stop();
+      }
+    }
+  }, _marked7);
+} // 댓글 삭제
+
+
+function watchDeleteComment() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchDeleteComment$(_context16) {
+    while (1) {
+      switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_COMMENT_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function deleteBoard(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function deleteBoard$(_context15) {
+              while (1) {
+                switch (_context15.prev = _context15.next) {
+                  case 0:
+                    _context15.prev = 0;
+                    _context15.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (commentId) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/episode/comment/".concat(commentId), {
+                        withCredentials: true
+                      });
+                    }, action.commentId);
+
+                  case 3:
+                    result = _context15.sent;
+                    _context15.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_COMMENT_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context15.next = 13;
+                    break;
+
+                  case 8:
+                    _context15.prev = 8;
+                    _context15.t0 = _context15["catch"](0);
+                    console.log(_context15.t0);
+                    _context15.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_3__["DELETE_EPISODE_COMMENT_FAILURE"],
+                      error: _context15.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context15.stop();
+                }
+              }
+            }, deleteBoard, null, [[0, 8]]);
+          }));
+
+        case 2:
+        case "end":
+          return _context16.stop();
+      }
+    }
+  }, _marked8);
+}
+
+function episodeSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function episodeSaga$(_context17) {
+    while (1) {
+      switch (_context17.prev = _context17.next) {
+        case 0:
+          _context17.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddRecommend), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUpdateEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchDeleteEpisode), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchAddComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUpdateComment), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchDeleteComment)]);
+
+        case 2:
+        case "end":
+          return _context17.stop();
+      }
+    }
+  }, _marked9);
 }
 
 /***/ }),

@@ -104,6 +104,85 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     return next(e);
   }
 });
+// 삭제
+router.delete('/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const episode = await db.Episode.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+    });
+    if (!episode) {
+      return res.status(404).send('존재하지 않는 글입니다.');
+    }
+    await episode.destroy();
+    return res.send('');
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
+
+// 댓글 작성
+router.post('/comment', isLoggedIn, async (req, res, next) => {
+  try {
+    const newComment = await db.EpisodeComment.create({
+      EpisodeId: parseInt(req.body.episodeId, 10),
+      UserId: req.user.id,
+      content: req.body.content,
+    });
+
+    const fullComment = await db.EpisodeComment.findOne({
+      where: { id: newComment.id },
+      attributes: ['id', 'content', 'createdAt'],
+      include: [
+        {
+          model: db.User,
+          attributes: ['id', 'nickname'],
+        },
+      ],
+    });
+
+    return res.json(fullComment);
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
+// 댓글 수정
+router.patch('/comment', isLoggedIn, async (req, res, next) => {
+  try {
+    const comment = db.EpisodeComment.findOne({ where: { id: parseInt(req.body.id, 10) } });
+    if (!comment) {
+      return res.status(404).send('댓글이 존재하지 않습니다.');
+    }
+    await db.EpisodeComment.update(
+      {
+        content: req.body.content,
+      },
+      {
+        where: { id: parseInt(req.body.id, 10) },
+      },
+    );
+    return res.json({ id: parseInt(req.body.id, 10), content: req.body.content });
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
+// 댓글 삭제
+router.delete('/comment/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const comment = await db.EpisodeComment.findOne({ where: { id: parseInt(req.params.id, 10) } });
+    if (!comment) {
+      return res.status(404).send('댓글이 존재하지 않습니다.');
+    }
+    await db.EpisodeComment.destroy({ where: { id: parseInt(req.params.id, 10) } });
+    res.send(req.params.id);
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
+});
+
 // 글 수정
 router.patch('/:id', isLoggedIn, async (req, res, next) => {
   try {
@@ -126,21 +205,7 @@ router.patch('/:id', isLoggedIn, async (req, res, next) => {
     return next(e);
   }
 });
-router.delete('/:id', isLoggedIn, async (req, res, next) => {
-  try {
-    const episode = await db.Episode.findOne({
-      where: { id: parseInt(req.params.id, 10) },
-    });
-    if (!episode) {
-      return res.status(404).send('존재하지 않는 글입니다.');
-    }
-    await episode.destroy();
-    return res.send('');
-  } catch (e) {
-    console.log(e);
-    return next(e);
-  }
-});
+
 // 추천
 router.post('/:id', isLoggedIn, async (req, res, next) => {
   try {
@@ -165,5 +230,4 @@ router.post('/:id', isLoggedIn, async (req, res, next) => {
     return next(e);
   }
 });
-
 module.exports = router;

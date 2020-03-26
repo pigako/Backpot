@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _reducers_board__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/board */ "./reducers/board.js");
+/* harmony import */ var _reducers_episode__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/episode */ "./reducers/episode.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
@@ -88,7 +88,7 @@ var CommentCard = function CommentCard(_ref) {
   var onUpdateComment = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
     if (isUpdatingComment) {
       dispatch({
-        type: _reducers_board__WEBPACK_IMPORTED_MODULE_5__["UPDATE_COMMENT_REQUEST"],
+        type: _reducers_episode__WEBPACK_IMPORTED_MODULE_5__["UPDATE_EPISODE_COMMENT_REQUEST"],
         data: {
           id: comment.id,
           content: updateCommentText
@@ -106,7 +106,7 @@ var CommentCard = function CommentCard(_ref) {
   var onDeleteComment = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (e) {
     console.log('CommentCard', comment.id);
     dispatch({
-      type: _reducers_board__WEBPACK_IMPORTED_MODULE_5__["DELETE_COMMENT_REQUEST"],
+      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_5__["DELETE_EPISODE_COMMENT_REQUEST"],
       commentId: comment.id
     });
   }, [comment && comment.id]);
@@ -35566,6 +35566,14 @@ var LoadingImg = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].img.w
   displayName: "episode__LoadingImg",
   componentId: "sc-1oaq4eh-19"
 })(["margin-top:4px;height:1.5rem;"]);
+var CommentDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div.withConfig({
+  displayName: "episode__CommentDiv",
+  componentId: "sc-1oaq4eh-20"
+})(["height:330px;"]);
+var CommentButton = Object(styled_components__WEBPACK_IMPORTED_MODULE_2__["default"])(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"]).withConfig({
+  displayName: "episode__CommentButton",
+  componentId: "sc-1oaq4eh-21"
+})(["width:8rem;margin-right:1.5rem;float:right;"]);
 
 var Episode = function Episode() {
   var _useSelector = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
@@ -35574,15 +35582,38 @@ var Episode = function Episode() {
       episode = _useSelector.episode,
       isDeletingEpisode = _useSelector.isDeletingEpisode,
       isDeletedEpisode = _useSelector.isDeletedEpisode,
-      isRecommending = _useSelector.isRecommending;
+      isRecommending = _useSelector.isRecommending,
+      isAddingComment = _useSelector.isAddingComment,
+      commentAdded = _useSelector.commentAdded;
 
   var _ref = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
     return state.user.me;
   }) || '',
       myId = _ref.id;
 
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      userComment = _useState[0],
+      setUserComment = _useState[1];
+
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
   var router = Object(next_router__WEBPACK_IMPORTED_MODULE_6__["useRouter"])();
+  var editorRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])();
+
+  var _ref2 = editorRef.current || {},
+      CKEditor = _ref2.CKEditor,
+      ClassicEditor = _ref2.ClassicEditor;
+
+  var _useState2 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      editorLoded = _useState2[0],
+      setEditorLoded = _useState2[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    editorRef.current = {
+      CKEditor: __webpack_require__(/*! @ckeditor/ckeditor5-react */ "./node_modules/@ckeditor/ckeditor5-react/dist/ckeditor.js"),
+      ClassicEditor: __webpack_require__(/*! @ckeditor/ckeditor5-build-classic */ "./node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js")
+    };
+    setEditorLoded(true);
+  }, []);
   var onGoList = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
     router.push({
       pathname: "/book",
@@ -35648,6 +35679,24 @@ var Episode = function Episode() {
       }
     }, "/episode/".concat(episode.next.id));
   }, [episode && episode.next && episode.next.id]);
+  var onCreateComment = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    if (!userComment.trim()) {
+      return;
+    }
+
+    dispatch({
+      type: _reducers_episode__WEBPACK_IMPORTED_MODULE_7__["ADD_EPISODE_COMMENT_REQUEST"],
+      data: {
+        episodeId: episode.id,
+        content: userComment
+      }
+    });
+  }, [episode && episode.id, userComment]);
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (commentAdded) {
+      setUserComment('');
+    }
+  }, [commentAdded]);
   return __jsx(EpisodeDiv, null, __jsx(react_helmet__WEBPACK_IMPORTED_MODULE_5___default.a, null, __jsx("title", null, episode && episode.Book.name), __jsx("style", {
     type: "text/css"
   }, "\n            .ck-editor__editable { height: 200px;}\n            .ck.ck-reset.ck-editor.ck-rounded-corners {margin: 1.5rem;}\n          ")), __jsx(EpisodeTopDiv, null, __jsx(BookTitle, null, episode && episode.Book.name), __jsx(EpisodeTitle, null, episode && episode.title), __jsx(TopButtonDiv, null, episode && episode.Book.User.id === myId ? __jsx(_components_designs_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -35680,7 +35729,19 @@ var Episode = function Episode() {
       key: +comment.id,
       comment: comment
     });
-  })));
+  })), myId && __jsx(CommentDiv, null, editorLoded ? __jsx(CKEditor, {
+    key: 'comment',
+    editor: ClassicEditor,
+    data: userComment,
+    onChange: function onChange(event, editor) {
+      var data = editor.getData();
+      setUserComment(data);
+    }
+  }) : __jsx("p", null, "Editor Loding"), __jsx(CommentButton, {
+    onClick: onCreateComment
+  }, isAddingComment ? __jsx(LoadingImg, {
+    src: "/static/icons/loading_blue.gif"
+  }) : "\uB313\uAE00\uC4F0\uAE30")));
 };
 
 Episode.getInitialProps = function _callee(context) {
@@ -35707,271 +35768,11 @@ Episode.getInitialProps = function _callee(context) {
 
 /***/ }),
 
-/***/ "./reducers/board.js":
-/*!***************************!*\
-  !*** ./reducers/board.js ***!
-  \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initalState", function() { return initalState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_REQUEST", function() { return LOAD_BOARDS_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_SUCCESS", function() { return LOAD_BOARDS_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARDS_FAILURE", function() { return LOAD_BOARDS_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_REQUEST", function() { return LOAD_BOARD_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_SUCCESS", function() { return LOAD_BOARD_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_BOARD_FAILURE", function() { return LOAD_BOARD_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_REQUEST", function() { return ADD_BOARD_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_SUCCESS", function() { return ADD_BOARD_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_BOARD_FAILURE", function() { return ADD_BOARD_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_REQUEST", function() { return UPDATE_BOARD_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_SUCCESS", function() { return UPDATE_BOARD_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_BOARD_FAILURE", function() { return UPDATE_BOARD_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_REQUEST", function() { return DELETE_BOARD_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_SUCCESS", function() { return DELETE_BOARD_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_BOARD_FAILURE", function() { return DELETE_BOARD_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_REQUEST", function() { return ADD_COMMENT_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_SUCCESS", function() { return ADD_COMMENT_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_COMMENT_FAILURE", function() { return ADD_COMMENT_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_REQUEST", function() { return UPDATE_COMMENT_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_SUCCESS", function() { return UPDATE_COMMENT_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_COMMENT_FAILURE", function() { return UPDATE_COMMENT_FAILURE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_REQUEST", function() { return DELETE_COMMENT_REQUEST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_SUCCESS", function() { return DELETE_COMMENT_SUCCESS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_FAILURE", function() { return DELETE_COMMENT_FAILURE; });
-/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
-
-var initalState = {
-  boards: [],
-  hasMoreBoards: false,
-  board: null,
-  isAddingBoard: false,
-  boardAdded: false,
-  boardDeleted: false,
-  isUpdatingBoard: false,
-  isAddingComment: false,
-  commentAdded: false,
-  isUpdatingComment: false
-};
-var LOAD_BOARDS_REQUEST = "LOAD_BOARDS_REQUEST";
-var LOAD_BOARDS_SUCCESS = "LOAD_BOARDS_SUCCESS";
-var LOAD_BOARDS_FAILURE = "LOAD_BOARDS_FAILURE";
-var LOAD_BOARD_REQUEST = "LOAD_BOARD_REQUEST";
-var LOAD_BOARD_SUCCESS = "LOAD_BOARD_SUCCESS";
-var LOAD_BOARD_FAILURE = "LOAD_BOARD_FAILURE";
-var ADD_BOARD_REQUEST = "ADD_BOARD_REQUEST";
-var ADD_BOARD_SUCCESS = "ADD_BOARD_SUCCESS";
-var ADD_BOARD_FAILURE = "ADD_BOARD_FAILURE";
-var UPDATE_BOARD_REQUEST = "UPDATE_BOARD_REQUEST";
-var UPDATE_BOARD_SUCCESS = "UPDATE_BOARD_SUCCESS";
-var UPDATE_BOARD_FAILURE = "UPDATE_BOARD_FAILURE";
-var DELETE_BOARD_REQUEST = "DELETE_BOARD_REQUEST";
-var DELETE_BOARD_SUCCESS = "DELETE_BOARD_SUCCESS";
-var DELETE_BOARD_FAILURE = "DELETE_BOARD_FAILURE";
-var ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
-var ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
-var ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
-var UPDATE_COMMENT_REQUEST = "UPDATE_COMMENT_REQUEST";
-var UPDATE_COMMENT_SUCCESS = "UPDATE_COMMENT_SUCCESS";
-var UPDATE_COMMENT_FAILURE = "UPDATE_COMMENT_FAILURE";
-var DELETE_COMMENT_REQUEST = "DELETE_COMMENT_REQUEST";
-var DELETE_COMMENT_SUCCESS = "DELETE_COMMENT_SUCCESS";
-var DELETE_COMMENT_FAILURE = "DELETE_COMMENT_FAILURE";
-
-var reducer = function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-  return Object(immer__WEBPACK_IMPORTED_MODULE_0__["default"])(state, function (draft) {
-    switch (action.type) {
-      // 전체 게시글 조회
-      case LOAD_BOARDS_REQUEST:
-        {
-          draft.boards = !action.lastId ? [] : draft.boards;
-
-          if (draft.hasMoreBoards) {
-            draft.hasMoreBoards = action.lastId ? draft.hasMoreBoards : false;
-          }
-
-          break;
-        }
-
-      case LOAD_BOARDS_SUCCESS:
-        {
-          draft.boards = draft.boards.concat(action.data);
-          draft.hasMoreBoards = action.data.length === 30;
-          break;
-        }
-
-      case LOAD_BOARDS_FAILURE:
-        {
-          break;
-        }
-      // 게시글 조회
-
-      case LOAD_BOARD_REQUEST:
-        {
-          draft.boardDeleted = false;
-          draft.board = null;
-          break;
-        }
-
-      case LOAD_BOARD_SUCCESS:
-        {
-          draft.board = action.data;
-          break;
-        }
-
-      case LOAD_BOARD_FAILURE:
-        {
-          break;
-        }
-      // 게시글 작성
-
-      case ADD_BOARD_REQUEST:
-        {
-          draft.isAddingBoard = true;
-          draft.boardAdded = false;
-          break;
-        }
-
-      case ADD_BOARD_SUCCESS:
-        {
-          draft.isAddingBoard = false;
-          draft.boardAdded = true;
-          draft.boards.unshift(action.data);
-          break;
-        }
-
-      case ADD_BOARD_FAILURE:
-        {
-          break;
-        }
-      // 게시글 수정
-
-      case UPDATE_BOARD_REQUEST:
-        {
-          draft.isUpdatingBoard = true;
-          break;
-        }
-
-      case UPDATE_BOARD_SUCCESS:
-        {
-          draft.isUpdatingBoard = false;
-          draft.board.content = action.data;
-          break;
-        }
-
-      case UPDATE_BOARD_FAILURE:
-        {
-          break;
-        }
-      // 게시글 삭제
-
-      case DELETE_BOARD_REQUEST:
-        {
-          draft.boardDeleted = false;
-          break;
-        }
-
-      case DELETE_BOARD_SUCCESS:
-        {
-          var boardIndex = draft.boards.findIndex(function (v) {
-            return v.id === action.data;
-          });
-          draft.boards.splice(boardIndex, 1);
-          draft.boardDeleted = true;
-          break;
-        }
-
-      case DELETE_BOARD_FAILURE:
-        {
-          break;
-        }
-      // 댓글 작성
-
-      case ADD_COMMENT_REQUEST:
-        {
-          draft.isAddingComment = true;
-          draft.commentAdded = false;
-          break;
-        }
-
-      case ADD_COMMENT_SUCCESS:
-        {
-          draft.isAddingComment = false;
-          draft.commentAdded = true;
-          draft.board.Comments.push(action.data);
-          break;
-        }
-
-      case ADD_COMMENT_FAILURE:
-        {
-          break;
-        }
-      // 댓글 수정
-
-      case UPDATE_COMMENT_REQUEST:
-        {
-          draft.isUpdatingBoard = true;
-          break;
-        }
-
-      case UPDATE_COMMENT_SUCCESS:
-        {
-          draft.isUpdatingBoard = false;
-          var commentIndex = draft.board.Comments.findIndex(function (v) {
-            return v.id === action.data.id;
-          });
-          draft.board.Comments[commentIndex].content = action.data.content;
-          break;
-        }
-
-      case UPDATE_COMMENT_FAILURE:
-        {
-          break;
-        }
-      // 댓글 삭제
-
-      case DELETE_COMMENT_REQUEST:
-        {
-          break;
-        }
-
-      case DELETE_COMMENT_SUCCESS:
-        {
-          var _commentIndex = draft.board.Comments.findIndex(function (v) {
-            return v.id === action.data;
-          });
-
-          draft.board.Comments.splice(_commentIndex, 1); // draft.board.Comments = draft.board.Comments.filter(c => c.id !== action.data);
-
-          break;
-        }
-
-      case DELETE_COMMENT_FAILURE:
-        {
-          break;
-        }
-
-      default:
-        {
-          break;
-        }
-    }
-  });
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (reducer);
-
-/***/ }),
-
 /***/ "./reducers/episode.js":
 /*!*****************************!*\
   !*** ./reducers/episode.js ***!
   \*****************************/
-/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, default */
+/*! exports provided: initalState, LOAD_EPISODE_REQUEST, LOAD_EPISODE_SUCCESS, LOAD_EPISODE_FAILURE, ADD_EPISODE_REQUEST, ADD_EPISODE_SUCCESS, ADD_EPISODE_FAILURE, CHANGE_ADDEDEPISODE, ADD_RECOMMEND_REQUEST, ADD_RECOMMEND_SUCCESS, ADD_RECOMMEND_FAILURE, UPDATE_EPISODE_REQUEST, UPDATE_EPISODE_SUCCESS, UPDATE_EPISODE_FAILURE, CHANGE_UPDATEDEPISODE, DELETE_EPISODE_REQUEST, DELETE_EPISODE_SUCCESS, DELETE_EPISODE_FAILURE, CHANGE_DELETEDEPISODE, ADD_EPISODE_COMMENT_REQUEST, ADD_EPISODE_COMMENT_SUCCESS, ADD_EPISODE_COMMENT_FAILURE, UPDATE_EPISODE_COMMENT_REQUEST, UPDATE_EPISODE_COMMENT_SUCCESS, UPDATE_EPISODE_COMMENT_FAILURE, DELETE_EPISODE_COMMENT_REQUEST, DELETE_EPISODE_COMMENT_SUCCESS, DELETE_EPISODE_COMMENT_FAILURE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35995,6 +35796,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_SUCCESS", function() { return DELETE_EPISODE_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_FAILURE", function() { return DELETE_EPISODE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_DELETEDEPISODE", function() { return CHANGE_DELETEDEPISODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_REQUEST", function() { return ADD_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_SUCCESS", function() { return ADD_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_EPISODE_COMMENT_FAILURE", function() { return ADD_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_REQUEST", function() { return UPDATE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_SUCCESS", function() { return UPDATE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_EPISODE_COMMENT_FAILURE", function() { return UPDATE_EPISODE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_REQUEST", function() { return DELETE_EPISODE_COMMENT_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_SUCCESS", function() { return DELETE_EPISODE_COMMENT_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_EPISODE_COMMENT_FAILURE", function() { return DELETE_EPISODE_COMMENT_FAILURE; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
 var initalState = {
@@ -36005,7 +35815,10 @@ var initalState = {
   isUpdatingEpisode: false,
   isUpdatedEpisode: false,
   isDeletingEpisode: false,
-  isDeletedEpisode: false
+  isDeletedEpisode: false,
+  isAddingComment: false,
+  commentAdded: false,
+  isUpdatingComment: false
 };
 var LOAD_EPISODE_REQUEST = "LOAD_EPISODE_REQUEST";
 var LOAD_EPISODE_SUCCESS = "LOAD_EPISODE_SUCCESS";
@@ -36025,6 +35838,15 @@ var DELETE_EPISODE_REQUEST = "DELETE_EPISODE_REQUEST";
 var DELETE_EPISODE_SUCCESS = "DELETE_EPISODE_SUCCESS";
 var DELETE_EPISODE_FAILURE = "DELETE_EPISODE_FAILURE";
 var CHANGE_DELETEDEPISODE = "CHANGE_DELETEDEPISODE";
+var ADD_EPISODE_COMMENT_REQUEST = "ADD_EPISODE_COMMENT_REQUEST";
+var ADD_EPISODE_COMMENT_SUCCESS = "ADD_EPISODE_COMMENT_SUCCESS";
+var ADD_EPISODE_COMMENT_FAILURE = "ADD_EPISODE_COMMENT_FAILURE";
+var UPDATE_EPISODE_COMMENT_REQUEST = "UPDATE_EPISODE_COMMENT_REQUEST";
+var UPDATE_EPISODE_COMMENT_SUCCESS = "UPDATE_EPISODE_COMMENT_SUCCESS";
+var UPDATE_EPISODE_COMMENT_FAILURE = "UPDATE_EPISODE_COMMENT_FAILURE";
+var DELETE_EPISODE_COMMENT_REQUEST = "DELETE_EPISODE_COMMENT_REQUEST";
+var DELETE_EPISODE_COMMENT_SUCCESS = "DELETE_EPISODE_COMMENT_SUCCESS";
+var DELETE_EPISODE_COMMENT_FAILURE = "DELETE_EPISODE_COMMENT_FAILURE";
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
@@ -36139,6 +35961,70 @@ var reducer = function reducer() {
           draft.isDeletedEpisode = false;
           break;
         }
+      // 댓글 작성
+
+      case ADD_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isAddingComment = true;
+          draft.commentAdded = false;
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isAddingComment = false;
+          draft.commentAdded = true;
+          draft.episode.Episode_Comments.push(action.data);
+          break;
+        }
+
+      case ADD_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 수정
+
+      case UPDATE_EPISODE_COMMENT_REQUEST:
+        {
+          draft.isUpdatingBoard = true;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_SUCCESS:
+        {
+          draft.isUpdatingBoard = false;
+          var commentIndex = draft.episode.Episode_Comments.findIndex(function (v) {
+            return v.id === action.data.id;
+          });
+          draft.episode.Episode_Comments[commentIndex].content = action.data.content;
+          break;
+        }
+
+      case UPDATE_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
+      // 댓글 삭제
+
+      case DELETE_EPISODE_COMMENT_REQUEST:
+        {
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_SUCCESS:
+        {
+          var _commentIndex = draft.episode.Episode_Comments.findIndex(function (v) {
+            return v.id === action.data;
+          });
+
+          draft.episode.Episode_Comments.splice(_commentIndex, 1);
+          break;
+        }
+
+      case DELETE_EPISODE_COMMENT_FAILURE:
+        {
+          break;
+        }
 
       default:
         {
@@ -36152,7 +36038,7 @@ var reducer = function reducer() {
 
 /***/ }),
 
-/***/ 3:
+/***/ 2:
 /*!**************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fepisode&absolutePagePath=C%3A%5CDocument%5CBackpot%5Cfront%5Cpages%5Cepisode%5Cindex.js ***!
   \**************************************************************************************************************************************/
@@ -36175,5 +36061,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[3,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=episode.js.map

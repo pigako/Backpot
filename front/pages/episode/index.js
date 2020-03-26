@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -10,6 +10,7 @@ import {
   ADD_RECOMMEND_REQUEST,
   DELETE_EPISODE_REQUEST,
   CHANGE_DELETEDEPISODE,
+  ADD_EPISODE_COMMENT_REQUEST,
 } from '../../reducers/episode';
 import EpisodeCommentCard from '../../components/EpisodeCommentCard';
 import Button from '../../components/designs/Button';
@@ -116,17 +117,43 @@ const LoadingImg = styled.img`
   margin-top: 4px;
   height: 1.5rem;
 `;
+const CommentDiv = styled.div`
+  height: 330px;
+`;
+
+const CommentButton = styled(Button)`
+  width: 8rem;
+  margin-right: 1.5rem;
+  float: right;
+`;
+
 const Episode = () => {
   const {
     episode,
     isDeletingEpisode,
     isDeletedEpisode,
     isRecommending,
+    isAddingComment,
+    commentAdded,
   } = useSelector(state => state.episode);
   const { id: myId } = useSelector(state => state.user.me) || '';
 
+  const [userComment, setUserComment] = useState('');
+
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const editorRef = useRef();
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+  const [editorLoded, setEditorLoded] = useState(false);
+
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require('@ckeditor/ckeditor5-react'),
+      ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
+    };
+    setEditorLoded(true);
+  }, []);
 
   const onGoList = useCallback(() => {
     router.push(
@@ -196,6 +223,28 @@ const Episode = () => {
       `/episode/${episode.next.id}`,
     );
   }, [episode && episode.next && episode.next.id]);
+
+  const onCreateComment = useCallback(
+    e => {
+      if (!userComment.trim()) {
+        return;
+      }
+      dispatch({
+        type: ADD_EPISODE_COMMENT_REQUEST,
+        data: {
+          episodeId: episode.id,
+          content: userComment,
+        },
+      });
+    },
+    [episode && episode.id, userComment],
+  );
+
+  useEffect(() => {
+    if (commentAdded) {
+      setUserComment('');
+    }
+  }, [commentAdded]);
 
   return (
     <EpisodeDiv>
@@ -289,6 +338,31 @@ const Episode = () => {
             return <EpisodeCommentCard key={+comment.id} comment={comment} />;
           })}
       </EpisodeComment>
+
+      {myId && (
+        <CommentDiv>
+          {editorLoded ? (
+            <CKEditor
+              key={'comment'}
+              editor={ClassicEditor}
+              data={userComment}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setUserComment(data);
+              }}
+            />
+          ) : (
+            <p>Editor Loding</p>
+          )}
+          <CommentButton onClick={onCreateComment}>
+            {isAddingComment ? (
+              <LoadingImg src="/static/icons/loading_blue.gif" />
+            ) : (
+              `댓글쓰기`
+            )}
+          </CommentButton>
+        </CommentDiv>
+      )}
     </EpisodeDiv>
   );
 };
