@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '../components/designs/Button';
 import BoardTable from '../components/BoardTable';
-import { LOAD_BOARDS_REQUEST } from '../reducers/board';
+import { LOAD_BOARDS_REQUEST, CHANGE_BOARD_KEYWORD } from '../reducers/board';
 
 const SBoard = styled.div`
   margin-top: 10px;
@@ -67,6 +67,7 @@ const Board = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [lastIdArray, setLastIdArray] = useState([]);
+  const [keyword, setKeyword] = useState('');
 
   const onScroll = useCallback(
     e => {
@@ -80,13 +81,14 @@ const Board = () => {
             dispatch({
               type: LOAD_BOARDS_REQUEST,
               lastId,
+              keyword,
             });
             setLastIdArray([...lastIdArray, lastId]);
           }
         }
       }
     },
-    [hasMoreBoards, boards.length],
+    [hasMoreBoards, boards.length, keyword],
   );
 
   useEffect(() => {
@@ -101,7 +103,25 @@ const Board = () => {
     router.push('/writeboard');
   }, []);
 
-  const onSearchBoard = useCallback(e => {}, []);
+  const onChangeKeyword = useCallback(e => {
+    setKeyword(e.target.value);
+  }, []);
+
+  const onSearchBoard = useCallback(
+    e => {
+      e.preventDefault();
+      dispatch({
+        type: CHANGE_BOARD_KEYWORD,
+        data: keyword,
+      });
+      dispatch({
+        type: LOAD_BOARDS_REQUEST,
+        lastId: 0,
+        keyword,
+      });
+    },
+    [keyword],
+  );
 
   return (
     <SBoard>
@@ -109,7 +129,7 @@ const Board = () => {
         <SBoardTitle>추천 게시판</SBoardTitle>
         {me && <Button onClick={onCreateBoard}>글쓰기</Button>}
         <SearchForm>
-          <SearchInput></SearchInput>
+          <SearchInput value={keyword} onChange={onChangeKeyword}></SearchInput>
           <Button onClick={onSearchBoard}>검색</Button>
         </SearchForm>
       </BoardDivTop>
@@ -120,8 +140,11 @@ const Board = () => {
 };
 
 Board.getInitialProps = async context => {
+  const state = context.store.getState();
   context.store.dispatch({
     type: LOAD_BOARDS_REQUEST,
+    lastId: 0,
+    keyword: state.board.keyword,
   });
 };
 

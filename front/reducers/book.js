@@ -4,6 +4,7 @@ export const initalState = {
   books: [],
   book: null,
   keyword: '',
+  hasMoreBooks: false,
   genre: [],
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
@@ -69,7 +70,10 @@ const reducer = (state = initalState, action) => {
       // 전체 작품 조회
       case LOAD_BOOKS_REQUEST: {
         draft.books = !action.lastId ? [] : draft.books;
-        draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+        // draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+        if (draft.hasMoreBooks) {
+          draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : false;
+        }
         break;
       }
       case LOAD_BOOKS_SUCCESS: {

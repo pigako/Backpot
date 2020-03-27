@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import BookCard from '../components/BookCard';
 import { LOAD_BOOKS_REQUEST } from '../reducers/book';
@@ -17,7 +16,8 @@ const NovelList = styled.div`
 `;
 
 const BookList = () => {
-  const { books } = useSelector(state => state.book);
+  const { books, keyword } = useSelector(state => state.book);
+
   return (
     <div>
       <BookListTitle>연재소설 목록</BookListTitle>
@@ -41,7 +41,6 @@ BookList.getInitialProps = async context => {
   const state = context.store.getState();
   context.store.dispatch({
     type: LOAD_BOOKS_REQUEST,
-    lastId: 0,
     keyword: state.book.keyword,
   });
 };

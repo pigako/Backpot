@@ -41527,7 +41527,7 @@ var configureStore = function configureStore(initialState, options) {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, CHANGE_BOARD_KEYWORD, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41557,11 +41557,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_REQUEST", function() { return DELETE_COMMENT_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_SUCCESS", function() { return DELETE_COMMENT_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_FAILURE", function() { return DELETE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_BOARD_KEYWORD", function() { return CHANGE_BOARD_KEYWORD; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
 
 var initalState = {
   boards: [],
   hasMoreBoards: false,
+  keyword: '',
   board: null,
   isAddingBoard: false,
   boardAdded: false,
@@ -41595,6 +41597,7 @@ var UPDATE_COMMENT_FAILURE = "UPDATE_COMMENT_FAILURE";
 var DELETE_COMMENT_REQUEST = "DELETE_COMMENT_REQUEST";
 var DELETE_COMMENT_SUCCESS = "DELETE_COMMENT_SUCCESS";
 var DELETE_COMMENT_FAILURE = "DELETE_COMMENT_FAILURE";
+var CHANGE_BOARD_KEYWORD = "CHANGE_BOARD_KEYWORD";
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
@@ -41771,6 +41774,12 @@ var reducer = function reducer() {
           break;
         }
 
+      case CHANGE_BOARD_KEYWORD:
+        {
+          draft.keyword = action.data;
+          break;
+        }
+
       default:
         {
           break;
@@ -41832,6 +41841,7 @@ var initalState = {
   books: [],
   book: null,
   keyword: '',
+  hasMoreBooks: false,
   genre: [],
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
@@ -41885,8 +41895,12 @@ var reducer = function reducer() {
       // 전체 작품 조회
       case LOAD_BOOKS_REQUEST:
         {
-          draft.books = !action.lastId ? [] : draft.books;
-          draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+          draft.books = !action.lastId ? [] : draft.books; // draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+
+          if (draft.hasMoreBooks) {
+            draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : false;
+          }
+
           break;
         }
 
@@ -42666,9 +42680,10 @@ function watchLoadBords() {
                     _context.next = 3;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function () {
                       var lastId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-                      var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 30;
-                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/boards?lastId=".concat(lastId, "&limit=").concat(limit));
-                    }, action.lastId);
+                      var keyword = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+                      var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 30;
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/boards?lastId=".concat(lastId, "&keyword=").concat(keyword, "&limit=").concat(limit));
+                    }, action.lastId, action.keyword);
 
                   case 3:
                     result = _context.sent;
@@ -43246,11 +43261,9 @@ function watchLoadBooks() {
                     _context.prev = 0;
                     _context.next = 3;
                     return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_8__["call"])(function () {
-                      var lastId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-                      var keyword = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-                      var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
-                      return axios__WEBPACK_IMPORTED_MODULE_9___default.a.get("/books?lastId=".concat(lastId, "&keyword=").concat(keyword, "&limit=").concat(limit));
-                    }, action.lastId, action.keyword);
+                      var keyword = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+                      return axios__WEBPACK_IMPORTED_MODULE_9___default.a.get("/books?keyword=".concat(keyword));
+                    }, action.keyword);
 
                   case 3:
                     result = _context.sent;

@@ -3,6 +3,7 @@ import produce from 'immer';
 export const initalState = {
   boards: [],
   hasMoreBoards: false,
+  keyword: '',
   board: null,
   isAddingBoard: false,
   boardAdded: false,
@@ -44,6 +45,8 @@ export const UPDATE_COMMENT_FAILURE = `UPDATE_COMMENT_FAILURE`;
 export const DELETE_COMMENT_REQUEST = `DELETE_COMMENT_REQUEST`;
 export const DELETE_COMMENT_SUCCESS = `DELETE_COMMENT_SUCCESS`;
 export const DELETE_COMMENT_FAILURE = `DELETE_COMMENT_FAILURE`;
+
+export const CHANGE_BOARD_KEYWORD = `CHANGE_BOARD_KEYWORD`;
 
 const reducer = (state = initalState, action) => {
   return produce(state, draft => {
@@ -163,6 +166,10 @@ const reducer = (state = initalState, action) => {
         break;
       }
       case DELETE_COMMENT_FAILURE: {
+        break;
+      }
+      case CHANGE_BOARD_KEYWORD: {
+        draft.keyword = action.data;
         break;
       }
       default: {

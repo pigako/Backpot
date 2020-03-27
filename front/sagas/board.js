@@ -31,9 +31,15 @@ import {
 function* watchLoadBords() {
   yield throttle(1000, LOAD_BOARDS_REQUEST, function* loadBoards(action) {
     try {
-      const result = yield call((lastId = 0, limit = 30) => {
-        return axios.get(`/boards?lastId=${lastId}&limit=${limit}`);
-      }, action.lastId);
+      const result = yield call(
+        (lastId = 0, keyword = '', limit = 30) => {
+          return axios.get(
+            `/boards?lastId=${lastId}&keyword=${keyword}&limit=${limit}`,
+          );
+        },
+        action.lastId,
+        action.keyword,
+      );
       yield put({
         type: LOAD_BOARDS_SUCCESS,
         data: result.data,

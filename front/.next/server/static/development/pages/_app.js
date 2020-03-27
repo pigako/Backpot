@@ -2642,7 +2642,7 @@ const configureStore = (initialState, options) => {
 /*!***************************!*\
   !*** ./reducers/board.js ***!
   \***************************/
-/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, default */
+/*! exports provided: initalState, LOAD_BOARDS_REQUEST, LOAD_BOARDS_SUCCESS, LOAD_BOARDS_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, LOAD_BOARD_FAILURE, ADD_BOARD_REQUEST, ADD_BOARD_SUCCESS, ADD_BOARD_FAILURE, UPDATE_BOARD_REQUEST, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE, DELETE_BOARD_REQUEST, DELETE_BOARD_SUCCESS, DELETE_BOARD_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE, DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE, CHANGE_BOARD_KEYWORD, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2672,12 +2672,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_REQUEST", function() { return DELETE_COMMENT_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_SUCCESS", function() { return DELETE_COMMENT_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_COMMENT_FAILURE", function() { return DELETE_COMMENT_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_BOARD_KEYWORD", function() { return CHANGE_BOARD_KEYWORD; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
 const initalState = {
   boards: [],
   hasMoreBoards: false,
+  keyword: '',
   board: null,
   isAddingBoard: false,
   boardAdded: false,
@@ -2711,6 +2713,7 @@ const UPDATE_COMMENT_FAILURE = `UPDATE_COMMENT_FAILURE`;
 const DELETE_COMMENT_REQUEST = `DELETE_COMMENT_REQUEST`;
 const DELETE_COMMENT_SUCCESS = `DELETE_COMMENT_SUCCESS`;
 const DELETE_COMMENT_FAILURE = `DELETE_COMMENT_FAILURE`;
+const CHANGE_BOARD_KEYWORD = `CHANGE_BOARD_KEYWORD`;
 
 const reducer = (state = initalState, action) => {
   return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, draft => {
@@ -2878,6 +2881,12 @@ const reducer = (state = initalState, action) => {
           break;
         }
 
+      case CHANGE_BOARD_KEYWORD:
+        {
+          draft.keyword = action.data;
+          break;
+        }
+
       default:
         {
           break;
@@ -2940,6 +2949,7 @@ const initalState = {
   books: [],
   book: null,
   keyword: '',
+  hasMoreBooks: false,
   genre: [],
   isAddingLikeBook: false,
   isRemovingLikeBook: false,
@@ -2991,8 +3001,12 @@ const reducer = (state = initalState, action) => {
       // 전체 작품 조회
       case LOAD_BOOKS_REQUEST:
         {
-          draft.books = !action.lastId ? [] : draft.books;
-          draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+          draft.books = !action.lastId ? [] : draft.books; // draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : true;
+
+          if (draft.hasMoreBooks) {
+            draft.hasMoreBooks = action.lastId ? draft.hasMoreBooks : false;
+          }
+
           break;
         }
 
@@ -3718,9 +3732,9 @@ __webpack_require__.r(__webpack_exports__);
 function* watchLoadBords() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["throttle"])(1000, _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_REQUEST"], function* loadBoards(action) {
     try {
-      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])((lastId = 0, limit = 30) => {
-        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/boards?lastId=${lastId}&limit=${limit}`);
-      }, action.lastId);
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])((lastId = 0, keyword = '', limit = 30) => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/boards?lastId=${lastId}&keyword=${keyword}&limit=${limit}`);
+      }, action.lastId, action.keyword);
       yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
         type: _reducers_board__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOARDS_SUCCESS"],
         data: result.data
@@ -3930,9 +3944,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function* watchLoadBooks() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["throttle"])(1000, _reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOKS_REQUEST"], function* loadBooks(action) {
     try {
-      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])((lastId = 0, keyword = '', limit = 20) => {
-        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/books?lastId=${lastId}&keyword=${keyword}&limit=${limit}`);
-      }, action.lastId, action.keyword);
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])((keyword = '') => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(`/books?keyword=${keyword}`);
+      }, action.keyword);
       yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
         type: _reducers_book__WEBPACK_IMPORTED_MODULE_2__["LOAD_BOOKS_SUCCESS"],
         data: result.data

@@ -5,11 +5,6 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     let where = { flag: { $not: 3 } };
-    if (parseInt(req.query.lastId, 10)) {
-      where.id = {
-        [db.Sequelize.Op.lt]: parseInt(req.query.lastId, 10),
-      };
-    }
     if (req.query.keyword) {
       where.name = {
         [db.Sequelize.Op.like]: '%' + req.query.keyword + '%',
@@ -32,7 +27,6 @@ router.get('/', async (req, res, next) => {
         },
       ],
       attributes: ['id', 'name', 'thumbnail', 'serialDay', 'likersCount', 'createdAt'],
-      limit: parseInt(req.query.limit, 10),
       order: [[db.Episode, 'updatedAt', 'DESC']],
     });
     return res.json(books);

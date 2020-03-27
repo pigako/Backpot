@@ -12,6 +12,11 @@ router.get('/', async (req, res, next) => {
         },
       };
     }
+    if (req.query.keyword) {
+      where.title = {
+        [db.Sequelize.Op.like]: '%' + req.query.keyword + '%',
+      };
+    }
     const boards = await db.Board.findAll({
       where,
       include: [

@@ -183,6 +183,12 @@ const WriteBook = () => {
 
   const imageInput = useRef();
 
+  useEffect(() => {
+    console.log('====');
+    console.log(imageInput.current.value);
+    console.log('===');
+  }, [imageInput.current]);
+
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
@@ -259,12 +265,18 @@ const WriteBook = () => {
 
   useEffect(() => {
     if (isAddedBook) {
+      console.log(imageInput);
+      console.log(imageInput.current);
+      console.log(imageInput.current.value);
+      imageInput.current.value = null;
+      console.log(imageInput.current.value);
+
       dispatch({
         type: CHANGE_ADDEDBOOK,
       });
-      router.push('/booklist');
+      router.back();
     }
-  }, [isAddedBook]);
+  }, [imageInput.current, isAddedBook]);
 
   const onChangeDay = useCallback(
     e => {
