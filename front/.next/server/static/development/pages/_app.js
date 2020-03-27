@@ -3523,7 +3523,7 @@ const rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST, default */
+/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, CHANGE_UPDATED, ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3541,6 +3541,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_REQUEST", function() { return LOAD_USER_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_SUCCESS", function() { return LOAD_USER_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_FAILURE", function() { return LOAD_USER_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_REQUEST", function() { return UPDATE_USER_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_SUCCESS", function() { return UPDATE_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_FAILURE", function() { return UPDATE_USER_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_UPDATED", function() { return CHANGE_UPDATED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOKLIST", function() { return ADD_LIKEBOOKLIST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOKLIST", function() { return REMOVE_LIKEBOOKLIST; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "immer");
@@ -3557,7 +3561,9 @@ const initalState = {
   me: null,
   LikedBookList: [],
   LikedWriterList: [],
-  otherUserInfo: null
+  otherUserInfo: null,
+  isUpdating: false,
+  isUpdated: false
 };
 const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
 const LOG_IN_SUCCESS = `LOG_IN_SUCCESS`;
@@ -3571,6 +3577,10 @@ const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
 const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
 const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
 const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
+const UPDATE_USER_REQUEST = `UPDATE_USER_REQUEST`;
+const UPDATE_USER_SUCCESS = `UPDATE_USER_SUCCESS`;
+const UPDATE_USER_FAILURE = `UPDATE_USER_FAILURE`;
+const CHANGE_UPDATED = `CHANGE_UPDATED`;
 const ADD_LIKEBOOKLIST = `ADD_LIKEBOOKLIST`;
 const REMOVE_LIKEBOOKLIST = `REMOVE_LIKEBOOKLIST`;
 
@@ -3695,6 +3705,40 @@ const reducer = (state = initalState, action) => {
             draft.me.LikingBook.splice(index, 1);
           }
 
+          break;
+        }
+
+      case UPDATE_USER_REQUEST:
+        {
+          draft.isUpdating = true;
+          draft.isUpdated = false;
+          break;
+        }
+
+      case UPDATE_USER_SUCCESS:
+        {
+          draft.isUpdating = false;
+          draft.isUpdated = true;
+
+          if (action.data.userId) {
+            draft.me.userId = action.data.userId;
+          }
+
+          if (action.data.nickname) {
+            draft.me.nickname = action.data.nickname;
+          }
+
+          break;
+        }
+
+      case UPDATE_USER_FAILURE:
+        {
+          break;
+        }
+
+      case CHANGE_UPDATED:
+        {
+          draft.isUpdated = false;
           break;
         }
 
@@ -4506,33 +4550,32 @@ function* loadUser(action) {
 
 function* watchLoadUser() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LOAD_USER_REQUEST"], loadUser);
-} // function* watchLoadUser() {
-//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
-//     try {
-//       const result = yield call(userId => {
-//         return axios.get(userId ? `/user/${userId}` : `/user`, {
-//           withCredentials: true,
-//         });
-//       }, action.data);
-//       console.log('LOAD_USER', result.data);
-//       yield put({
-//         type: LOAD_USER_SUCCESS,
-//         data: result.data,
-//         me: !action.data,
-//       });
-//     } catch (e) {
-//       console.log(e);
-//       yield put({
-//         type: LOAD_USER_FAILURE,
-//         error: e,
-//       });
-//     }
-//   });
-// }
+}
 
+function* watchUpdateUser() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER_REQUEST"], function* (action) {
+    try {
+      const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateData => {
+        return axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch('/user', updateData, {
+          withCredentials: true
+        });
+      }, action.data);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER_SUCCESS"],
+        data: result.data
+      });
+    } catch (e) {
+      console.log(e);
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER_FAILURE"],
+        error: e
+      });
+    }
+  });
+}
 
 function* userSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUser)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(watchUpdateUser)]);
 }
 
 /***/ }),

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '../components/designs/Button';
+import { UPDATE_USER_REQUEST, CHANGE_UPDATED } from '../reducers/user';
 
 const SProfileDiv = styled.div`
   width: 98%;
@@ -77,12 +78,11 @@ const SButton = styled(Button)`
 `;
 
 const Profile = ({ id }) => {
-  const { me } = useSelector(state => state.user);
+  const { me, isUpdating, isUpdated } = useSelector(state => state.user);
 
   const [inputs, setInputs] = useState({
     userId: '',
     userNickname: '',
-    userPassword: '',
     newUserPassword: '',
     newUserPasswordCheck: '',
   });
@@ -92,12 +92,12 @@ const Profile = ({ id }) => {
   const [passwordErrorReason, setPasswordErrorReason] = useState('');
   const {
     userId,
-    userPassword,
     userNickname,
     newUserPassword,
     newUserPasswordCheck,
   } = inputs;
 
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const onChangeInputs = useCallback(
@@ -119,18 +119,32 @@ const Profile = ({ id }) => {
 
   useEffect(
     e => {
+      if (isUpdated) {
+        dispatch({
+          type: CHANGE_UPDATED,
+        });
+        setCheckUserPassword(false);
+        setInputs({
+          userId: '',
+          userNickname: '',
+          newUserPassword: '',
+          newUserPasswordCheck: '',
+        });
+      }
       if (!(me && me.id)) {
         alert('로그인 하지 않은 사용자는 접근 할 수 없습니다.');
         router.push('/');
         return;
       }
       if ((me && me.userId) !== id) {
-        alert('잘 못된 접근입니다.');
-        router.push('/');
+        router.push(
+          { pathname: '/pofile', query: { id: me.userId } },
+          `/profile/${me.userId}`,
+        );
         return;
       }
     },
-    [me && me.userId, id],
+    [isUpdated, me && me.userId, id],
   );
 
   const onCheck = useCallback(
@@ -180,23 +194,34 @@ const Profile = ({ id }) => {
 
   const onUpdateProfile = useCallback(
     e => {
-      if (!(userId || userPassword || userNickname)) {
+      if (!(userId || newUserPassword || userNickname)) {
         alert('수정 사항이 없습니다.');
         return;
       }
       if (passwordErrorReason !== '') {
         alert('패스워드가 일치하지 않습니다.');
+        return;
       }
       if (userId && !checkUserId) {
         alert('아이디 중복확인을 해주세요.');
+        return;
       }
       if (userNickname && !checkUserNickname) {
         alert('닉네임 중복확인을 해주세요.');
+        return;
       }
+      dispatch({
+        type: UPDATE_USER_REQUEST,
+        data: {
+          userId,
+          newUserPassword,
+          userNickname,
+        },
+      });
     },
     [
       userId,
-      userPassword,
+      newUserPassword,
       userNickname,
       passwordErrorReason,
       checkUserId,
@@ -233,13 +258,6 @@ const Profile = ({ id }) => {
           </InfoLeftDiv>
           {checkUserPassword ? (
             <InfoRightDiv>
-              <input
-                type="password"
-                name="userPassword"
-                value={userPassword}
-                placeholder="Current Password"
-                onChange={onChangeInputs}
-              />
               <input
                 type="password"
                 name="newUserPassword"

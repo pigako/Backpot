@@ -42422,7 +42422,7 @@ var rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST, default */
+/*! exports provided: initalState, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, CHANGE_UPDATED, ADD_LIKEBOOKLIST, REMOVE_LIKEBOOKLIST, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42440,6 +42440,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_REQUEST", function() { return LOAD_USER_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_SUCCESS", function() { return LOAD_USER_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOAD_USER_FAILURE", function() { return LOAD_USER_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_REQUEST", function() { return UPDATE_USER_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_SUCCESS", function() { return UPDATE_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER_FAILURE", function() { return UPDATE_USER_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_UPDATED", function() { return CHANGE_UPDATED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_LIKEBOOKLIST", function() { return ADD_LIKEBOOKLIST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_LIKEBOOKLIST", function() { return REMOVE_LIKEBOOKLIST; });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
@@ -42455,7 +42459,9 @@ var initalState = {
   me: null,
   LikedBookList: [],
   LikedWriterList: [],
-  otherUserInfo: null
+  otherUserInfo: null,
+  isUpdating: false,
+  isUpdated: false
 };
 var LOG_IN_REQUEST = "LOG_IN_REQUEST";
 var LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -42469,6 +42475,10 @@ var SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 var LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 var LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 var LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+var UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
+var UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+var UPDATE_USER_FAILURE = "UPDATE_USER_FAILURE";
+var CHANGE_UPDATED = "CHANGE_UPDATED";
 var ADD_LIKEBOOKLIST = "ADD_LIKEBOOKLIST";
 var REMOVE_LIKEBOOKLIST = "REMOVE_LIKEBOOKLIST";
 
@@ -42597,6 +42607,40 @@ var reducer = function reducer() {
             draft.me.LikingBook.splice(index, 1);
           }
 
+          break;
+        }
+
+      case UPDATE_USER_REQUEST:
+        {
+          draft.isUpdating = true;
+          draft.isUpdated = false;
+          break;
+        }
+
+      case UPDATE_USER_SUCCESS:
+        {
+          draft.isUpdating = false;
+          draft.isUpdated = true;
+
+          if (action.data.userId) {
+            draft.me.userId = action.data.userId;
+          }
+
+          if (action.data.nickname) {
+            draft.me.nickname = action.data.nickname;
+          }
+
+          break;
+        }
+
+      case UPDATE_USER_FAILURE:
+        {
+          break;
+        }
+
+      case CHANGE_UPDATED:
+        {
+          draft.isUpdated = false;
           break;
         }
 
@@ -44457,6 +44501,9 @@ _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(l
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchLoadUser),
     _marked6 =
 /*#__PURE__*/
+_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchUpdateUser),
+    _marked7 =
+/*#__PURE__*/
 _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(userSaga);
 
 
@@ -44705,45 +44752,82 @@ function watchLoadUser() {
       }
     }
   }, _marked5);
-} // function* watchLoadUser() {
-//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
-//     try {
-//       const result = yield call(userId => {
-//         return axios.get(userId ? `/user/${userId}` : `/user`, {
-//           withCredentials: true,
-//         });
-//       }, action.data);
-//       console.log('LOAD_USER', result.data);
-//       yield put({
-//         type: LOAD_USER_SUCCESS,
-//         data: result.data,
-//         me: !action.data,
-//       });
-//     } catch (e) {
-//       console.log(e);
-//       yield put({
-//         type: LOAD_USER_FAILURE,
-//         error: e,
-//       });
-//     }
-//   });
-// }
+}
 
-
-function userSaga() {
-  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function userSaga$(_context9) {
+function watchUpdateUser() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function watchUpdateUser$(_context10) {
     while (1) {
-      switch (_context9.prev = _context9.next) {
+      switch (_context10.prev = _context10.next) {
         case 0:
-          _context9.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser)]);
+          _context10.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_3__["UPDATE_USER_REQUEST"],
+          /*#__PURE__*/
+          _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(action) {
+            var result;
+            return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context9) {
+              while (1) {
+                switch (_context9.prev = _context9.next) {
+                  case 0:
+                    _context9.prev = 0;
+                    _context9.next = 3;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(function (updateData) {
+                      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.patch('/user', updateData, {
+                        withCredentials: true
+                      });
+                    }, action.data);
+
+                  case 3:
+                    result = _context9.sent;
+                    _context9.next = 6;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["UPDATE_USER_SUCCESS"],
+                      data: result.data
+                    });
+
+                  case 6:
+                    _context9.next = 13;
+                    break;
+
+                  case 8:
+                    _context9.prev = 8;
+                    _context9.t0 = _context9["catch"](0);
+                    console.log(_context9.t0);
+                    _context9.next = 13;
+                    return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+                      type: _reducers_user__WEBPACK_IMPORTED_MODULE_3__["UPDATE_USER_FAILURE"],
+                      error: _context9.t0
+                    });
+
+                  case 13:
+                  case "end":
+                    return _context9.stop();
+                }
+              }
+            }, _callee, null, [[0, 8]]);
+          }));
 
         case 2:
         case "end":
-          return _context9.stop();
+          return _context10.stop();
       }
     }
   }, _marked6);
+}
+
+function userSaga() {
+  return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function userSaga$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignUp), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUpdateUser)]);
+
+        case 2:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  }, _marked7);
 }
 
 /***/ }),

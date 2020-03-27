@@ -175,8 +175,8 @@ router.post('/check', async (req, res, next) => {
         return res.send(false);
       }
       return res.send(true);
-    } else if (req.body.type === 'nickname') {
-      const existNickname = await db.User.findOne({ where: { nickname: req.body.nickname } });
+    } else if (req.body.type === 'userNickname') {
+      const existNickname = await db.User.findOne({ where: { nickname: req.body.userNickname } });
       if (existNickname) {
         return res.send(false);
       }
@@ -191,5 +191,32 @@ router.post('/check', async (req, res, next) => {
   // if (existUser) {
   //   return res.status(403).send('이미 사용중인 아이디입니다.');
   // }
+});
+router.patch('/', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: req.user.id },
+    });
+    const updateData = {};
+    if (req.body.userId) {
+      updateData.userId = req.body.userId;
+    }
+    if (req.body.userPassword) {
+      const newHashPassword = await bcrypt.hash(req.body.newUserPassword, 12);
+      updateData.password = newHashPassword;
+    }
+    if (req.body.userNickname) {
+      updateData.nickname = req.body.userNickname;
+    }
+    const newUser = await user.update(updateData, {
+      where: { id: req.user.id },
+    });
+    const jsonData = newUser.toJSON();
+    delete jsonData.password;
+    return res.json(jsonData);
+  } catch (e) {
+    console.log(e);
+    return next(e);
+  }
 });
 module.exports = router;

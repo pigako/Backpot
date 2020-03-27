@@ -20,6 +20,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_FAILURE,
+  UPDATE_USER_SUCCESS,
 } from '../reducers/user';
 
 // 로그인
@@ -119,34 +122,35 @@ function* loadUser(action) {
 function* watchLoadUser() {
   yield takeEvery(LOAD_USER_REQUEST, loadUser);
 }
-// function* watchLoadUser() {
-//   yield takeEvery(LOAD_USER_REQUEST, function* loadUser(action) {
-//     try {
-//       const result = yield call(userId => {
-//         return axios.get(userId ? `/user/${userId}` : `/user`, {
-//           withCredentials: true,
-//         });
-//       }, action.data);
-//       console.log('LOAD_USER', result.data);
-//       yield put({
-//         type: LOAD_USER_SUCCESS,
-//         data: result.data,
-//         me: !action.data,
-//       });
-//     } catch (e) {
-//       console.log(e);
-//       yield put({
-//         type: LOAD_USER_FAILURE,
-//         error: e,
-//       });
-//     }
-//   });
-// }
+
+function* watchUpdateUser() {
+  yield takeLatest(UPDATE_USER_REQUEST, function*(action) {
+    try {
+      const result = yield call(updateData => {
+        return axios.patch('/user', updateData, {
+          withCredentials: true,
+        });
+      }, action.data);
+      yield put({
+        type: UPDATE_USER_SUCCESS,
+        data: result.data,
+      });
+    } catch (e) {
+      console.log(e);
+      yield put({
+        type: UPDATE_USER_FAILURE,
+        error: e,
+      });
+    }
+  });
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchSignUp),
     fork(watchLogin),
     fork(watchLogout),
     fork(watchLoadUser),
+    fork(watchUpdateUser),
   ]);
 }

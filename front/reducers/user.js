@@ -12,6 +12,8 @@ export const initalState = {
   LikedBookList: [],
   LikedWriterList: [],
   otherUserInfo: null,
+  isUpdating: false,
+  isUpdated: false,
 };
 
 export const LOG_IN_REQUEST = `LOG_IN_REQUEST`;
@@ -29,6 +31,12 @@ export const SIGN_UP_FAILURE = `SIGN_UP_FAILURE`;
 export const LOAD_USER_REQUEST = `LOAD_USER_REQUEST`;
 export const LOAD_USER_SUCCESS = `LOAD_USER_SUCCESS`;
 export const LOAD_USER_FAILURE = `LOAD_USER_FAILURE`;
+
+export const UPDATE_USER_REQUEST = `UPDATE_USER_REQUEST`;
+export const UPDATE_USER_SUCCESS = `UPDATE_USER_SUCCESS`;
+export const UPDATE_USER_FAILURE = `UPDATE_USER_FAILURE`;
+
+export const CHANGE_UPDATED = `CHANGE_UPDATED`;
 
 export const ADD_LIKEBOOKLIST = `ADD_LIKEBOOKLIST`;
 export const REMOVE_LIKEBOOKLIST = `REMOVE_LIKEBOOKLIST`;
@@ -122,6 +130,29 @@ const reducer = (state = initalState, action) => {
         if (index !== -1) {
           draft.me.LikingBook.splice(index, 1);
         }
+        break;
+      }
+      case UPDATE_USER_REQUEST: {
+        draft.isUpdating = true;
+        draft.isUpdated = false;
+        break;
+      }
+      case UPDATE_USER_SUCCESS: {
+        draft.isUpdating = false;
+        draft.isUpdated = true;
+        if (action.data.userId) {
+          draft.me.userId = action.data.userId;
+        }
+        if (action.data.nickname) {
+          draft.me.nickname = action.data.nickname;
+        }
+        break;
+      }
+      case UPDATE_USER_FAILURE: {
+        break;
+      }
+      case CHANGE_UPDATED: {
+        draft.isUpdated = false;
         break;
       }
       default: {
