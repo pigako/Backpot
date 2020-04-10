@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import Helmet from 'react-helmet';
 
 import {
   LOAD_BOOK_REQUEST,
@@ -12,6 +13,7 @@ import {
 } from '../reducers/book';
 import BookTable from '../components/BookTable';
 import Button from '../components/designs/Button';
+import { frontUrl } from '../config/config';
 
 const SBookDiv = styled.div`
   width: 98%;
@@ -105,9 +107,9 @@ const LoadingImg = styled.img`
 
 const Book = () => {
   const { book, isDeletingBook, isDeletedBook } = useSelector(
-    state => state.book,
+    (state) => state.book,
   );
-  const { me } = useSelector(state => state.user);
+  const { me } = useSelector((state) => state.user);
   const [isASC, setIsASC] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -150,7 +152,7 @@ const Book = () => {
   }, [isDeletedBook]);
 
   const onAddLikeBook = useCallback(
-    e => {
+    (e) => {
       dispatch({
         type: ADD_LIKEBOOK_REQUEST,
         bookId: book.id,
@@ -171,7 +173,7 @@ const Book = () => {
     ],
   );
   const onRemoveLikeBook = useCallback(
-    e => {
+    (e) => {
       dispatch({
         type: REMOVE_LIKEBOOK_REQUEST,
         bookId: book.id,
@@ -180,7 +182,7 @@ const Book = () => {
     [book && book.id],
   );
   const onIsASC = useCallback(
-    e => {
+    (e) => {
       setIsASC(!isASC);
     },
     [isASC],
@@ -188,9 +190,38 @@ const Book = () => {
 
   return (
     <SBookDiv>
+      <Helmet
+        title={book && book.name}
+        description={book && book.summary}
+        meta={[
+          {
+            name: 'description',
+            content: book && book.summary,
+          },
+          {
+            property: 'og:title',
+            content: `${book && book.name}`,
+          },
+          {
+            property: 'og:description',
+            content: `${book && book.summary}`,
+          },
+          {
+            property: 'og:image',
+            content:
+              book && book.thumbnail
+                ? `${book && book.thumbnail}`
+                : `${frontUrl}/favicon`,
+          },
+          {
+            property: 'og:url',
+            content: `${frontUrl}/book/${book && book.id}`,
+          },
+        ]}
+      />
       <BookTopDiv>
         <BookTopLeftDiv>
-          <Thumbnail src={`http://localhost:5000/${book && book.thumbnail}`} />
+          <Thumbnail src={`${book && book.thumbnail}`} />
         </BookTopLeftDiv>
         <BookTopRightDiv>
           <BookTitle>{book && book.name}</BookTitle>
@@ -207,13 +238,13 @@ const Book = () => {
             </WriterButtonDiv>
           ) : null}
 
-          <label>{book && book.BookGenre.map(v => v.name + ' ')}</label>
+          <label>{book && book.BookGenre.map((v) => v.name + ' ')}</label>
           <div>
             <label>
               작가 <a onClick={onGoWriter}>{book && book.User.nickname}</a> 님
             </label>
             <label>
-              연재주기 {book && book.serialDay.split(',').map(v => v + ' ')}
+              연재주기 {book && book.serialDay.split(',').map((v) => v + ' ')}
             </label>
           </div>
           <div>
@@ -256,7 +287,7 @@ const Book = () => {
           <Button onClick={onGoWriteEpisode}>글쓰러가기</Button>
         ) : null}
         {me ? (
-          me.LikingBook.find(v => v.id === (book && book.id)) ? (
+          me.LikingBook.find((v) => v.id === (book && book.id)) ? (
             <Button color="pink" onClick={onRemoveLikeBook}>
               선호작해제
             </Button>
@@ -273,7 +304,7 @@ const Book = () => {
   );
 };
 
-Book.getInitialProps = async context => {
+Book.getInitialProps = async (context) => {
   const bookId = context.query.bookid;
 
   context.store.dispatch({

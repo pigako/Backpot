@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
+import Helmet from 'react-helmet';
 
 import Button from '../components/designs/Button';
 import BoardTable from '../components/BoardTable';
@@ -62,15 +63,15 @@ const SearchInput = styled.input`
 const PageButtonDiv = styled.div``;
 
 const Board = () => {
-  const { boards, hasMoreBoards } = useSelector(state => state.board);
-  const { me } = useSelector(state => state.user);
+  const { boards, hasMoreBoards } = useSelector((state) => state.board);
+  const { me } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
   const [lastIdArray, setLastIdArray] = useState([]);
   const [keyword, setKeyword] = useState('');
 
   const onScroll = useCallback(
-    e => {
+    (e) => {
       if (
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
@@ -99,16 +100,16 @@ const Board = () => {
     };
   }, [boards.length]);
 
-  const onCreateBoard = useCallback(e => {
+  const onCreateBoard = useCallback((e) => {
     router.push('/writeboard');
   }, []);
 
-  const onChangeKeyword = useCallback(e => {
+  const onChangeKeyword = useCallback((e) => {
     setKeyword(e.target.value);
   }, []);
 
   const onSearchBoard = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
       dispatch({
         type: CHANGE_BOARD_KEYWORD,
@@ -125,6 +126,10 @@ const Board = () => {
 
   return (
     <SBoard>
+      <Helmet
+        title={'추천 게시판'}
+        description={'웹소설 Backpot 추천 게시판'}
+      />
       <BoardDivTop>
         <SBoardTitle>추천 게시판</SBoardTitle>
         {me && <Button onClick={onCreateBoard}>글쓰기</Button>}
@@ -139,7 +144,7 @@ const Board = () => {
   );
 };
 
-Board.getInitialProps = async context => {
+Board.getInitialProps = async (context) => {
   const state = context.store.getState();
   context.store.dispatch({
     type: LOAD_BOARDS_REQUEST,

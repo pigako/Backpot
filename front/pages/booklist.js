@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
+import Helmet from 'react-helmet';
 
 import BookCard from '../components/BookCard';
 import { LOAD_BOOKS_REQUEST } from '../reducers/book';
@@ -16,14 +17,14 @@ const NovelList = styled.div`
 `;
 
 const BookList = () => {
-  const { books, keyword } = useSelector(state => state.book);
+  const { books, keyword } = useSelector((state) => state.book);
 
   return (
     <div>
       <BookListTitle>연재소설 목록</BookListTitle>
       <NovelList>
         {books &&
-          books.map(book => {
+          books.map((book) => {
             return (
               <BookCard
                 key={+book.id}
@@ -37,7 +38,7 @@ const BookList = () => {
   );
 };
 
-BookList.getInitialProps = async context => {
+BookList.getInitialProps = async (context) => {
   const state = context.store.getState();
   context.store.dispatch({
     type: LOAD_BOOKS_REQUEST,

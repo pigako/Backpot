@@ -8,7 +8,7 @@ import { ServerStyleSheet } from 'styled-components';
 class MyDocument extends Document {
   static getInitialProps(context) {
     const sheet = new ServerStyleSheet();
-    const page = context.renderPage(App => props =>
+    const page = context.renderPage((App) => (props) =>
       sheet.collectStyles(<App {...props} />),
     );
     const styleTages = sheet.getStyleElement();
@@ -23,10 +23,13 @@ class MyDocument extends Document {
       <html {...htmlAttrs}>
         <head>
           {this.props.styleTages}
-          {Object.values(helmet).map(el => el.toComponent())}
+          {Object.values(helmet).map((el) => el.toComponent())}
         </head>
         <body {...bodyAttrs}>
           <Main />
+          {process.env.NODE_ENV === 'production' && (
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />
+          )}
           <NextScript />
         </body>
       </html>

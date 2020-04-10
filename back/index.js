@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const dotenv = require('dotenv');
 const passport = require('passport');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const passportConfig = require('./passport');
 const db = require('./models'); // DB model
@@ -16,21 +18,37 @@ const booksAPIRouter = require('./routes/books');
 const genresAPIRouter = require('./routes/genres');
 const episodeAPIRouter = require('./routes/episode');
 
+const prod = process.env.NODE_ENV === 'production';
+
 dotenv.config(); // dotenv 실행
 const app = express();
 db.sequelize.sync(); // 시퀄라이즈 실행
 passportConfig(); // passport start
 
-app.use(morgan('dev')); // Log
+if (prod) {
+  app.use(hpp());
+  app.use(helmet());
+  app.use(morgan('combined'));
+  app.use(
+    cors({
+      origin: NODE.env.FORNT_URL,
+      credentials: true,
+    }),
+  );
+} else {
+  app.use(morgan('dev'));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    }),
+  );
+}
+
 app.use('/', express.static('uploads')); // Image 파일 다른서버에서 가져갈수 있도록 등록
+
 app.use(express.json()); // JSON 형식 본문 처리
 app.use(express.urlencoded({ extended: true })); // form으로 넘어온 Data 처리
-app.use(
-  cors({
-    origin: true,
-    credentials: true, // 쿠키 교환
-  }),
-);
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   expressSession({
@@ -47,6 +65,10 @@ app.use(
 app.use(passport.initialize()); // 로그인 미들웨어
 app.use(passport.session()); // express session
 
+app.get('/', (req, res) => {
+  res.send('Backpot backend start');
+});
+
 app.use('/api/user', userAPIRouter);
 app.use('/api/board', boardAPIRouter);
 app.use('/api/boards', boardsAPIRouter);
@@ -56,6 +78,6 @@ app.use('/api/genres', genresAPIRouter);
 app.use('/api/episode', episodeAPIRouter);
 
 // 서버시작
-app.listen(5000, () => {
-  console.log(`server is running on http://localhost:5000`);
+app.listen(prod ? process.env.PORT : 5000, () => {
+  console.log(`server is running on ${process.env.PORT}`);
 });

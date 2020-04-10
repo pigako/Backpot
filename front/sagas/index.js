@@ -4,8 +4,9 @@ import user from './user';
 import book from './book';
 import board from './board';
 import episode from './episode';
+import { backUrl } from '../config/config';
 
-axios.defaults.baseURL = `http://localhost:5000/api`;
+axios.defaults.baseURL = `${backUrl}/api`;
 
 export default function* rootSaga() {
   yield all([call(user), call(book), call(board), call(episode)]);
