@@ -14,6 +14,7 @@ AWS.config.update({
   region: 'ap-northeast-2', //서울
   accessKeyId: process.env.S3_ACCESS_KET_ID,
   secretAccessKeyt: process.env.S3_SECRET_ACCESS_KEY,
+  credentials: new aws.SharedIniFileCredentials(),
 });
 
 const upload = multer({
