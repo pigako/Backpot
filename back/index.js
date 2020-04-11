@@ -58,6 +58,7 @@ app.use(
     cookie: {
       httpOnly: true, //자바스크립트로 쿠키 접근 x
       secure: false, // https 설정
+      domain: prod && '.',
     },
     name: 'ADSFOPK',
   }),
