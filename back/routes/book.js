@@ -10,7 +10,6 @@ const { isLoggedIn } = require('./middleware');
 const router = express.Router();
 
 AWS.config.update({
-  // 아마존 S3 설정
   region: 'us-east-2',
   accessKeyId: process.env.S3_ACCESS_KET_ID,
   secretAccessKeyt: process.env.S3_SECRET_ACCESS_KEY,
