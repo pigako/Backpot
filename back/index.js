@@ -31,7 +31,7 @@ if (prod) {
   app.use(morgan('combined'));
   app.use(
     cors({
-      origin: NODE.env.FORNT_URL,
+      origin: process.env.FORNT_URL,
       credentials: true,
     }),
   );
