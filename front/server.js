@@ -73,7 +73,7 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  server.listen(prod ? precess.env.PORT : 8080, (err) => {
+  server.listen(prod ? process.env.PORT : 8080, (err) => {
     console.log(`next+express running on port 3060 ${process.env.PORT}`);
   });
 });
