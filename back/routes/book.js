@@ -11,17 +11,16 @@ const router = express.Router();
 
 AWS.config.update({
   // 아마존 S3 설정
-  region: 'ap-northeast-2', //서울
+  region: 'us-east-2',
   accessKeyId: process.env.S3_ACCESS_KET_ID,
   secretAccessKeyt: process.env.S3_SECRET_ACCESS_KEY,
-  credentials: new AWS.SharedIniFileCredentials(),
 });
 
 const upload = multer({
   // S3 멀터 설정
   storage: multerS3({
     s3: new AWS.S3(),
-    bucket: 'backpot',
+    bucket: 'backpots3',
     key(req, file, cb) {
       cb(null, `original/${+new Date()}${path.basename(file.originalname)}`);
     },
