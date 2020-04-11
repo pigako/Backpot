@@ -54,13 +54,13 @@ const Backpot = ({ Component, store, pageProps }) => {
             },
             {
               property: 'og:image',
-              content: `${frontUrl}/favicon`,
+              content: `${frontUrl}/favicon.png`,
             },
           ]}
           link={[
             {
               rel: 'shortcut icon',
-              href: '/favicon',
+              href: '/favicon.png',
             },
           ]}
         />

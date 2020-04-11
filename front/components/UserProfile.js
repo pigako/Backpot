@@ -92,17 +92,17 @@ const LoadingImg = styled.img`
   height: 1.5rem;
 `;
 const UserProfile = () => {
-  const { isLoggingOut } = useSelector(state => state.user);
+  const { isLoggingOut } = useSelector((state) => state.user);
   const {
     LikingBook: likingBookList,
     LikingUser: likingWriter,
     nickname,
-  } = useSelector(state => state.user.me);
+  } = useSelector((state) => state.user.me);
   // const likingBookList = useSelector(state => state.user.me.LikingBook);
   // const likingWriter = useSelector(state => state.user.me.LikingUser);
   const dispatch = useDispatch();
 
-  const onLogout = useCallback(e => {
+  const onLogout = useCallback((e) => {
     dispatch({
       type: LOG_OUT_REQUEST,
     });
