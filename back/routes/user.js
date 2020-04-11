@@ -80,7 +80,7 @@ router.post('/login', (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.login(user, async loginErr => {
+    return req.login(user, async (loginErr) => {
       try {
         if (loginErr) {
           console.log(loginErr);
@@ -175,8 +175,8 @@ router.post('/check', async (req, res, next) => {
         return res.send(false);
       }
       return res.send(true);
-    } else if (req.body.type === 'userNickname') {
-      const existNickname = await db.User.findOne({ where: { nickname: req.body.userNickname } });
+    } else if (req.body.type === 'nickname') {
+      const existNickname = await db.User.findOne({ where: { nickname: req.body.nickname } });
       if (existNickname) {
         return res.send(false);
       }
