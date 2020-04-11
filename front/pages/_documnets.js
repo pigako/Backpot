@@ -1,8 +1,7 @@
-// HTML의 역할을 한다.
 import React from 'react';
-import Document, { Main, NextScript } from 'next/document';
 import Helmet from 'react-helmet';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
+import Document, { Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 class MyDocument extends Document {
@@ -11,18 +10,19 @@ class MyDocument extends Document {
     const page = context.renderPage((App) => (props) =>
       sheet.collectStyles(<App {...props} />),
     );
-    const styleTages = sheet.getStyleElement();
-    return { ...page, helmet: Helmet.renderStatic(), styleTages };
+    const styleTags = sheet.getStyleElement();
+    return { ...page, helmet: Helmet.renderStatic(), styleTags };
   }
 
   render() {
     const { htmlAttributes, bodyAttributes, ...helmet } = this.props.helmet;
     const htmlAttrs = htmlAttributes.toComponent();
     const bodyAttrs = bodyAttributes.toComponent();
+
     return (
       <html {...htmlAttrs}>
         <head>
-          {this.props.styleTages}
+          {this.props.styleTags}
           {Object.values(helmet).map((el) => el.toComponent())}
         </head>
         <body {...bodyAttrs}>
@@ -38,8 +38,8 @@ class MyDocument extends Document {
 }
 
 MyDocument.propTypes = {
-  helmet: Proptypes.object.isRequired,
-  styleTags: Proptypes.object.isRequired,
+  helmet: PropTypes.object.isRequired,
+  styleTags: PropTypes.array.isRequired,
 };
 
 export default MyDocument;
