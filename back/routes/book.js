@@ -11,7 +11,7 @@ const router = express.Router();
 
 AWS.config.update({
   region: 'us-east-2',
-  accessKeyId: process.env.S3_ACCESS_KET_ID,
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKeyt: process.env.S3_SECRET_ACCESS_KEY,
 });
 
