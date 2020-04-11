@@ -19,7 +19,7 @@ AWS.config.update({
 const upload = multer({
   // S3 멀터 설정
   storage: multerS3({
-    s3: new AWS.s3(),
+    s3: new AWS.S3(),
     bucket: 'backpot',
     key(req, file, cb) {
       cb(null, `original/${+new Date()}${path.basename(file.originalname)}`);
