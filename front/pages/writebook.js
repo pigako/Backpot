@@ -93,7 +93,7 @@ const GenreButton = styled(Button)`
     margin-left: 0px;
   }
 
-  ${props => {
+  ${(props) => {
     if (props.check) {
       return css`
         color: white;
@@ -131,7 +131,7 @@ const DayButton = styled(Button)`
     color: white;
   }
 
-  ${props => {
+  ${(props) => {
     if (props.check) {
       return css`
         color: white;
@@ -154,11 +154,11 @@ const WriteBook = () => {
   const router = useRouter();
 
   const { thumbnailPath, isAddingBook, isAddedBook } = useSelector(
-    state => state.book,
+    (state) => state.book,
   );
 
   const [bookName, setBookName] = useState('');
-  const { genre } = useSelector(state => state.book);
+  const { genre } = useSelector((state) => state.book);
   const [genreArr, setGenreArr] = useState([]);
   const [serialDay, setSerialDay] = useState({
     sun: false,
@@ -193,10 +193,10 @@ const WriteBook = () => {
     imageInput.current.click();
   }, [imageInput.current]);
 
-  const onChagneImage = useCallback(e => {
+  const onChagneImage = useCallback((e) => {
     console.log(e.target.files);
     const imageFormData = new FormData();
-    [].forEach.call(e.target.files, f => {
+    [].forEach.call(e.target.files, (f) => {
       imageFormData.append('image', f);
     });
     console.log(imageFormData);
@@ -221,14 +221,14 @@ const WriteBook = () => {
     setEditorLoded(true);
   }, []);
 
-  const onChangeBookName = useCallback(e => {
+  const onChangeBookName = useCallback((e) => {
     setBookName(e.target.value);
   }, []);
 
   const onClickGenreButton = useCallback(
-    id => e => {
+    (id) => (e) => {
       if (genreArr.includes(id)) {
-        setGenreArr(genreArr.filter(g => g !== id));
+        setGenreArr(genreArr.filter((g) => g !== id));
       } else {
         setGenreArr([...genreArr, id]);
       }
@@ -241,7 +241,7 @@ const WriteBook = () => {
   }, []);
 
   const onSubmitForm = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
       const serialDayJoin = Object.keys(serialDay)
         .reduce(
@@ -279,7 +279,7 @@ const WriteBook = () => {
   }, [imageInput.current, isAddedBook]);
 
   const onChangeDay = useCallback(
-    e => {
+    (e) => {
       setSerialDay({
         ...serialDay,
         [e.target.name]: !serialDay[e.target.name],
@@ -330,7 +330,7 @@ const WriteBook = () => {
             <label>장르</label>
           </DivCardLeft>
           <GenreDiv>
-            {genre.map(g => {
+            {genre.map((g) => {
               return (
                 <GenreButton
                   key={+g.id}
@@ -357,7 +357,7 @@ const WriteBook = () => {
             />
             {thumbnailPath ? (
               <ThumbnailDiv>
-                <img src={`http://localhost:5000/${thumbnailPath}`} />
+                <img src={`${thumbnailPath}`} />
                 <div>
                   <Button type="button" onClick={onRemoveThumbnail}>
                     제거
@@ -467,7 +467,7 @@ const WriteBook = () => {
   );
 };
 
-WriteBook.getInitialProps = async context => {
+WriteBook.getInitialProps = async (context) => {
   context.store.dispatch({
     type: LOAD_GENRE_REQUEST,
   });

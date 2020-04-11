@@ -95,7 +95,7 @@ const GenreButton = styled(Button)`
     margin-left: 0px;
   }
 
-  ${props => {
+  ${(props) => {
     if (props.check) {
       return css`
         color: white;
@@ -133,7 +133,7 @@ const DayButton = styled(Button)`
     color: white;
   }
 
-  ${props => {
+  ${(props) => {
     if (props.check) {
       return css`
         color: white;
@@ -156,11 +156,11 @@ const UpdateBook = () => {
   const router = useRouter();
 
   const { thumbnailPath, isUpdatedBook, isUpdatingBook, book } = useSelector(
-    state => state.book,
+    (state) => state.book,
   );
 
   const [bookName, setBookName] = useState(book && book.name);
-  const { genre } = useSelector(state => state.book);
+  const { genre } = useSelector((state) => state.book);
   const [genreArr, setGenreArr] = useState(
     book && book.BookGenre.reduce((acc, cur) => acc.concat(cur.id), []),
   );
@@ -193,10 +193,10 @@ const UpdateBook = () => {
     imageInput.current.click();
   }, [imageInput.current]);
 
-  const onChagneImage = useCallback(e => {
+  const onChagneImage = useCallback((e) => {
     console.log(e.target.files);
     const imageFormData = new FormData();
-    [].forEach.call(e.target.files, f => {
+    [].forEach.call(e.target.files, (f) => {
       imageFormData.append('image', f);
     });
     console.log(imageFormData);
@@ -227,14 +227,14 @@ const UpdateBook = () => {
     setEditorLoded(true);
   }, []);
 
-  const onChangeBookName = useCallback(e => {
+  const onChangeBookName = useCallback((e) => {
     setBookName(e.target.value);
   }, []);
 
   const onClickGenreButton = useCallback(
-    id => e => {
+    (id) => (e) => {
       if (genreArr.includes(id)) {
-        setGenreArr(genreArr.filter(g => g !== id));
+        setGenreArr(genreArr.filter((g) => g !== id));
       } else {
         setGenreArr([...genreArr, id]);
       }
@@ -247,7 +247,7 @@ const UpdateBook = () => {
   }, []);
 
   const onSubmitForm = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
       const serialDayJoin = Object.keys(serialDay)
         .reduce(
@@ -288,7 +288,7 @@ const UpdateBook = () => {
   }, [isUpdatedBook]);
 
   const onChangeDay = useCallback(
-    e => {
+    (e) => {
       setSerialDay({
         ...serialDay,
         [e.target.name]: !serialDay[e.target.name],
@@ -339,7 +339,7 @@ const UpdateBook = () => {
             <label>장르</label>
           </DivCardLeft>
           <GenreDiv>
-            {genre.map(g => {
+            {genre.map((g) => {
               return (
                 <GenreButton
                   key={+g.id}
@@ -366,7 +366,7 @@ const UpdateBook = () => {
             />
             {book && book.thumbnail ? (
               <ThumbnailDiv>
-                <img src={`http://localhost:5000/${book.thumbnail}`} />
+                <img src={`${book && book.thumbnail}`} />
                 <div>
                   <Button type="button" onClick={onRemoveThumbnail}>
                     제거
@@ -375,7 +375,7 @@ const UpdateBook = () => {
               </ThumbnailDiv>
             ) : thumbnailPath ? (
               <ThumbnailDiv>
-                <img src={`http://localhost:5000/${thumbnailPath}`} />
+                <img src={`${thumbnailPath}`} />
                 <div>
                   <Button type="button" onClick={onRemoveThumbnail}>
                     제거
@@ -485,7 +485,7 @@ const UpdateBook = () => {
   );
 };
 
-UpdateBook.getInitialProps = async context => {
+UpdateBook.getInitialProps = async (context) => {
   context.store.dispatch({
     type: LOAD_GENRE_REQUEST,
   });
