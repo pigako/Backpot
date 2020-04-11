@@ -191,27 +191,26 @@ const Book = () => {
   return (
     <SBookDiv>
       <Helmet
-        title={book && book.name}
-        description={book && book.summary}
+        title={book.name}
+        description={book.summary}
         meta={[
           {
             name: 'description',
-            content: book && book.summary,
+            content: book.summary,
           },
           {
             property: 'og:title',
-            content: `${book && book.name}`,
+            content: book.name,
           },
           {
             property: 'og:description',
-            content: `${book && book.summary}`,
+            content: book.summary,
           },
           {
             property: 'og:image',
-            content:
-              book && book.thumbnail
-                ? `${book && book.thumbnail}`
-                : `${frontUrl}/favicon`,
+            content: book.thumbnail
+              ? book.thumbnail
+              : `${frontUrl}/favicon.png`,
           },
           {
             property: 'og:url',
